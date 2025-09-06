@@ -45,7 +45,7 @@
   time.timeZone = "Pacific/Auckland";
 
   users.users = {
-    ben = {
+    nixos = {
       extraGroups = [
         "docker"
         "wheel"
