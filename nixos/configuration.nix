@@ -15,8 +15,8 @@
     loader.efi.canTouchEfiVariables = true;
   };
 
-  environment.systemPackages = [
-    pkgs.git
+  environment.systemPackages = with pkgs; [
+    git
   ];
 
   i18n = {
@@ -70,6 +70,8 @@
       PasswordAuthentication = false;
     };
   };
+
+  services.vscode-server.enable = true;
 
   services.xserver.xkb = {
     layout = "us";
