@@ -17,7 +17,32 @@
 
   environment.systemPackages = with pkgs; [
     git
+    home-manager
+    nano
+    nixfmt-rfc-style
   ];
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+  };
+
+  home-manager.users.ben = {
+    home.stateVersion = "25.05";
+
+    home.packages = with pkgs; [
+      vscode-fhs
+    ];
+
+    programs.git = {
+      enable = true;
+      extraConfig = {
+        user.name = "Ben Feather";
+        user.email = "contact@benfeather.dev";
+        init.defaultBranch = "master";
+      };
+    };
+  };
 
   i18n = {
     defaultLocale = "en_GB.UTF-8";
