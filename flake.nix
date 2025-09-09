@@ -7,6 +7,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    sops.url = "github:Mic92/sops-nix";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
@@ -15,24 +16,31 @@
       home-manager,
       nixpkgs,
       self,
+      sops,
       vscode-server,
       ...
     }@inputs:
     let
-      env = import ../utils/env.nix;
+      env = {
+        config_dir = "/mnt/mac/Users/ben/VM-Data/config";
+        data_dir = "/mnt/mac/Users/ben/VM-Data/data";
+        domain = "nixos.orb.local";
+        pgid = "1000";
+        puid = "100";
+        tz = "Pacific/Auckland";
+      };
     in
     {
-      nixosConfigurations = {
-        hydra = nixpkgs.lib.nixosSystem {
-          modules = [
-            home-manager.nixosModules.home-manager
-            vscode-server.nixosModules.default
-            ./nixos/configuration.nix
-          ];
-          specialArgs = {
-            inherit env;
-            inherit inputs;
-          };
+      nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {
+        modules = [
+          home-manager.nixosModules.home-manager
+          sops.nixosModules.sops
+          vscode-server.nixosModules.default
+          ./nixos/configuration.nix
+        ];
+        specialArgs = {
+          inherit env;
+          inherit inputs;
         };
       };
     };

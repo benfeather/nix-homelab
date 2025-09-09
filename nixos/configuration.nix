@@ -22,6 +22,7 @@
     home-manager
     nano
     nixfmt-rfc-style
+    sops
   ];
 
   home-manager = {
@@ -108,6 +109,20 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
+  };
+
+  sops = {
+    age.keyFile = "/home/ben/.config/sops/age/keys.txt";
+
+    # secrets = {
+    #   "global/pg_pass".sopsFile = ./secrets.yaml;
+    #   "global/tailscale_key".sopsFile = ./secrets.yaml;
+    # };
+
+    # placeholder = {
+    #   "global/pg_pass" = config.sops.secrets."global/pg_pass".path;
+    #   "global/tailscale_key" = config.sops.secrets."global/tailscale_key".path;
+    # };
   };
 
   system.stateVersion = "25.05";
