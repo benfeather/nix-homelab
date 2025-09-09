@@ -10,6 +10,7 @@
     {
       nixpkgs,
       self,
+      vscode-server,
       ...
     }@inputs:
     let
