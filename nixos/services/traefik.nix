@@ -90,9 +90,9 @@
       };
     };
 
-    volumes = {
-      "tailscale-data" = { };
-      "traefik-certs" = { };
-    };
+    # volumes = {
+    #   "tailscale-data" = { };
+    #   "traefik-certs" = { };
+    # };
   };
 }

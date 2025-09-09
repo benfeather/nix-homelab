@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./services/traefik.nix
+    # ./services/traefik.nix
   ];
 
   boot = {
@@ -79,10 +79,6 @@
 
     settings = {
       experimental-features = "nix-command flakes";
-      trusted-users = [
-        "root"
-        "ben"
-      ];
     };
   };
 
@@ -130,8 +126,6 @@
   time.timeZone = "Pacific/Auckland";
 
   users = {
-    # mutableUsers = false;
-
     users.ben = {
       extraGroups = [
         "docker"
