@@ -15,6 +15,10 @@
     loader.efi.canTouchEfiVariables = true;
   };
 
+  environment.systemPackages = [
+    pkgs.git
+  ];
+
   i18n = {
     defaultLocale = "en_GB.UTF-8";
 
