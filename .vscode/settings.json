@@ -3,5 +3,7 @@
 		"nixos",
 		"nixpkgs",
 		"pkgs"
-	]
+	],
+
+	"extensions.verifySignature": false
 }

@@ -2,16 +2,10 @@
 
 ## Install
 
-### 1. Install Nix:
+### 1. Clone this repo: 
 
-`$ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon`
+`nix-shell -p git --run "git clone https://github.com/benfeather/nix-homelab.git ~/homelab"`
 
-### 2. Clone this repo: 
+### 2. Initial Setup:
 
-`sudo rm -R /etc/nixos`
-`nix-shell -p git --run "git clone https://github.com/benfeather/nix-homelab.git /etc/nixos"`
-`nixos-generate-config`
-
-### 3. Initial Setup:
-
-`sudo nixos-rebuild switch --flake /etc/nixos`
+`sudo nixos-rebuild switch --flake ~/homelab#hydra`

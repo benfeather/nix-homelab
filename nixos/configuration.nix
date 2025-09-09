@@ -30,10 +30,6 @@
   home-manager.users.ben = {
     home.stateVersion = "25.05";
 
-    home.packages = with pkgs; [
-      vscode-fhs
-    ];
-
     programs.git = {
       enable = true;
       extraConfig = {
@@ -96,7 +92,10 @@
     };
   };
 
-  services.vscode-server.enable = true;
+  services.vscode-server = {
+    enable = true;
+    enableFHS = true;
+  };
 
   services.xserver.xkb = {
     layout = "us";
@@ -107,17 +106,23 @@
 
   time.timeZone = "Pacific/Auckland";
 
-  users.users = {
-    ben = {
-      extraGroups = [
-        "docker"
-        "networkmanager"
-        "wheel"
-      ];
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
-      ];
+  users = {
+    mutableUsers = false;
+
+    users = {
+      ben = {
+        extraGroups = [
+          "docker"
+          "networkmanager"
+          "wheel"
+        ];
+
+        isNormalUser = true;
+        
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
+        ];
+      };
     };
   };
 }
