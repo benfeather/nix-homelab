@@ -16,6 +16,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    curl
     git
     home-manager
     nano
@@ -25,17 +26,17 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-  };
 
-  home-manager.users.ben = {
-    home.stateVersion = "25.05";
+    users.ben = {
+      home.stateVersion = "25.05";
 
-    programs.git = {
-      enable = true;
-      extraConfig = {
-        user.name = "Ben Feather";
-        user.email = "contact@benfeather.dev";
-        init.defaultBranch = "master";
+      programs.git = {
+        enable = true;
+        extraConfig = {
+          user.name = "Ben Feather";
+          user.email = "contact@benfeather.dev";
+          init.defaultBranch = "master";
+        };
       };
     };
   };
@@ -73,8 +74,13 @@
 
   nix = {
     channel.enable = false;
+
     settings = {
       experimental-features = "nix-command flakes";
+      trusted-users = [
+        "root"
+        "ben"
+      ];
     };
   };
 
@@ -86,6 +92,7 @@
 
   services.openssh = {
     enable = true;
+
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
@@ -107,22 +114,20 @@
   time.timeZone = "Pacific/Auckland";
 
   users = {
-    mutableUsers = false;
+    # mutableUsers = false;
 
-    users = {
-      ben = {
-        extraGroups = [
-          "docker"
-          "networkmanager"
-          "wheel"
-        ];
+    users.ben = {
+      extraGroups = [
+        "docker"
+        "networkmanager"
+        "wheel"
+      ];
 
-        isNormalUser = true;
-        
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
-        ];
-      };
+      isNormalUser = true;
+
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
+      ];
     };
   };
 }
