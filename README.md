@@ -2,10 +2,38 @@
 
 ## Install
 
-### 1. Clone this repo: 
+### Edit the configuration fie:
 
-`nix-shell -p git --run "git clone https://github.com/benfeather/nix-homelab.git ~/homelab"`
+`sudo nano /etc/nixos/configuration.nix`
 
-### 2. Initial Setup:
+```
+services.openssh.enable = true;
 
-`sudo nixos-rebuild switch --flake ~/homelab#hydra`
+environment.systemPackages = with pkgs; [
+	git
+];
+```
+
+### Rebuild the system:
+
+`sudo nixos-rebuild switch`
+
+### Get SSH keys
+
+`ssh-keygen -t ed25519`
+
+`curl https://github.com/benfeather.keys -o ~/.ssh/authorized_keys`
+
+### Clone this repo: 
+
+`sudo mkdir /config`
+
+`sudo chown -R 1000:nobody /config`
+
+`git clone https://github.com/benfeather/nix-homelab.git /config`
+
+`cp /etc/nixos/hardware-configuration.nix /config/nixos`
+
+### Use the new config
+
+`sudo nixos-rebuild switch --flake /config#hydra`
