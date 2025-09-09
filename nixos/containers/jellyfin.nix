@@ -1,10 +1,8 @@
 {
   config,
+  env,
   ...
 }:
-let
-  env = import ../utils/env.nix;
-in
 {
   virtualisation.oci-containers.containers."jellyfin" = {
     image = "lscr.io/linuxserver/jellyfin:latest";

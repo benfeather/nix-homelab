@@ -1,10 +1,8 @@
 {
   config,
+  env,
   ...
 }:
-let
-  env = import ../utils/env.nix;
-in
 {
   virtualisation.oci-containers.containers."bazarr-anime" = {
     image = "lscr.io/linuxserver/bazarr:latest";

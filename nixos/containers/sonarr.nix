@@ -1,10 +1,8 @@
 {
   config,
+  env,
   ...
 }:
-let
-  env = import ../utils/env.nix;
-in
 {
   virtualisation.oci-containers.containers."sonarr" = {
     image = "lscr.io/linuxserver/sonarr:latest";
