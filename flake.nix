@@ -26,7 +26,6 @@
           specialArgs = {
             inherit env;
             inherit inputs;
-            inherit outputs;
           };
         };
       };
