@@ -32,8 +32,6 @@ environment.systemPackages = with pkgs; [
 
 `git clone https://github.com/benfeather/nix-homelab.git /config`
 
-`cp /etc/nixos/hardware-configuration.nix /config/nixos`
-
 ### Use the new config
 
 `sudo nixos-rebuild switch --flake /config#hydra`
