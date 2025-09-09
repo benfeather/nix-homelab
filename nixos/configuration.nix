@@ -8,6 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./services/traefik.nix
   ];
 
   boot = {
@@ -42,7 +43,7 @@
   };
 
   i18n = {
-    defaultLocale = "en_GB.UTF-8";
+    defaultLocale = "en_NZ.UTF-8";
 
     extraLocaleSettings = {
       LC_ADDRESS = "en_NZ.UTF-8";
@@ -129,5 +130,18 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
       ];
     };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
+
+  virtualisation.oci-containers = {
+    backend = "docker";
   };
 }

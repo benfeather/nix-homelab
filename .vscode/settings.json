@@ -1,8 +1,15 @@
 {
 	"cSpell.words": [
+		"bazarr",
+		"letsencrypt",
 		"nixos",
 		"nixpkgs",
-		"pkgs"
+		"pgid",
+		"pkgs",
+		"puid",
+		"sonarr",
+		"traefik",
+		"websecure"
 	],
 
 	"extensions.verifySignature": false

@@ -13,16 +13,12 @@
       environment = {
         "AUTHENTIK_SECRET_KEY" = "secret";
         "AUTHENTIK_REDIS__HOST" = "authentik-redis";
-        "AUTHENTIK_POSTGRESQL__HOST" = "postgresql";
+        "AUTHENTIK_POSTGRESQL__HOST" = "authentik-postgresql";
         "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
         "AUTHENTIK_POSTGRESQL__USER" = config.sops.placeholder."global/pg_user";
         "AUTHENTIK_POSTGRESQL__PASSWORD" = config.sops.placeholder."global/pg_pass";
         "TZ" = env.tz;
       };
-
-      networks = [
-        "proxy"
-      ];
 
       ports = [
         "9000:9000"
@@ -43,16 +39,12 @@
       environment = {
         "AUTHENTIK_SECRET_KEY" = "changeme";
         "AUTHENTIK_REDIS__HOST" = "authentik-redis";
-        "AUTHENTIK_POSTGRESQL__HOST" = "postgres";
+        "AUTHENTIK_POSTGRESQL__HOST" = "authentik-postgres";
         "AUTHENTIK_POSTGRESQL__NAME" = "authentik";
         "AUTHENTIK_POSTGRESQL__USER" = config.sops.placeholder."global/pg_user";
         "AUTHENTIK_POSTGRESQL__PASSWORD" = config.sops.placeholder."global/pg_pass";
         "TZ" = env.tz;
       };
-
-      networks = [
-        "proxy"
-      ];
 
       volumes = [
         "${env.config_dir}/authentik/media:/media"
@@ -70,12 +62,25 @@
         "TZ" = env.tz;
       };
 
-      networks = [
-        "proxy"
-      ];
-
       volumes = [
         "${env.config_dir}/authentik/redis:/data"
+      ];
+    };
+
+    "authentik-postgres" = {
+      image = "docker.io/library/postgres:alpine";
+      hostname = "postgres";
+
+      environment = {
+        "POSTGRES_USER" = config.sops.placeholder."global/pg_user";
+        "POSTGRES_PASSWORD" = config.sops.placeholder."global/pg_pass";
+        "PUID" = env.puid;
+        "PGID" = env.pgid;
+        "TZ" = env.tz;
+      };
+
+      volumes = [
+        "${env.config_dir}/authentik/db:/var/lib/postgresql/data"
       ];
     };
   };
