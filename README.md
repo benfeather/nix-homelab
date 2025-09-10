@@ -40,4 +40,4 @@ environment.systemPackages = with pkgs; [
 
 ### Use the new config
 
-`sudo nixos-rebuild switch --flake /config#hydra`
+`sudo nixos-rebuild switch --flake /config#nixos`
