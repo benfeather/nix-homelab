@@ -22,9 +22,12 @@
     }@inputs:
     let
       env = {
-        config_dir = "/mnt/mac/Users/ben/VM-Data/config";
-        data_dir = "/mnt/mac/Users/ben/VM-Data/data";
-        domain = "nixos.orb.local";
+        config_dir = "/config/appdata/config";
+        data_dir = "/config/appdata/data";
+        domain = "benfeather.com";
+        domain_sans = "*.benfeather.com";
+        cf_api_email = "benfeather8425@gmail.com";
+        le_email = "contact@benfeather.dev";
         pgid = "1000";
         puid = "100";
         tz = "Pacific/Auckland";

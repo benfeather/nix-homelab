@@ -30,6 +30,8 @@ environment.systemPackages = with pkgs; [
 
 `nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/.config/sops/age/keys.txt"`
 
+`nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'`
+
 ### Clone this repo: 
 
 `sudo mkdir /config`

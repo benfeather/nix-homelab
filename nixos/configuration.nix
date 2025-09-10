@@ -9,7 +9,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ./services/traefik.nix
+    ./services/traefik.nix
   ];
 
   boot = {
@@ -108,19 +108,19 @@
     variant = "";
   };
 
-  # sops = {
-  # age.keyFile = "/home/ben/.config/sops/age/keys.txt";
+  sops = {
+    age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
 
-  # secrets = {
-  #   "global/pg_pass".sopsFile = ./secrets.yaml;
-  #   "global/tailscale_key".sopsFile = ./secrets.yaml;
-  # };
+    secrets = {
+      "cloudflare_key".sopsFile = ../.secrets/cloudflare_key.yml;
+      "tailscale_key".sopsFile = ../.secrets/tailscale_key.yml;
+    };
 
-  # placeholder = {
-  #   "global/pg_pass" = config.sops.secrets."global/pg_pass".path;
-  #   "global/tailscale_key" = config.sops.secrets."global/tailscale_key".path;
-  # };
-  # };
+    placeholder = {
+      "cloudflare_key" = config.sops.secrets."cloudflare_key".path;
+      "tailscale_key" = config.sops.secrets."tailscale_key".path;
+    };
+  };
 
   system.stateVersion = "25.05";
 
