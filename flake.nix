@@ -31,7 +31,7 @@
       };
     in
     {
-      nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         modules = [
           home-manager.nixosModules.home-manager
           sops.nixosModules.sops
