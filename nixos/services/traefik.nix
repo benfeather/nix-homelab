@@ -8,7 +8,6 @@
     "tailscale" = {
       image = "tailscale/tailscale";
       hostname = "traefik";
-      restartPolicy = "unless-stopped";
 
       environment = {
         "TS_AUTH_ONCE" = "true";
@@ -21,9 +20,8 @@
         "/dev/net/tun:/dev/net/tun"
       ];
 
-      extraCapabilities = [
-        "NET_ADMIN"
-        "SYS_MODULE"
+      extraOptions = [
+        "--cap-add=net_admin,sys_module"
       ];
 
       volumes = [
@@ -34,7 +32,6 @@
     "traefik" = {
       image = "traefik:v3";
       hostname = "traefik";
-      restartPolicy = "unless-stopped";
 
       environment = {
         "TZ" = env.tz;

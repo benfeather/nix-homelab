@@ -9,7 +9,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ./services/traefik.nix
+    ./services/traefik.nix
   ];
 
   boot = {
