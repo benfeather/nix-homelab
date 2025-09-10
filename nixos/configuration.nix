@@ -1,5 +1,6 @@
 {
   config,
+  env,
   inputs,
   lib,
   pkgs,
@@ -29,7 +30,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    users.ben = {
+    users.nixos = {
       home.stateVersion = "25.05";
 
       programs.git = {
@@ -69,7 +70,7 @@
       ];
     };
 
-    hostName = "hydra";
+    hostName = "nixos";
 
     networkmanager.enable = true;
   };
@@ -107,26 +108,26 @@
     variant = "";
   };
 
-  sops = {
-    age.keyFile = "/home/ben/.config/sops/age/keys.txt";
+  # sops = {
+  # age.keyFile = "/home/ben/.config/sops/age/keys.txt";
 
-    # secrets = {
-    #   "global/pg_pass".sopsFile = ./secrets.yaml;
-    #   "global/tailscale_key".sopsFile = ./secrets.yaml;
-    # };
+  # secrets = {
+  #   "global/pg_pass".sopsFile = ./secrets.yaml;
+  #   "global/tailscale_key".sopsFile = ./secrets.yaml;
+  # };
 
-    # placeholder = {
-    #   "global/pg_pass" = config.sops.secrets."global/pg_pass".path;
-    #   "global/tailscale_key" = config.sops.secrets."global/tailscale_key".path;
-    # };
-  };
+  # placeholder = {
+  #   "global/pg_pass" = config.sops.secrets."global/pg_pass".path;
+  #   "global/tailscale_key" = config.sops.secrets."global/tailscale_key".path;
+  # };
+  # };
 
   system.stateVersion = "25.05";
 
-  time.timeZone = "Pacific/Auckland";
+  time.timeZone = env.tz;
 
   users = {
-    users.ben = {
+    users.nixos = {
       extraGroups = [
         "docker"
         "networkmanager"
