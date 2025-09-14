@@ -2,7 +2,7 @@ keys:
   - &nixos age1f0fkgkc702yckqfzc6s56rmyp3h2wf3rr5runhmjdru4uuegy5assy7eyk
 
 creation_rules:
-  - path_regex: \.secrets/.*$
+  - path_regex: secrets/\.env.*$
     key_groups:
       - age:
           - *nixos

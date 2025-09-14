@@ -113,8 +113,8 @@
     defaultSopsFormat = "dotenv";
 
     secrets = {
-      "cloudflare_env".sopsFile = ../.secrets/cloudflare_env;
-      "tailscale_env".sopsFile = ../.secrets/tailscale_env;
+      "cloudflare_env".sopsFile = ../secrets/.env.cloudflare;
+      "tailscale_env".sopsFile = ../secrets/.env.tailscale;
     };
   };
 
