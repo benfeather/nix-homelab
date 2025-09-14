@@ -15,7 +15,7 @@
         "TS_USERSPACE" = "false";
       };
 
-      environmentFile = [
+      environmentFiles = [
         "${config.sops.secrets.tailscale_env.path}"
       ];
 
@@ -42,8 +42,8 @@
         "CF_API_EMAIL" = env.cf_api_email;
       };
 
-      environmentFile = [
-        "${config.sops.secrets.traefik_env.path}"
+      environmentFiles = [
+        "${config.sops.secrets.cloudflare_env.path}"
       ];
 
       volumes = [

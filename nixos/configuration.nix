@@ -110,16 +110,11 @@
   sops = {
     age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
 
-    secrets = {
-      "cloudflare_key" = {
-        format = "env";
-        sopsFile = ../.secrets/cloudflare_env
-      };
+    defaultSopsFormat = "dotenv";
 
-      "tailscale_key" = {
-        format = "env";
-        sopsFile = ../.secrets/tailscale_env
-      };
+    secrets = {
+      "cloudflare_env".sopsFile = ../.secrets/cloudflare_env;
+      "tailscale_env".sopsFile = ../.secrets/tailscale_env;
     };
   };
 
