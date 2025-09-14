@@ -62,7 +62,7 @@
 
   networking = {
     firewall = {
-      enable = true;
+      enable = false;
       allowedTCPPorts = [
         22
         80
@@ -100,7 +100,6 @@
 
   services.vscode-server = {
     enable = true;
-    enableFHS = true;
   };
 
   services.xserver.xkb = {
@@ -112,13 +111,15 @@
     age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
 
     secrets = {
-      "cloudflare_key".sopsFile = ../.secrets/cloudflare_key.yml;
-      "tailscale_key".sopsFile = ../.secrets/tailscale_key.yml;
-    };
+      "cloudflare_key" = {
+        format = "env";
+        sopsFile = ../.secrets/cloudflare_env
+      };
 
-    placeholder = {
-      "cloudflare_key" = config.sops.secrets."cloudflare_key".path;
-      "tailscale_key" = config.sops.secrets."tailscale_key".path;
+      "tailscale_key" = {
+        format = "env";
+        sopsFile = ../.secrets/tailscale_env
+      };
     };
   };
 

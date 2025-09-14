@@ -11,17 +11,21 @@
 
       environment = {
         "TS_AUTH_ONCE" = "true";
-        "TS_AUTHKEY" = "${config.sops.placeholder.tailscale_key}";
         "TS_STATE_DIR" = "/var/lib/tailscale";
         "TS_USERSPACE" = "false";
       };
+
+      environmentFile = [
+        "${config.sops.secrets.tailscale_env.path}"
+      ];
 
       devices = [
         "/dev/net/tun:/dev/net/tun"
       ];
 
       extraOptions = [
-        "--cap-add=net_admin,sys_module"
+        "--cap-add=net_admin"
+        "--cap-add=sys_module"
       ];
 
       volumes = [
@@ -36,9 +40,11 @@
       environment = {
         "TZ" = env.tz;
         "CF_API_EMAIL" = env.cf_api_email;
-        "CF_DNS_API_TOKEN" = "${config.sops.placeholder.cloudflare_key}";
-        "CF_ZONE_API_TOKEN" = "${config.sops.placeholder.cloudflare_key}";
       };
+
+      environmentFile = [
+        "${config.sops.secrets.traefik_env.path}"
+      ];
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
