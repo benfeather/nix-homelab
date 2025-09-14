@@ -5,86 +5,33 @@
 }:
 {
   virtualisation.oci-containers.containers = {
-    "tailscale" = {
-      image = "tailscale/tailscale";
-      hostname = "traefik";
-
-      environment = {
-        "TS_AUTH_ONCE" = "true";
-        "TS_STATE_DIR" = "/var/lib/tailscale";
-        "TS_USERSPACE" = "false";
-      };
-
-      environmentFiles = [
-        "${config.sops.secrets.tailscale_env.path}"
-      ];
-
-      devices = [
-        "/dev/net/tun:/dev/net/tun"
-      ];
-
-      extraOptions = [
-        "--cap-add=net_admin"
-        "--cap-add=sys_module"
-      ];
-
-      volumes = [
-        "tailscale-data:/var/lib/tailscale"
-      ];
-    };
-
     "traefik" = {
       image = "traefik:v3";
       hostname = "traefik";
 
       environment = {
         "TZ" = env.tz;
-        "CF_API_EMAIL" = env.cf_api_email;
       };
 
-      environmentFiles = [
-        "${config.sops.secrets.cloudflare_env.path}"
-      ];
+      # environmentFiles = [
+      #   "${config.sops.secrets.cloudflare_env.path}"
+      # ];
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
-        "traefik-certs:/certs"
-      ];
-
-      cmd = [
-        # Docker provider
-        "--providers.docker=true"
-        "--providers.docker.exposedByDefault=false"
-
-        # API dashboard
-        "--api.dashboard=true"
-
-        # Let's Encrypt via Cloudflare
-        "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
-        "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
-        "--certificatesresolvers.letsencrypt.acme.email=${env.le_email}"
-        "--certificatesresolvers.letsencrypt.acme.storage=/certs/acme.json"
-
-        # HTTP -> HTTPS redirect
-        "--entrypoints.web.address=:80"
-        "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-        "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-
-        # HTTPS entrypoint
-        "--entrypoints.websecure.address=:443"
-        "--entrypoints.websecure.http.tls=true"
-        "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
-        "--entrypoints.websecure.http.tls.domains[0].main=${env.domain}"
-        "--entrypoints.websecure.http.tls.domains[0].sans=${env.domain_sans}"
+        "${env.config_dir}/traefik:/etc/traefik"
+        "${env.config_dir}/tailscale/lib:/var/lib/tailscale"
+        "${env.config_dir}/tailscale/run:/var/run/tailscale"
       ];
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.traefik.rule" = "Host(`traefik.${env.domain}`)";
-        "traefik.http.routers.traefik.entrypoints" = "websecure";
-        "traefik.http.routers.traefik.tls.certresolver" = "letsencrypt";
-        "traefik.http.routers.traefik.service" = "api@internal";
-        "traefik.http.services.traefik.loadbalancer.server.port" = "8080";
+        "traefik.http.routers.traefik_https.entrypoints" = "https";
+        "traefik.http.routers.traefik_https.service" = "api@internal";
+        "traefik.http.routers.traefik_https.tls" = "true";
+        "traefik.http.routers.traefik_https.tls.certresolver" = "myresolver";
+        "traefik.http.routers.traefik_https.tls.domains[0].main" = "traefik.mudpuppy-dorian.ts.net";
+        "traefik.http.services.traefik.loadbalancer.server.port" = "443";
       };
     };
   };

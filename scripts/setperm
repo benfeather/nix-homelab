@@ -1,0 +1,9 @@
+#!/bin/sh
+# Set permissions for /config directory and its contents
+
+chown -R nixos:nogroup /config
+
+find /config -type d -exec chmod 700 {} \;
+find /config -type f -exec chmod 600 {} \;
+
+chmod +x /config/scripts/*

@@ -9,7 +9,9 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./services/tailscale.nix
     ./services/traefik.nix
+    ./services/radarr.nix
   ];
 
   boot = {
