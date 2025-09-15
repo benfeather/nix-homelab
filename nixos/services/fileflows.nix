@@ -35,9 +35,9 @@
     ];
 
     volumes = [
-      "${env.config_dir}/fileflows/data:/app/Data"
-      "${env.config_dir}/fileflows/logs:/app/Logs"
-      "${env.config_dir}/fileflows/temp:/temp"
+      "${env.conf_dir}/fileflows/data:/app/Data"
+      "${env.conf_dir}/fileflows/logs:/app/Logs"
+      "${env.conf_dir}/fileflows/temp:/temp"
       "${env.data_dir}:/data"
       "/var/run/docker.sock:/var/run/docker.sock:ro"
     ];

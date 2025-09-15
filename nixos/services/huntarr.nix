@@ -30,7 +30,7 @@
     ];
 
     volumes = [
-      "${env.config_dir}/huntarr/config:/config"
+      "${env.conf_dir}/huntarr/config:/config"
     ];
   };
 }

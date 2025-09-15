@@ -91,6 +91,13 @@
     };
   };
 
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "*/5 * * * *      root    date >> /tmp/cron.log"
+    ];
+  };
+
   services.openssh = {
     enable = true;
 
@@ -112,11 +119,16 @@
   sops = {
     age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
 
-    defaultSopsFormat = "dotenv";
-
     secrets = {
-      "cloudflare_env".sopsFile = ../secrets/.env.cloudflare;
-      "tailscale_env".sopsFile = ../secrets/.env.tailscale;
+      "cloudflare" = {
+        format = "inifile";
+        sopsFile = ../secrets/cloudflare.ini;
+      };
+
+      "tailscale" = {
+        format = "dotenv";
+        sopsFile = ../secrets/tailscale.env;
+      };
     };
   };
 

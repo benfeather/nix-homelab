@@ -43,3 +43,5 @@ environment.systemPackages = with pkgs; [
 ### Use the new config
 
 `sudo nixos-rebuild switch --flake /config#nixos`
+
+`sops --input-type dotenv --output-type dotenv ./secrets/tailscale.env`

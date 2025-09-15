@@ -19,7 +19,7 @@
     ];
 
     volumes = [
-      "${env.config_dir}/recyclarr/config:/config"
+      "${env.conf_dir}/recyclarr/config:/config"
     ];
   };
 }

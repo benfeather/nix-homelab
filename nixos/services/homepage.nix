@@ -31,7 +31,7 @@
     ];
 
     volumes = [
-      "${env.config_dir}/homepage/config:/app/config"
+      "${env.conf_dir}/homepage/config:/app/config"
       "/var/run/docker.sock:/var/run/docker.sock:ro"
     ];
   };

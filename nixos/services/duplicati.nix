@@ -26,8 +26,8 @@
     ];
 
     volumes = [
-      "${env.config_dir}/duplicati/config:/config"
-      "${env.config_dir}:/source"
+      "${env.conf_dir}/duplicati/config:/config"
+      "${env.conf_dir}:/source"
     ];
   };
 }

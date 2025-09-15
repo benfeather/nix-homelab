@@ -31,7 +31,7 @@
       ];
 
       volumes = [
-        "${env.config_dir}/sonarr/config:/config"
+        "${env.conf_dir}/sonarr/config:/config"
         "${env.data_dir}:/data"
       ];
     };
@@ -62,7 +62,7 @@
       ];
 
       volumes = [
-        "${env.config_dir}/sonarr-anime/config:/config"
+        "${env.conf_dir}/sonarr-anime/config:/config"
         "${env.data_dir}:/data"
       ];
     };

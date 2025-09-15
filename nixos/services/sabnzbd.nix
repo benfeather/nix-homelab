@@ -30,7 +30,7 @@
     ];
 
     volumes = [
-      "${env.config_dir}/sabnzbd/config:/config"
+      "${env.conf_dir}/sabnzbd/config:/config"
       "${env.data_dir}:/data"
     ];
   };

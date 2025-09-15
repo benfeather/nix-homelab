@@ -22,9 +22,10 @@
     }@inputs:
     let
       env = {
-        config_dir = "/config/appdata/config";
+        conf_dir = "/config/appdata/config";
         data_dir = "/config/appdata/data";
-        domain = "mudpuppy-dorian.ts.net";
+        root_dir = "/config";
+        domain = "benfeather.com";
         email = "contact@benfeather.dev";
         pgid = "1000";
         puid = "100";

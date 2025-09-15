@@ -26,8 +26,8 @@
       ];
 
       volumes = [
-        "${env.config_dir}/authentik/media:/media"
-        "${env.config_dir}/authentik/custom-templates:/templates"
+        "${env.conf_dir}/authentik/media:/media"
+        "${env.conf_dir}/authentik/custom-templates:/templates"
       ];
     };
 
@@ -47,9 +47,9 @@
       };
 
       volumes = [
-        "${env.config_dir}/authentik/media:/media"
-        "${env.config_dir}/authentik/certs:/certs"
-        "${env.config_dir}/authentik/custom-templates:/templates"
+        "${env.conf_dir}/authentik/media:/media"
+        "${env.conf_dir}/authentik/certs:/certs"
+        "${env.conf_dir}/authentik/custom-templates:/templates"
         "/var/run/docker.sock:/var/run/docker.sock"
       ];
     };
@@ -63,7 +63,7 @@
       };
 
       volumes = [
-        "${env.config_dir}/authentik/redis:/data"
+        "${env.conf_dir}/authentik/redis:/data"
       ];
     };
 
@@ -80,7 +80,7 @@
       };
 
       volumes = [
-        "${env.config_dir}/authentik/db:/var/lib/postgresql/data"
+        "${env.conf_dir}/authentik/db:/var/lib/postgresql/data"
       ];
     };
   };
