@@ -19,13 +19,17 @@
       ];
 
       extraOptions = [
-        "--cap-add=net_admin"
-        "--cap-add=sys_module"
+        "--cap-add net_admin"
+        "--cap-add sys_module"
       ];
 
-      devices = [
+      networks = [
+        "host"
+      ];
+
+      volumes = [
         "/dev/net/tun:/dev/net/tun"
-        "${env.conf_dir}/tailscale/lib:/var/lib/tailscale"
+        "${env.conf_dir}/tailscale:/var/lib/tailscale"
       ];
     };
 
@@ -33,13 +37,18 @@
       image = "traefik:latest";
       hostname = "traefik";
 
+      dependsOn = [
+        "tailscale"
+      ];
+
       environment = {
         "TZ" = env.tz;
       };
 
-      # extraOptions = [
-      #   "--network=service:tailscale"
-      # ];
+      networks = [
+        "host"
+        "proxy"
+      ];
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -61,6 +70,10 @@
       image = "traefik/whoami:latest";
       hostname = "whoami";
 
+      dependsOn = [
+        "traefik"
+      ];
+
       environment = {
         "TZ" = env.tz;
       };
@@ -71,34 +84,38 @@
         "traefik.http.routers.whoami.entrypoints" = "websecure";
         "traefik.http.routers.whoami.tls" = "true";
       };
-    };
 
-    "certbot" = {
-      image = "certbot/dns-cloudflare:latest";
-      hostname = "certbot";
-
-      cmd = [
-        "certonly"
-        "--agree-tos"
-        "--cert-name 'traefik'"
-        "--dns-cloudflare "
-        "--dns-cloudflare-credentials '/root/cloudflare.ini'"
-        "--dns-cloudflare-propagation-seconds 15 "
-        "--email '${env.email}'"
-        "--keep-until-expiring"
-        "--no-eff-email"
-        "-d '${env.domain}'"
-        "-d '*.${env.domain}'"
-      ];
-
-      environment = {
-        "TZ" = env.tz;
-      };
-
-      volumes = [
-        "${env.conf_dir}/letsencrypt:/etc/letsencrypt"
-        "${config.sops.secrets.cloudflare.path}:/root/cloudflare.ini:ro"
+      networks = [
+        "proxy"
       ];
     };
+
+    # "certbot" = {
+    #   image = "certbot/dns-cloudflare:latest";
+    #   hostname = "certbot";
+
+    #   cmd = [
+    #     "certonly"
+    #     "--agree-tos"
+    #     "--cert-name 'traefik'"
+    #     "--dns-cloudflare "
+    #     "--dns-cloudflare-credentials '/root/cloudflare.ini'"
+    #     "--dns-cloudflare-propagation-seconds 15 "
+    #     "--email '${env.email}'"
+    #     "--keep-until-expiring"
+    #     "--no-eff-email"
+    #     "-d '${env.domain}'"
+    #     "-d '*.${env.domain}'"
+    #   ];
+
+    #   environment = {
+    #     "TZ" = env.tz;
+    #   };
+
+    #   volumes = [
+    #     "${env.conf_dir}/letsencrypt:/etc/letsencrypt"
+    #     "${config.sops.secrets.cloudflare.path}:/root/cloudflare.ini:ro"
+    #   ];
+    # };
   };
 }

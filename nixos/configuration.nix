@@ -9,8 +9,8 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./utils/networks.nix
     ./services/traefik.nix
-    ./services/radarr.nix
   ];
 
   boot = {
