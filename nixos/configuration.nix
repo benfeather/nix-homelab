@@ -9,7 +9,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./services/tailscale.nix
     ./services/traefik.nix
     ./services/radarr.nix
   ];
@@ -91,12 +90,12 @@
     };
   };
 
-  services.cron = {
-    enable = true;
-    systemCronJobs = [
-      "*/5 * * * *      root    date >> /tmp/cron.log"
-    ];
-  };
+  # services.cron = {
+  #   enable = true;
+  #   systemCronJobs = [
+  #     "*/5 * * * *      root    date >> /tmp/cron.log"
+  #   ];
+  # };
 
   services.openssh = {
     enable = true;
@@ -121,7 +120,7 @@
 
     secrets = {
       "cloudflare" = {
-        format = "inifile";
+        format = "ini";
         sopsFile = ../secrets/cloudflare.ini;
       };
 

@@ -21,7 +21,6 @@
       extraOptions = [
         "--cap-add=net_admin"
         "--cap-add=sys_module"
-        "--restart=unless-stopped"
       ];
 
       devices = [
@@ -38,10 +37,9 @@
         "TZ" = env.tz;
       };
 
-      extraOptions = [
-        "--network=service:tailscale"
-        "--restart=unless-stopped"
-      ];
+      # extraOptions = [
+      #   "--network=service:tailscale"
+      # ];
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -66,10 +64,6 @@
       environment = {
         "TZ" = env.tz;
       };
-
-      extraOptions = [
-        "--restart=unless-stopped"
-      ];
 
       labels = {
         "traefik.enable" = "true";
