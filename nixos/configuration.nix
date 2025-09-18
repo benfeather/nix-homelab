@@ -82,6 +82,12 @@
     settings = {
       experimental-features = "nix-command flakes";
     };
+
+    gc = {
+      automatic = true;
+      dates = "03:00";
+      options = "--delete-older-than 3d";
+    };
   };
 
   nixpkgs = {
