@@ -126,13 +126,8 @@
 
     secrets = {
       "cloudflare" = {
-        format = "ini";
-        sopsFile = ../secrets/cloudflare.ini;
-      };
-
-      "tailscale" = {
         format = "dotenv";
-        sopsFile = ../secrets/tailscale.env;
+        sopsFile = ../secrets/cloudflare.env;
       };
     };
   };

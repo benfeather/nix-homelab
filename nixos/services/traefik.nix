@@ -23,10 +23,6 @@
       image = "traefik:latest";
       hostname = "traefik";
 
-      dependsOn = [
-        "tailscale"
-      ];
-
       environment = {
         "TZ" = env.tz;
       };
