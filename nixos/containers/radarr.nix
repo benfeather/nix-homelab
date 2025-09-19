@@ -6,12 +6,12 @@
 {
   virtualisation.oci-containers.containers = {
     "radarr" = {
-      image = "lscr.io/linuxserver/radarr:latest";
       hostname = "radarr";
+      image = "lscr.io/linuxserver/radarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
@@ -28,18 +28,18 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/radarr:/config"
+        "${env.conf_dir}/radarr/config:/config"
         "${env.data_dir}:/data"
       ];
     };
 
     "radarr-anime" = {
-      image = "lscr.io/linuxserver/radarr:latest";
       hostname = "radarr-anime";
+      image = "lscr.io/linuxserver/radarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
@@ -56,7 +56,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/radarr-anime:/config"
+        "${env.conf_dir}/radarr-anime/config:/config"
         "${env.data_dir}:/data"
       ];
     };

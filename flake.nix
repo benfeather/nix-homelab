@@ -26,8 +26,8 @@
         data_dir = "/config/nixos/data";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
-        pgid = "1000";
-        puid = "100";
+        pgid = "100";
+        puid = "1000";
         tz = "Pacific/Auckland";
       };
     in
