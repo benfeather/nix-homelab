@@ -127,7 +127,8 @@
     secrets = {
       "cloudflare" = {
         format = "dotenv";
-        sopsFile = ../secrets/cloudflare.env;
+        sopsFile = ./secrets/cloudflare.env;
+        key = "";
       };
     };
   };

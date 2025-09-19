@@ -9,13 +9,20 @@
       image = "cloudflare/cloudflared:latest";
       hostname = "cf-tunnel";
 
+      cmd = [
+        "tunnel"
+        "--no-autoupdate"
+        "run"
+      ];
+
       environment = {
         "TUNNEL_HOSTNAME" = "*.${env.domain}";
         "TUNNEL_URL" = "https://traefik:443";
+        "TZ" = env.tz;
       };
 
       environmentFiles = [
-        "${config.sops.secrets.cloudflare.path}"
+        config.sops.secrets."cloudflare".path
       ];
     };
 
@@ -28,24 +35,24 @@
       };
 
       environmentFiles = [
-        "${config.sops.secrets.cloudflare.path}"
-      ];
-
-      volumes = [
-        "/var/run/docker.sock:/var/run/docker.sock:ro"
-        "${env.conf_dir}/traefik:/etc/traefik"
+        config.sops.secrets."cloudflare".path
       ];
 
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.traefik.entrypoints" = "websecure";
-        "traefik.http.routers.traefik.middlewares" = "authelia@docker";
+        # "traefik.http.routers.traefik.middlewares" = "authelia@docker";
         "traefik.http.routers.traefik.rule" = "Host(`traefik.${env.domain}`)";
         "traefik.http.routers.traefik.service" = "api@internal";
         "traefik.http.routers.traefik.tls" = "true";
         "traefik.http.routers.traefik.tls.certresolver" = "cloudflare";
         "traefik.http.services.traefik.loadbalancer.server.port" = "8080";
       };
+
+      volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock:ro"
+        "${env.conf_dir}/traefik:/etc/traefik"
+      ];
     };
 
     "whoami" = {
@@ -59,7 +66,7 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.whoami.entrypoints" = "websecure";
-        "traefik.http.routers.traefik.middlewares" = "authelia@docker";
+        # "traefik.http.routers.whoami.middlewares" = "authelia@docker";
         "traefik.http.routers.whoami.rule" = "Host(`whoami.${env.domain}`)";
         "traefik.http.routers.whoami.tls" = "true";
       };
