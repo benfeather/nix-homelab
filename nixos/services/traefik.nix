@@ -53,7 +53,7 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.traefik.entrypoints" = "websecure";
-        # "traefik.http.routers.traefik.middlewares" = "authelia@docker";
+        "traefik.http.routers.traefik.middlewares" = "authelia@docker";
         "traefik.http.routers.traefik.rule" = "Host(`traefik.${env.domain}`)";
         "traefik.http.routers.traefik.service" = "api@internal";
         "traefik.http.routers.traefik.tls" = "true";

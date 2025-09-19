@@ -129,6 +129,12 @@
     age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
 
     secrets = {
+      "authelia" = {
+        format = "dotenv";
+        sopsFile = ./secrets/authelia.env;
+        key = "";
+      };
+
       "cloudflare" = {
         format = "dotenv";
         sopsFile = ./secrets/cloudflare.env;
