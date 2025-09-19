@@ -4,34 +4,33 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."sabnzbd" = {
-    image = "lscr.io/linuxserver/sabnzbd:latest";
-    hostname = "sabnzbd";
+  virtualisation.oci-containers.containers = {
+    "sabnzbd" = {
+      hostname = "sabnzbd";
+      image = "lscr.io/linuxserver/sabnzbd:latest";
 
-    environment = {
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.sabnzbd.entrypoints" = "websecure";
+        "traefik.http.routers.sabnzbd.middlewares" = "authelia@docker";
+        "traefik.http.routers.sabnzbd.rule" = "Host(`sabnzbd.${env.domain}`)";
+        "traefik.http.services.sabnzbd.loadbalancer.server.port" = "8080";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/sabnzbd/config:/config"
+        "${env.data_dir}:/data"
+      ];
     };
-
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.sabnzbd.rule" = "Host(`sabnzbd.${env.domain}`)";
-      "traefik.http.routers.sabnzbd.entrypoints" = "websecure";
-      "traefik.http.services.sabnzbd.loadbalancer.server.port" = "8080";
-    };
-
-    networks = [
-      "proxy"
-    ];
-
-    ports = [
-      "8012:8080"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/sabnzbd/config:/config"
-      "${env.data_dir}:/data"
-    ];
   };
 }

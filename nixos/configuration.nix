@@ -10,19 +10,24 @@
   imports = [
     ./hardware-configuration.nix
 
+    # Nix Services
     ./services/cron.nix
     ./services/docker-networks.nix
     ./services/openssh.nix
     ./services/vscode-server.nix
     ./services/xserver.nix
 
+    # Networking
     ./containers/authelia.nix
     ./containers/cf-tunnel.nix
-    ./containers/prowlarr.nix
-    ./containers/radarr.nix
-    ./containers/sonarr.nix
     ./containers/traefik.nix
     ./containers/whoami.nix
+
+    # Homelab
+    ./containers/prowlarr.nix
+    ./containers/radarr.nix
+    ./containers/sabnzbd.nix
+    ./containers/sonarr.nix
   ];
 
   boot = {
