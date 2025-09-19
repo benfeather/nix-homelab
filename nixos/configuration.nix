@@ -9,8 +9,12 @@
 {
   imports = [
     ./hardware-configuration.nix
+
     ./utils/networks.nix
+
+    ./services/cf-tunnel.nix
     ./services/traefik.nix
+    ./services/whoami.nix
   ];
 
   boot = {
