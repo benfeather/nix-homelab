@@ -22,8 +22,8 @@
     }@inputs:
     let
       env = {
-        conf_dir = "/config/appdata/config";
-        data_dir = "/config/appdata/data";
+        conf_dir = "/config/appdata";
+        data_dir = "/config/data";
         root_dir = "/config";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
