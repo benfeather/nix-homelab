@@ -29,6 +29,7 @@
     ./containers/radarr.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
+    ./containers/whisparr.nix
   ];
 
   boot = {
