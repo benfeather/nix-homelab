@@ -18,6 +18,7 @@
 
     ./containers/authelia.nix
     ./containers/cf-tunnel.nix
+    ./containers/radarr.nix
     ./containers/traefik.nix
     ./containers/whoami.nix
   ];
