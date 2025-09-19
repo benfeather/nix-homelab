@@ -12,6 +12,7 @@
 
     ./utils/networks.nix
 
+    ./services/authelia.nix
     ./services/cf-tunnel.nix
     ./services/traefik.nix
     ./services/whoami.nix
