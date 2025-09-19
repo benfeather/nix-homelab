@@ -11,18 +11,27 @@
 
       cmd = [
         "tunnel"
+        "--config=/etc/cloudflared/config.yml"
+        "--logfile=/etc/cloudflared/cloudflared.log"
+        "--loglevel=debug"
         "--no-autoupdate"
         "run"
       ];
 
       environment = {
-        "TUNNEL_HOSTNAME" = "*.${env.domain}";
-        "TUNNEL_URL" = "https://traefik:443";
         "TZ" = env.tz;
       };
 
       environmentFiles = [
         config.sops.secrets."cloudflare".path
+      ];
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/cloudflared:/etc/cloudflared"
       ];
     };
 
@@ -49,6 +58,15 @@
         "traefik.http.services.traefik.loadbalancer.server.port" = "8080";
       };
 
+      networks = [
+        "proxy"
+      ];
+
+      ports = [
+        "80:80"
+        "443:443"
+      ];
+
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
         "${env.conf_dir}/traefik:/etc/traefik"
@@ -70,6 +88,10 @@
         "traefik.http.routers.whoami.rule" = "Host(`whoami.${env.domain}`)";
         "traefik.http.routers.whoami.tls" = "true";
       };
+
+      networks = [
+        "proxy"
+      ];
     };
   };
 }
