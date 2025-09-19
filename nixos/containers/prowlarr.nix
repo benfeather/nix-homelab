@@ -4,33 +4,33 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."prowlarr" = {
-    image = "lscr.io/linuxserver/prowlarr:latest";
-    hostname = "prowlarr";
+  virtualisation.oci-containers.containers = {
+    "prowlarr" = {
+      hostname = "prowlarr";
+      image = "lscr.io/linuxserver/prowlarr:latest";
 
-    environment = {
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.prowlarr.entrypoints" = "websecure";
+        "traefik.http.routers.prowlarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.prowlarr.rule" = "Host(`prowlarr.${env.domain}`)";
+        "traefik.http.services.prowlarr.loadbalancer.server.port" = "9696";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/prowlarr/config:/config"
+        "${env.data_dir}:/data"
+      ];
     };
-
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.prowlarr.rule" = "Host(`prowlarr.${env.domain}`)";
-      "traefik.http.routers.prowlarr.entrypoints" = "websecure";
-      "traefik.http.services.prowlarr.loadbalancer.server.port" = "9696";
-    };
-
-    networks = [
-      "proxy"
-    ];
-
-    ports = [
-      "8009:9696"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/prowlarr/config:/config"
-    ];
   };
 }
