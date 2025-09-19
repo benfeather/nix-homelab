@@ -11,7 +11,7 @@
 
       cmd = [
         "tunnel"
-        "--logfile=/etc/cloudflared/logs/cloudflared.log"
+        "--logfile=/etc/cf-tunnel/logs/cloudflared.log"
         "--loglevel=info"
         "--no-autoupdate"
         "run"
@@ -30,7 +30,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/cloudflared:/etc/cloudflared"
+        "${env.conf_dir}/cf-tunnel:/etc/cf-tunnel"
       ];
     };
   };
