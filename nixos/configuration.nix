@@ -10,7 +10,11 @@
   imports = [
     ./hardware-configuration.nix
 
-    ./services/networks.nix
+    ./services/cron.nix
+    ./services/docker-networks.nix
+    ./services/openssh.nix
+    ./services/vscode-server.nix
+    ./services/xserver.nix
 
     ./containers/authelia.nix
     ./containers/cf-tunnel.nix
@@ -99,31 +103,6 @@
     config = {
       allowUnfree = true;
     };
-  };
-
-  # services.cron = {
-  #   enable = true;
-  #   systemCronJobs = [
-  #     "*/5 * * * *      root    date >> /tmp/cron.log"
-  #   ];
-  # };
-
-  services.openssh = {
-    enable = true;
-
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-
-  services.vscode-server = {
-    enable = true;
-  };
-
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
   };
 
   sops = {

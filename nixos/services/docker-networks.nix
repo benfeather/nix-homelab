@@ -3,7 +3,7 @@
   ...
 }:
 {
-  systemd.services.networks = {
+  systemd.services.docker-networks = {
     serviceConfig = {
       Type = "oneshot";
     };
