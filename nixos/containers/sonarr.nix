@@ -6,28 +6,25 @@
 {
   virtualisation.oci-containers.containers = {
     "sonarr" = {
-      image = "lscr.io/linuxserver/sonarr:latest";
       hostname = "sonarr";
+      image = "lscr.io/linuxserver/sonarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.sonarr.rule" = "Host(`sonarr.${env.domain}`)";
         "traefik.http.routers.sonarr.entrypoints" = "websecure";
+        "traefik.http.routers.sonarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.sonarr.rule" = "Host(`sonarr.${env.domain}`)";
         "traefik.http.services.sonarr.loadbalancer.server.port" = "8989";
       };
 
       networks = [
         "proxy"
-      ];
-
-      ports = [
-        "8014:8989"
       ];
 
       volumes = [
@@ -37,28 +34,25 @@
     };
 
     "sonarr-anime" = {
-      image = "lscr.io/linuxserver/sonarr:latest";
       hostname = "sonarr-anime";
+      image = "lscr.io/linuxserver/sonarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.sonarr-anime.rule" = "Host(`sonarr-anime.${env.domain}`)";
         "traefik.http.routers.sonarr-anime.entrypoints" = "websecure";
+        "traefik.http.routers.sonarr-anime.middlewares" = "authelia@docker";
+        "traefik.http.routers.sonarr-anime.rule" = "Host(`sonarr-anime.${env.domain}`)";
         "traefik.http.services.sonarr-anime.loadbalancer.server.port" = "8989";
       };
 
       networks = [
         "proxy"
-      ];
-
-      ports = [
-        "8013:8989"
       ];
 
       volumes = [
