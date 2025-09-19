@@ -11,8 +11,6 @@
 
       cmd = [
         "tunnel"
-        "--logfile=/etc/cf-tunnel/logs/cloudflared.log"
-        "--loglevel=info"
         "--no-autoupdate"
         "run"
       ];
@@ -27,10 +25,6 @@
 
       networks = [
         "proxy"
-      ];
-
-      volumes = [
-        "${env.conf_dir}/cf-tunnel:/etc/cf-tunnel"
       ];
     };
   };

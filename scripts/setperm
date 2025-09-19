@@ -6,7 +6,4 @@ chown -R 1000:100 /config
 find /config -type d -exec chmod 700 {} \;
 find /config -type f -exec chmod 600 {} \;
 
-find /config/appdata -type d -exec chmod 777 {} \;
-find /config/appdata -type f -exec chmod 666 {} \;
-
 chmod +x /config/scripts/*
