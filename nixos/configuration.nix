@@ -10,12 +10,12 @@
   imports = [
     ./hardware-configuration.nix
 
-    ./utils/networks.nix
+    ./services/networks.nix
 
-    ./services/authelia.nix
-    ./services/cf-tunnel.nix
-    ./services/traefik.nix
-    ./services/whoami.nix
+    ./containers/authelia.nix
+    ./containers/cf-tunnel.nix
+    ./containers/traefik.nix
+    ./containers/whoami.nix
   ];
 
   boot = {
