@@ -26,17 +26,18 @@
     # Homelab
     ./containers/bazarr.nix
     ./containers/bookshelf.nix
-    ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
     ./containers/jellyfin.nix
     ./containers/lidarr.nix
+    # ./containers/n8n.nix
     ./containers/overseerr.nix
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
     ./containers/recyclarr.nix
+    # ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
