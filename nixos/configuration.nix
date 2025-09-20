@@ -31,6 +31,7 @@
     ./containers/huntarr.nix
     ./containers/jellyfin.nix
     ./containers/lidarr.nix
+    ./containers/overseerr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
     ./containers/sabnzbd.nix
