@@ -22,9 +22,9 @@
     }@inputs:
     let
       env = {
-        conf_dir = "/config/nixos/appdata";
-        backup_dir = "/home/nixos/backup";
-        data_dir = "/home/nixos/data";
+        conf_dir = "/mnt/unraid/homelab/appdata";
+        backup_dir = "/mnt/unraid/homelab/backups";
+        data_dir = "/mnt/unraid/homelab/data";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
         pgid = "100";

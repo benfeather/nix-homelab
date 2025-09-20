@@ -50,6 +50,15 @@
     sops
   ];
 
+  fileSystems."/mnt/unraid" = {
+    device = "unraid";
+    fsType = "9p";
+    options = [
+      "defaults"
+      "nofail"
+    ];
+  };
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
