@@ -25,6 +25,7 @@
 
     # Homelab
     ./containers/bazarr.nix
+    ./containers/bookshelf.nix
     ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/homepage.nix
