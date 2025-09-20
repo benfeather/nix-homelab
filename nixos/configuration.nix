@@ -26,6 +26,7 @@
     # Homelab
     ./containers/bazarr.nix
     ./containers/duplicati.nix
+    ./containers/fileflows.nix
     ./containers/lidarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
