@@ -35,6 +35,7 @@
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
+    ./containers/recyclarr.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/whisparr.nix

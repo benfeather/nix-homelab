@@ -4,22 +4,24 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."recyclarr" = {
-    image = "recyclarr/recyclarr:latest";
-    hostname = "recyclarr";
+  virtualisation.oci-containers.containers = {
+    "recyclarr" = {
+      hostname = "recyclarr";
+      image = "recyclarr/recyclarr:latest";
 
-    environment = {
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/recyclarr/config:/config"
+      ];
     };
-
-    networks = [
-      "proxy"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/recyclarr/config:/config"
-    ];
   };
 }
