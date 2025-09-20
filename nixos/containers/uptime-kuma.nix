@@ -4,33 +4,32 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."uptime" = {
-    image = "louislam/uptime-kuma:alpine";
-    hostname = "uptime";
+  virtualisation.oci-containers.containers = {
+    "uptime" = {
+      hostname = "uptime";
+      image = "docker.io/louislam/uptime-kuma:alpine";
 
-    environment = {
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.uptime.entrypoints" = "websecure";
+        "traefik.http.routers.uptime.middlewares" = "authelia@docker";
+        "traefik.http.routers.uptime.rule" = "Host(`uptime.${env.domain}`)";
+        "traefik.http.services.uptime.loadbalancer.server.port" = "3001";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/uptime/config:/app/data"
+      ];
     };
-
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.uptime.rule" = "Host(`uptime.${env.domain}`)";
-      "traefik.http.routers.uptime.entrypoints" = "websecure";
-      "traefik.http.services.uptime.loadbalancer.server.port" = "3001";
-    };
-
-    networks = [
-      "proxy"
-    ];
-
-    ports = [
-      "8015:3001"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/uptime/config:/app/data"
-    ];
   };
 }
