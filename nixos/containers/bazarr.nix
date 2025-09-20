@@ -6,19 +6,20 @@
 {
   virtualisation.oci-containers.containers = {
     "bazarr" = {
-      image = "lscr.io/linuxserver/bazarr:latest";
       hostname = "bazarr";
+      image = "lscr.io/linuxserver/bazarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.bazarr.rule" = "Host(`bazarr.${env.domain}`)";
         "traefik.http.routers.bazarr.entrypoints" = "websecure";
+        "traefik.http.routers.bazarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.bazarr.rule" = "Host(`bazarr.${env.domain}`)";
         "traefik.http.services.bazarr.loadbalancer.server.port" = "6767";
       };
 
@@ -26,39 +27,32 @@
         "proxy"
       ];
 
-      ports = [
-        "8002:6767"
-      ];
-
       volumes = [
-        "${env.conf_dir}/bazarr/config:/config"
+        "${env.conf_dir}/bazarr:/config"
         "${env.data_dir}:/data"
       ];
     };
 
     "bazarr-anime" = {
-      image = "lscr.io/linuxserver/bazarr:latest";
       hostname = "bazarr-anime";
+      image = "lscr.io/linuxserver/bazarr:latest";
 
       environment = {
-        "PUID" = env.puid;
         "PGID" = env.pgid;
+        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.bazarr-anime.rule" = "Host(`bazarr-anime.${env.domain}`)";
         "traefik.http.routers.bazarr-anime.entrypoints" = "websecure";
+        "traefik.http.routers.bazarr-anime.middlewares" = "authelia@docker";
+        "traefik.http.routers.bazarr-anime.rule" = "Host(`bazarr-anime.${env.domain}`)";
         "traefik.http.services.bazarr-anime.loadbalancer.server.port" = "6767";
       };
 
-      ports = [
-        "8001:6767"
-      ];
-
       volumes = [
-        "${env.conf_dir}/bazarr-anime/config:/config"
+        "${env.conf_dir}/bazarr-anime:/config"
         "${env.data_dir}:/data"
       ];
     };

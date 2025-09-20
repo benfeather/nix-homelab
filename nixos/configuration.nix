@@ -24,6 +24,7 @@
     ./containers/whoami.nix
 
     # Homelab
+    ./containers/bazarr.nix
     ./containers/lidarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
