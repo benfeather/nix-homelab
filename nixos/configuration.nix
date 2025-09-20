@@ -31,9 +31,10 @@
     ./containers/homepage.nix
     ./containers/huntarr.nix
     ./containers/jellyfin.nix
+    ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
-    ./containers/overseerr.nix
+    # ./containers/overseerr.nix
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
