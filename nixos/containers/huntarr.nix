@@ -4,33 +4,32 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."huntarr" = {
-    image = "huntarr/huntarr:latest";
-    hostname = "huntarr";
+  virtualisation.oci-containers.containers = {
+    "huntarr" = {
+      hostname = "huntarr";
+      image = "ghcr.io/plexguide/huntarr:latest";
 
-    environment = {
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.huntarr.entrypoints" = "websecure";
+        "traefik.http.routers.huntarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.huntarr.rule" = "Host(`huntarr.${env.domain}`)";
+        "traefik.http.services.huntarr.loadbalancer.server.port" = "9705";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.conf_dir}/huntarr/config:/config"
+      ];
     };
-
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.huntarr.rule" = "Host(`huntarr.${env.domain}`)";
-      "traefik.http.routers.huntarr.entrypoints" = "websecure";
-      "traefik.http.services.huntarr.loadbalancer.server.port" = "9705";
-    };
-
-    networks = [
-      "proxy"
-    ];
-
-    ports = [
-      "8004:9705"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/huntarr/config:/config"
-    ];
   };
 }

@@ -28,6 +28,7 @@
     ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/homepage.nix
+    ./containers/huntarr.nix
     ./containers/lidarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
