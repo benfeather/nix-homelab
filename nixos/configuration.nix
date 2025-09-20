@@ -140,6 +140,12 @@
         sopsFile = ./secrets/duplicati.env;
         key = "";
       };
+
+      "homepage" = {
+        format = "dotenv";
+        sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
     };
   };
 

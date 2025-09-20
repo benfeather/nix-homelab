@@ -11,10 +11,15 @@
 
       environment = {
         "HOMEPAGE_ALLOWED_HOSTS" = "home.${env.domain}";
+        "HOMEPAGE_VAR_DOMAIN" = "${env.domain}";
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;
       };
+
+      environmentFiles = [
+        config.sops.secrets."homepage".path
+      ];
 
       labels = {
         "traefik.enable" = "true";
