@@ -34,6 +34,7 @@
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/whisparr.nix
+    ./containers/watchtower.nix
   ];
 
   boot = {
@@ -54,8 +55,11 @@
     device = "unraid";
     fsType = "9p";
     options = [
-      "defaults"
-      "nofail"
+      "auto"
+      "exec" # Permit execution of binaries and other executable files
+      "nofail" # Prevent system from failing if this drive doesn't mount
+      "rw"
+      "users" # Allows any user to mount and unmount
     ];
   };
 

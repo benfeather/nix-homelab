@@ -23,11 +23,12 @@
     let
       env = {
         conf_dir = "/mnt/unraid/homelab/appdata";
+        # conf_dir = "/config/nixos/appdata";
         backup_dir = "/mnt/unraid/homelab/backups";
         data_dir = "/mnt/unraid/homelab/data";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
-        pgid = "100";
+        pgid = "131";
         puid = "1000";
         tz = "Pacific/Auckland";
       };
