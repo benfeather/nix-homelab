@@ -21,7 +21,6 @@
     ./containers/authelia.nix
     ./containers/cf-tunnel.nix
     ./containers/traefik.nix
-    ./containers/whoami.nix
 
     # Homelab
     ./containers/audiobookshelf.nix
@@ -35,6 +34,7 @@
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     # ./containers/overseerr.nix
+    ./containers/owncloud.nix
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
@@ -46,6 +46,7 @@
     ./containers/uptime-kuma.nix
     ./containers/watchtower.nix
     ./containers/whisparr.nix
+    ./containers/whoami.nix
   ];
 
   boot = {
@@ -168,6 +169,12 @@
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
+
+      "owncloud" = {
+        format = "dotenv";
+        sopsFile = ./secrets/owncloud.env;
         key = "";
       };
 

@@ -9,6 +9,9 @@
     };
 
     script = ''
+      ${pkgs.docker}/bin/docker network inspect backend || \
+      ${pkgs.docker}/bin/docker network create --driver="bridge" backend
+
       ${pkgs.docker}/bin/docker network inspect proxy || \
       ${pkgs.docker}/bin/docker network create --driver="bridge" proxy
 
@@ -17,7 +20,8 @@
     '';
 
     wantedBy = [
-      "docker-tailscale.service"
+      "docker-authelia.service"
+      "docker-cf-tunnel.service"
       "docker-traefik.service"
     ];
   };
