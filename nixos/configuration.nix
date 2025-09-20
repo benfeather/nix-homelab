@@ -32,6 +32,7 @@
     ./containers/jellyfin.nix
     ./containers/lidarr.nix
     ./containers/overseerr.nix
+    ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
     ./containers/sabnzbd.nix
@@ -160,6 +161,12 @@
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
+
+      "plex" = {
+        format = "dotenv";
+        sopsFile = ./secrets/plex.env;
         key = "";
       };
     };

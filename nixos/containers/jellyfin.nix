@@ -32,8 +32,8 @@
       ];
 
       ports = [
-        "7359:7359/udp" # Local network discovery
         "1900:1900/udp" # DNLA discovery
+        "7359:7359/udp" # Local network discovery
       ];
 
       volumes = [
