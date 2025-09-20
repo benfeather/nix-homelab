@@ -23,6 +23,7 @@
     let
       env = {
         conf_dir = "/config/nixos/appdata";
+        backup_dir = "/home/nixos/backup";
         data_dir = "/home/nixos/data";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";

@@ -25,6 +25,7 @@
 
     # Homelab
     ./containers/bazarr.nix
+    ./containers/duplicati.nix
     ./containers/lidarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
@@ -129,6 +130,12 @@
       "cloudflare" = {
         format = "dotenv";
         sopsFile = ./secrets/cloudflare.env;
+        key = "";
+      };
+
+      "duplicati" = {
+        format = "dotenv";
+        sopsFile = ./secrets/duplicati.env;
         key = "";
       };
     };
