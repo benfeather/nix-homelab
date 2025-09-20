@@ -1,4 +1,4 @@
-{}
+{ }
 
 # n8n:
 #   image: docker.n8n.io/n8nio/n8n
@@ -34,5 +34,5 @@
 #     - n8n_data:/home/node/.n8n
 #     - ./local-files:/files
 
-volumes:
-  n8n_data:
+# volumes:
+#   n8n_data:
