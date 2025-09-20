@@ -29,6 +29,7 @@
     ./containers/fileflows.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
+    ./containers/jellyfin.nix
     ./containers/lidarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
