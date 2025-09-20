@@ -34,14 +34,12 @@ environment.systemPackages = with pkgs; [
 
 ### Clone this repo: 
 
-`sudo mkdir /config`
+`sudo mkdir /mnt/unraid/homelab`
 
-`sudo chown -R 1000:nobody /config`
+`sudo chown -R 1000:nobody /mnt/unraid/homelab`
 
-`git clone https://github.com/benfeather/nix-homelab.git /config`
+`git clone https://github.com/benfeather/nix-homelab.git /mnt/unraid/homelab`
 
 ### Use the new config
 
-`sudo nixos-rebuild switch --flake /config#nixos`
-
-`sops --input-type dotenv --output-type dotenv ./secrets/tailscale.env`
+`sudo nixos-rebuild switch --flake /mnt/unraid/homelab#nixos`
