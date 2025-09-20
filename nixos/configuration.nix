@@ -26,6 +26,7 @@
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     ./containers/bookshelf.nix
+    ./containers/cloud.nix
     ./containers/fileflows.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
@@ -34,7 +35,6 @@
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     # ./containers/overseerr.nix
-    ./containers/owncloud.nix
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
@@ -154,6 +154,12 @@
         key = "";
       };
 
+      "cloud" = {
+        format = "dotenv";
+        sopsFile = ./secrets/cloud.env;
+        key = "";
+      };
+
       "cloudflare" = {
         format = "dotenv";
         sopsFile = ./secrets/cloudflare.env;
@@ -169,12 +175,6 @@
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;
-        key = "";
-      };
-
-      "owncloud" = {
-        format = "dotenv";
-        sopsFile = ./secrets/owncloud.env;
         key = "";
       };
 
