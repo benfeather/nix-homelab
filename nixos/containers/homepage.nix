@@ -4,35 +4,34 @@
   ...
 }:
 {
-  virtualisation.oci-containers.containers."homepage" = {
-    image = "ghcr.io/gethomepage/homepage:latest";
-    hostname = "homepage";
+  virtualisation.oci-containers.containers = {
+    "homepage" = {
+      hostname = "homepage";
+      image = "ghcr.io/gethomepage/homepage:latest";
 
-    environment = {
-      "HOMEPAGE_ALLOWED_HOSTS" = "homepage.${env.domain}";
-      "PUID" = env.puid;
-      "PGID" = env.pgid;
-      "TZ" = env.tz;
+      environment = {
+        "HOMEPAGE_ALLOWED_HOSTS" = "home.${env.domain}";
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.homepage.entrypoints" = "websecure";
+        "traefik.http.routers.homepage.middlewares" = "authelia@docker";
+        "traefik.http.routers.homepage.rule" = "Host(`home.${env.domain}`)";
+        "traefik.http.services.homepage.loadbalancer.server.port" = "3000";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock:ro"
+        "${env.conf_dir}/homepage/config:/app/config"
+      ];
     };
-
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.homepage.rule" = "Host(`homepage.${env.domain}`)";
-      "traefik.http.routers.homepage.entrypoints" = "websecure";
-      "traefik.http.services.homepage.loadbalancer.server.port" = "3000";
-    };
-
-    networks = [
-      "proxy"
-    ];
-
-    ports = [
-      "8016:3000"
-    ];
-
-    volumes = [
-      "${env.conf_dir}/homepage/config:/app/config"
-      "/var/run/docker.sock:/var/run/docker.sock:ro"
-    ];
   };
 }
