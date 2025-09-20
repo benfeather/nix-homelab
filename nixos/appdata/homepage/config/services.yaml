@@ -1,80 +1,82 @@
 ---
 # For configuration options and examples, please see:
-# https://gethomepage.dev/configs/services/
+# https://gethomepage.dev/configs/services
 
 - Servarr:
+    - Prowlarr:
+        icon: prowlarr.png
+        href: "https://prowlarr.{{HOMEPAGE_VAR_DOMAIN}}"
+        description: Servarr app sync manager.
+        server: docker
+        container: prowlarr
+        widget:
+            type: prowlarr
+            url: "http://prowlarr:9696"
+            key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+
     - Lidarr:
         icon: lidarr.png
-        href: https://lidarr.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://lidarr.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Music collection manager.
         server: docker
         container: lidarr
         widget:
             type: lidarr
-            url: https://lidarr.home
-            key: {{ HOMEPAGE_VAR_LIDARR_API_KEY }}
+            url: "http://lidarr:8686"
+            key: "{{HOMEPAGE_VAR_LIDARR_API_KEY}}"
 
     - Radarr:
         icon: radarr.png
-        href: https://radarr.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://radarr.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Movie collection manager.
         server: docker
         container: radarr
         widget:
             type: radarr
-            url: https://radarr.home
-            key: {{ HOMEPAGE_VAR_RADARR_API_KEY }}
+            url: "http://radarr:7878"
+            key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
 
     - Radarr Anime:
         icon: radarr.png
-        href: https://radarr-anime.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://radarr-anime.{{HOMEPAGE_VAR_DOMAIN}}"
         description: Movie collection manager.
         server: docker
         container: radarr-anime
         widget:
             type: radarr
-            url: https://radarr-anime.home
-            key: {{ HOMEPAGE_VAR_RADARR_ANIME_API_KEY }}
+            url: "http://radarr-anime:7878"
+            key: "{{HOMEPAGE_VAR_RADARR_ANIME_API_KEY}}"
 
     - Sonarr:
         icon: sonarr.png
-        href: https://sonarr.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://sonarr.{{HOMEPAGE_VAR_DOMAIN}}"
         description: TV show collection manager.
         server: docker
         container: sonarr
         widget:
             type: sonarr
-            url: https://sonarr.home
-            key: {{ HOMEPAGE_VAR_SONARR_API_KEY }}
+            url: "http://sonarr:8989"
+            key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
 
     - Sonarr Anime:
         icon: sonarr.png
-        href: https://sonarr-anime.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://sonarr-anime.{{HOMEPAGE_VAR_DOMAIN}}"
         description: TV show collection manager.
         server: docker
         container: sonarr-anime
         widget:
             type: sonarr
-            url: https://sonarr-anime.home
-            key: {{ HOMEPAGE_VAR_SONARR_ANIME_API_KEY }}
+            url: "http://sonarr-anime:8989"
+            key: "{{HOMEPAGE_VAR_SONARR_ANIME_API_KEY}}"
 
     - Whisparr:
         icon: whisparr.png
-        href: https://whisparr.{{ HOMEPAGE_VAR_DOMAIN }}
+        href: "https://whisparr.{{HOMEPAGE_VAR_DOMAIN}}"
         description: XXX collection manager.
         server: docker
         container: whisparr
-        widget:
-            type: whisparr
-            url: https://whisparr.home
-            key: {{ HOMEPAGE_VAR_WHISPARR_API_KEY }}
+        # widget:
+        #     type: whisparr
+        #     url: "http://whisparr:6969"
+        #     key: "{{HOMEPAGE_VAR_WHISPARR_API_KEY}}"
 
-- My Second Group:
-    - My Second Service:
-        href: http://localhost/
-        description: Homepage is the best
-
-- My Third Group:
-    - My Third Service:
-        href: http://localhost/
-        description: Homepage is 😎

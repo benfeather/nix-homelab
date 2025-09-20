@@ -40,7 +40,6 @@ access_control:
 
 session:
   name: authelia_session
-  # secret: unsecure_session_secret
   expiration: 3600  # 1 hour
   inactivity: 300  # 5 minutes
   domain: benfeather.com 
