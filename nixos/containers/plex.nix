@@ -36,7 +36,7 @@
       ];
 
       ports = [
-        "1900:1900/udp" # Plex DLNA discovery
+        # "1900:1900/udp" # Plex DLNA discovery
         "5353:5353/udp" # Bonjour/Avahi network discovery
         "8324:8324" # Plex for Roku via Plex Companion
         "32410:32410/udp" # GDM network discovery
