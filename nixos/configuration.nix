@@ -24,6 +24,7 @@
     ./containers/whoami.nix
 
     # Homelab
+    ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     ./containers/bookshelf.nix
     ./containers/fileflows.nix
