@@ -11,6 +11,7 @@
     ./hardware-configuration.nix
 
     # Nix Scripts
+    ./scripts/backup-appdata.nix
     ./scripts/nix-rebuild.nix
     ./scripts/nix-update.nix
     ./scripts/oci-containers.nix
@@ -65,6 +66,7 @@
     home-manager
     nano
     nixfmt-rfc-style
+    rclone
     sops
   ];
 

@@ -4,8 +4,6 @@
 }:
 let
   nix-rebuild = pkgs.writeShellScriptBin "nix-rebuild" ''
-        #!/bin/bash
-
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
         echo "NixOS rebuild requires root privileges. Re-running with sudo..."

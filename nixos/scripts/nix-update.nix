@@ -4,8 +4,6 @@
 }:
 let
   nix-update = pkgs.writeShellScriptBin "nix-update" ''
-    #!/bin/bash
-
     FLAKE_PATH="/mnt/unraid/homelab"
     FLAKE_TARGET="$FLAKE_PATH#nixos"
 
