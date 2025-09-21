@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "cloud" = {
       hostname = "cloud";
-      image = "lscr.io/linuxserver/nextcloud:latest";
+      image = "docker.io/nextcloud:latest";
 
       dependsOn = [
         "cloud-db"
@@ -15,8 +15,14 @@
       ];
 
       environment = {
+        "MYSQL_DATABASE" = "$DB_NAME";
+        "MYSQL_HOST" = "cloud-db";
+        "MYSQL_PASSWORD" = "$DB_PASS";
+        "MYSQL_USER" = "$DB_USER";
+        "NEXTCLOUD_TRUSTED_DOMAINS" = "cloud.${env.domain}";
         "PGID" = env.pgid;
         "PUID" = env.puid;
+        "REDIS_HOST" = "cloud-redis";
         "TZ" = env.tz;
       };
 
@@ -29,7 +35,7 @@
         "traefik.http.routers.cloud.entrypoints" = "websecure";
         # "traefik.http.routers.cloud.middlewares" = "authelia@docker";
         "traefik.http.routers.cloud.rule" = "Host(`cloud.${env.domain}`)";
-        "traefik.http.services.cloud.loadbalancer.server.port" = "443";
+        "traefik.http.services.cloud.loadbalancer.server.port" = "80";
       };
 
       networks = [
@@ -39,18 +45,18 @@
 
       volumes = [
         "${env.conf_dir}/cloud/config:/config"
-        "${env.data_dir}:/data"
+        "${env.data_dir}/cloud:/data"
       ];
     };
 
     "cloud-db" = {
       hostname = "cloud-db";
-      image = "lscr.io/linuxserver/mariadb:latest";
+      image = "docker.io/mysql:latest";
 
       environment = {
         "MYSQL_DATABASE" = "$DB_NAME";
         "MYSQL_PASSWORD" = "$DB_PASS";
-        "MYSQL_ROOT_PASSWORD" = "$DB_PASS";
+        "MYSQL_RANDOM_ROOT_PASSWORD" = "true";
         "MYSQL_USER" = "$DB_USER";
         "PGID" = env.pgid;
         "PUID" = env.puid;
@@ -66,7 +72,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/cloud/db:/config"
+        "${env.conf_dir}/cloud/db:/var/lib/mysql"
       ];
     };
 
