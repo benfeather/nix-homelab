@@ -5,6 +5,7 @@
 }:
 let
   backup = pkgs.writeShellScriptBin "backup" ''
+    # Create a compressed backup of a local directory
     # Usage: ./backup.sh <source_dir> <dest_dir>
 
     # Check for correct number of arguments

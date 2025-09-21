@@ -15,6 +15,7 @@
     ./scripts/nix-rebuild.nix
     ./scripts/nix-update.nix
     ./scripts/oci-containers.nix
+    ./scripts/rclone-sync.nix
 
     # Nix Services
     ./services/cron.nix
