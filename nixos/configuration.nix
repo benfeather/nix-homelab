@@ -10,6 +10,8 @@
   imports = [
     ./hardware-configuration.nix
 
+    ./scripts/test.nix
+
     # Nix Services
     ./services/cron.nix
     ./services/docker-networks.nix
