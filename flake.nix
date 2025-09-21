@@ -22,8 +22,8 @@
     }@inputs:
     let
       env = {
-        conf_dir = "/mnt/unraid/homelab/appdata";
         backup_dir = "/mnt/unraid/homelab/backups";
+        conf_dir = "/mnt/unraid/homelab/appdata";
         data_dir = "/mnt/unraid/homelab/data";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
