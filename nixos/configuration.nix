@@ -71,7 +71,11 @@
       "exec" # Permit execution of binaries and other executable files
       "nofail" # Prevent system from failing if this drive doesn't mount
       "rw"
-      "users" # Allows any user to mount and unmount
+      "users"
+      "uid=1000"
+      "gid=100"
+      "file_mode=0775"
+      "dir_mode=0775"
     ];
   };
 

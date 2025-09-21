@@ -22,8 +22,8 @@
     }@inputs:
     let
       env = {
-        # conf_dir = "/mnt/unraid/homelab/appdata";
-        conf_dir = "/config/nixos/appdata";
+        conf_dir = "/mnt/unraid/homelab/appdata";
+        # conf_dir = "/config/nixos/appdata";
         backup_dir = "/mnt/unraid/homelab/backups";
         data_dir = "/mnt/unraid/homelab/data";
         domain = "benfeather.com";

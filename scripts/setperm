@@ -1,9 +1,12 @@
 #!/bin/sh
 # Set permissions for /config directory and its contents
 
-chown -R nixos:docker /mnt/unraid/homelab
+chown -R nixos:users /mnt/unraid/homelab
 
-find /mnt/unraid/homelab -type d -exec chmod 770 {} \;
-find /mnt/unraid/homelab -type f -exec chmod 660 {} \;
+find /mnt/unraid/homelab -type d -exec chmod 777 {} \;
+find /mnt/unraid/homelab -type f -exec chmod 666 {} \;
 
 chmod +x /mnt/unraid/homelab/scripts/*
+
+chown -R nixos:docker /mnt/unraid/homelab/nixos/secrets
+find /mnt/unraid/homelab/nixos/secrets -type f -exec chmod 600 {} \;
