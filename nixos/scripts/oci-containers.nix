@@ -4,6 +4,13 @@
 }:
 let
   oci-containers = pkgs.writeShellScriptBin "oci-containers" ''
+    # Check if running as root, if not re-run with sudo
+    if [ "$EUID" -ne 0 ]; then
+      echo "This script requires root privileges. Re-running with sudo..."
+      exec sudo "$0" "$@"
+      echo ""
+    fi
+
     # Space-separated list of services to whitelist
     WHITELIST="docker-prune.service"
 
@@ -32,23 +39,6 @@ let
 
     echo "=== Docker Service Manager - $ACTION ==="
     echo ""
-
-    # Check if running as root
-    if [ "$EUID" -ne 0 ]; then
-      echo "This script requires root privileges to control systemd services."
-      echo ""
-      read -p "Do you want to run this script with sudo? (y/n): " confirm
-      echo ""
-
-      if [[ $confirm =~ ^[Yy]$ ]]; then
-        echo "Re-running with sudo..."
-        echo ""
-        exec sudo "$0" "$@"
-      else
-        echo "Cannot proceed without root privileges. Exiting."
-        exit 1
-      fi
-    fi
 
     echo "1. Searching for services matching pattern: docker-*.service"
     all_services=$(systemctl list-unit-files --type=service)
