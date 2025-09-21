@@ -11,6 +11,8 @@
     ./hardware-configuration.nix
 
     # Nix Scripts
+    ./scripts/nix-rebuild.nix
+    ./scripts/nix-update.nix
     ./scripts/oci-containers.nix
 
     # Nix Services
