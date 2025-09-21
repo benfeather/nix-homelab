@@ -179,6 +179,12 @@
         key = "";
       };
 
+      "gcs" = {
+        format = "json";
+        sopsFile = ./secrets/gcs.env;
+        key = "";
+      };
+
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;

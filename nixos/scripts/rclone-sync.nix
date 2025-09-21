@@ -1,166 +1,186 @@
 {
+  config,
   env,
   pkgs,
   ...
 }:
 let
   rclone-sync = pkgs.writeShellScriptBin "rclone-sync" ''
-    # Syncs a local directory to Proton Drive
-    # Usage: rclone-sync <source_dir> [remote_subdir]
+    # GCS Sync Script using rclone
+    # Usage: rclone-sync <local_source_path> <bucket_dest_path> [bucket_name] [credentials_file]
 
-    # Configuration
-    BASE_REMOTE_NAME="gcs-base"
-    ENCRYPTED_REMOTE_NAME="gcs-encrypted"
-    LOCKFILE="/tmp/rclone_sync_gcs_encrypted.lock"
-    LOGFILE="/var/log/rclone_sync_gcs_encrypted.log"
+    set -euo pipefail
 
-    # Function to log messages
-    log_message() {
-        local message="[$(date '+%Y-%m-%d %H:%M:%S')] $1"
-        echo "$message"
-        echo "$message" >> "$LOGFILE"
+    # Default values
+    DEFAULT_BUCKET_NAME="backups.benfeather.com"
+    DEFAULT_CREDENTIALS_FILE="${config.sops.secrets."gcs".path}
+    LOG_DIR="${env.log_dir}"
+    REMOTE_NAME="gcs-remote"
+
+    # Function to display usage
+    usage() {
+        echo "Usage: $0 <local_source_path> <bucket_dest_path> [bucket_name] [credentials_file]"
+        echo ""
+        echo "Arguments:"
+        echo "  local_source_path   : Local directory to sync from"
+        echo "  bucket_dest_path    : Destination path relative to bucket root"
+        echo "  bucket_name         : GCS bucket name (default: $DEFAULT_BUCKET_NAME)"
+        echo "  credentials_file    : Path to GCS credentials JSON file (default: $DEFAULT_CREDENTIALS_FILE)"
+        echo ""
+        echo "Examples:"
+        echo "  $0 ./local-folder remote-folder"
+        echo "  $0 /home/user/data backup/2025 my-bucket ./auth/creds.json"
+        exit 1
     }
 
-    # Function to setup environment authentication
-    setup_env_auth() {
-        # Setup GCS auth
-        if [ -n "$GCS_PROJECT_ID" ] && [ -n "$GCS_SERVICE_ACCOUNT_FILE" ]; then
-            export RCLONE_CONFIG_GCS_BASE_TYPE=googlecloudstorage
-            export RCLONE_CONFIG_GCS_BASE_PROJECT_NUMBER="$GCS_PROJECT_ID"
-            export RCLONE_CONFIG_GCS_BASE_SERVICE_ACCOUNT_FILE="$GCS_SERVICE_ACCOUNT_FILE"
-            export RCLONE_CONFIG_GCS_BASE_BUCKET_ACL=private
-            export RCLONE_CONFIG_GCS_BASE_OBJECT_ACL=private
-            export RCLONE_CONFIG_GCS_BASE_LOCATION="$GCS_LOCATION"
-            log_message "Using environment variable authentication for GCS"
-        fi
+    # Check if minimum arguments provided
+    if [ $# -lt 2 ]; then
+        echo "Error: Missing required arguments"
+        usage
+    fi
+
+    # Parse arguments
+    LOCAL_SOURCE="$1"
+    BUCKET_DEST_PATH="$2"
+
+    # Set bucket name with fallback
+    if [ $# -ge 3 ] && [ -n "$3" ]; then
+        BUCKET_NAME="$3"
+    else
+        BUCKET_NAME="$DEFAULT_BUCKET_NAME"
+    fi
+
+    # Set credentials file with fallback
+    if [ $# -ge 4 ] && [ -n "$4" ]; then
+        CREDENTIALS_FILE="$4"
+    else
+        CREDENTIALS_FILE="$DEFAULT_CREDENTIALS_FILE"
+    fi
+
+    # Validate inputs
+    if [ ! -d "$LOCAL_SOURCE" ]; then
+        echo "Error: Local source directory '$LOCAL_SOURCE' does not exist"
+        exit 1
+    fi
+
+    if [ ! -f "$CREDENTIALS_FILE" ]; then
+        echo "Error: Credentials file '$CREDENTIALS_FILE' does not exist"
+        exit 1
+    fi
+
+    # Create log directory if it doesn't exist
+    mkdir -p "$LOG_DIR"
+
+    # Generate timestamp for log file
+    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+    LOG_FILE="$LOG_DIR/gcs-sync_$TIMESTAMP.log"
+
+    # Function to log with timestamp
+    log_with_timestamp() {
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+    }
+
+    # Function to setup rclone config for GCS
+    setup_rclone_config() {
+        log_with_timestamp "Setting up rclone configuration for GCS..."
         
-        # Setup encryption
-        if [ -n "$RCLONE_CRYPT_PASSWORD" ]; then
-            export RCLONE_CONFIG_GCS_ENCRYPTED_TYPE=crypt
-            export RCLONE_CONFIG_GCS_ENCRYPTED_REMOTE="$BASE_REMOTE_NAME:"
-            export RCLONE_CONFIG_GCS_ENCRYPTED_PASSWORD="$RCLONE_CRYPT_PASSWORD"
-            if [ -n "$RCLONE_CRYPT_PASSWORD2" ]; then
-                export RCLONE_CONFIG_GCS_ENCRYPTED_PASSWORD2="$RCLONE_CRYPT_PASSWORD2"
-            fi
-            log_message "Using environment variable encryption passwords"
+        # Remove existing config if present
+        rclone config delete "$REMOTE_NAME" 2>/dev/null || true
+        
+        # Create new GCS remote configuration
+        rclone config create "$REMOTE_NAME" gcs \
+            service_account_file "$CREDENTIALS_FILE" \
+            project_number "" \
+            object_acl "" \
+            bucket_acl "" \
+            location "" \
+            storage_class ""
+        
+        log_with_timestamp "Rclone GCS configuration completed"
+    }
+
+    # Function to perform the sync
+    perform_sync() {
+        local source="$1"
+        local dest="$2"
+        
+        log_with_timestamp "Starting sync operation..."
+        log_with_timestamp "Source: $source"
+        log_with_timestamp "Destination: $REMOTE_NAME:$BUCKET_NAME/$dest"
+        
+        # Perform the sync with progress and stats
+        rclone sync "$source" "$REMOTE_NAME:$BUCKET_NAME/$dest" \
+            --progress \
+            --stats 30s \
+            --stats-one-line \
+            --transfers 4 \
+            --checkers 8 \
+            --retries 3 \
+            --low-level-retries 10 \
+            --stats-log-level INFO \
+            --log-level INFO
+        
+        local exit_code=$?
+        
+        if [ $exit_code -eq 0 ]; then
+            log_with_timestamp "Sync completed successfully"
+        else
+            log_with_timestamp "Sync failed with exit code: $exit_code"
+            return $exit_code
         fi
     }
 
-    # Function to cleanup on exit
+    # Function to cleanup
     cleanup() {
-        rm -f "$LOCKFILE"
+        log_with_timestamp "Cleaning up rclone configuration..."
+        rclone config delete "$REMOTE_NAME" 2>/dev/null || true
     }
 
-    # Set trap for cleanup
-    trap cleanup EXIT
+    # Main execution function
+    main() {
+        {
+            log_with_timestamp "=== GCS Sync Script Started ==="
+            log_with_timestamp "Local Source: $LOCAL_SOURCE"
+            log_with_timestamp "Bucket: $BUCKET_NAME"
+            log_with_timestamp "Destination Path: $BUCKET_DEST_PATH"
+            log_with_timestamp "Credentials File: $CREDENTIALS_FILE"
+            log_with_timestamp "Log File: $LOG_FILE"
+            
+            # Setup trap for cleanup
+            trap cleanup EXIT
+            
+            # Setup rclone configuration
+            setup_rclone_config
+            
+            # Test connection
+            log_with_timestamp "Testing GCS connection..."
+            if rclone lsd "$REMOTE_NAME:$BUCKET_NAME" >/dev/null 2>&1; then
+                log_with_timestamp "GCS connection test successful"
+            else
+                log_with_timestamp "Error: Failed to connect to GCS bucket '$BUCKET_NAME'"
+                exit 1
+            fi
+            
+            # Perform sync
+            perform_sync "$LOCAL_SOURCE" "$BUCKET_DEST_PATH"
+            
+            log_with_timestamp "=== GCS Sync Script Completed ==="
+            
+        } 2>&1 | tee "$LOG_FILE"
+    }
 
-    # Check if script is already running
-    if [ -f "$LOCKFILE" ]; then
-        log_message "ERROR: Another instance is already running (lockfile exists)"
-        exit 1
-    fi
-
-    # Create lockfile
-    echo $$ > "$LOCKFILE"
-
-    # Setup authentication
-    setup_env_auth
-
-    # Check arguments
-    if [ $# -lt 2 ] || [ $# -gt 3 ]; then
-        echo "Usage: $0 <source_directory> <bucket_name> [remote_subdirectory]"
-        echo "Example: $0 /home/user/documents my-backup-bucket"
-        echo "Example: $0 /home/user/photos my-backup-bucket backup/photos"
-        exit 1
-    fi
-
-    SOURCE_DIR="$1"
-    BUCKET_NAME="$2"
-    REMOTE_SUBDIR="$3"
-
-    # Convert to absolute path if relative
-    if [[ "$SOURCE_DIR" != /* ]]; then
-        SOURCE_DIR="$(pwd)/$SOURCE_DIR"
-    fi
-
-    # Check if source directory exists
-    if [ ! -d "$SOURCE_DIR" ]; then
-        log_message "ERROR: Source directory '$SOURCE_DIR' does not exist"
-        exit 1
-    fi
-
-    # Build remote path (using encrypted remote)
-    if [ -n "$REMOTE_SUBDIR" ]; then
-        REMOTE_PATH="$ENCRYPTED_REMOTE_NAME:$BUCKET_NAME/$REMOTE_SUBDIR"
-    else
-        REMOTE_PATH="$ENCRYPTED_REMOTE_NAME:$BUCKET_NAME/$(basename "$SOURCE_DIR")"
-    fi
-
-    # Check if rclone is available
+    # Check if rclone is installed
     if ! command -v rclone >/dev/null 2>&1; then
-        log_message "ERROR: rclone is not installed or not in PATH"
+        echo "Error: rclone is not installed or not in PATH"
+        echo "Please install rclone: https://rclone.org/install/"
         exit 1
     fi
 
-    # Test base remote connectivity
-    log_message "Testing connectivity to Google Cloud Storage..."
-    if ! rclone lsd "$BASE_REMOTE_NAME:$BUCKET_NAME" >/dev/null 2>&1; then
-        log_message "ERROR: Cannot connect to GCS bucket '$BUCKET_NAME'"
-        exit 1
-    fi
+    # Run main function
+    main
 
-    # Test encrypted remote
-    log_message "Testing encrypted remote..."
-    if ! rclone lsd "$ENCRYPTED_REMOTE_NAME:$BUCKET_NAME" >/dev/null 2>&1; then
-        log_message "ERROR: Cannot access encrypted remote"
-        log_message "Please check your encryption configuration"
-        exit 1
-    fi
-
-    # Start sync
-    log_message "Starting encrypted sync: '$SOURCE_DIR' -> '$REMOTE_PATH'"
-
-    # Rclone sync with encryption and GCS optimization
-    RCLONE_OUTPUT=$(rclone sync "$SOURCE_DIR" "$REMOTE_PATH" \
-        --create-empty-src-dirs \
-        --checksum \
-        --transfers 8 \
-        --checkers 16 \
-        --retries 3 \
-        --low-level-retries 10 \
-        --stats 0 \
-        --progress=false \
-        --fast-list \
-        --use-mmap \
-        2>&1)
-
-    SYNC_EXIT_CODE=$?
-
-    if [ $SYNC_EXIT_CODE -eq 0 ]; then
-        log_message "Encrypted sync completed successfully"
-        if echo "$RCLONE_OUTPUT" | grep -q "Transferred:.*[1-9]"; then
-            log_message "Transfer details: $(echo "$RCLONE_OUTPUT" | grep "Transferred:")"
-        fi
-    else
-        log_message "ERROR: Encrypted sync failed with exit code $SYNC_EXIT_CODE"
-        log_message "Error output: $RCLONE_OUTPUT"
-        exit $SYNC_EXIT_CODE
-    fi
-
-    # Check encrypted remote directory size
-    REMOTE_SIZE=$(rclone size "$REMOTE_PATH" --json 2>/dev/null | grep -o '"bytes":[0-9]*' | cut -d: -f2)
-
-    if [ -n "$REMOTE_SIZE" ]; then
-        HUMAN_SIZE=$(echo "$REMOTE_SIZE" | awk '{
-            if ($1 >= 1073741824) printf "%.2f GB", $1/1073741824
-            else if ($1 >= 1048576) printf "%.2f MB", $1/1048576  
-            else if ($1 >= 1024) printf "%.2f KB", $1/1024
-            else printf "%d bytes", $1
-        }')
-        log_message "Encrypted remote directory size: $HUMAN_SIZE"
-    fi
-
-    log_message "Encrypted sync job completed"
+    echo ""
+    echo "Sync operation completed. Log file: $LOG_FILE"
   '';
 in
 {

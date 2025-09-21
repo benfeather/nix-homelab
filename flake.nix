@@ -25,6 +25,7 @@
         backup_dir = "/mnt/unraid/homelab/backups";
         conf_dir = "/mnt/unraid/homelab/appdata";
         data_dir = "/mnt/unraid/homelab/data";
+        log_dir = "/mnt/unraid/homelab/logs";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
         pgid = "131";
