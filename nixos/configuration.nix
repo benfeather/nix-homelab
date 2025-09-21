@@ -65,17 +65,12 @@
 
   fileSystems."/mnt/unraid" = {
     device = "unraid";
-    fsType = "9p";
+    fsType = "virtiofs";
     options = [
-      "auto"
-      "exec" # Permit execution of binaries and other executable files
+      "defaults"
+      "noatime"
+      "nodiratime"
       "nofail" # Prevent system from failing if this drive doesn't mount
-      "rw"
-      "users"
-      "uid=1000"
-      "gid=100"
-      "file_mode=0775"
-      "dir_mode=0775"
     ];
   };
 
@@ -213,9 +208,20 @@
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
+
     autoPrune = {
       enable = true;
       dates = "weekly";
+    };
+
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+
+      daemon.settings.dns = [
+        "1.1.1.1"
+        "1.0.0.1"
+      ];
     };
   };
 
