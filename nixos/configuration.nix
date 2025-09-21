@@ -10,7 +10,8 @@
   imports = [
     ./hardware-configuration.nix
 
-    ./scripts/test.nix
+    # Nix Scripts
+    ./scripts/oci-containers.nix
 
     # Nix Services
     ./services/cron.nix
