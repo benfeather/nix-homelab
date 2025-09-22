@@ -84,8 +84,8 @@ let
         echo ""
         echo -e "$BOLD$WHITE"Features:"$NC"
         echo -e "  $GRAY• Creates timestamped .tar.gz archive$NC"
-        echo -e "  $GRAY• Automatically cleans up backups older than 7 days$NC"
         echo -e "  $GRAY• Shows backup size and progress$NC"
+        echo -e "  $GRAY• Preserves directory structure$NC"
         echo ""
         exit 1
     }
@@ -148,26 +148,6 @@ let
     else
         log_error "Backup creation failed!"
         exit 1
-    fi
-
-    print_section "🧹 Cleanup" "Removing old backups (older than 7 days)..."
-    log_step "Scanning for old backups to clean up..."
-
-    # Find and delete backup files older than 7 days that match our naming pattern
-    OLD_BACKUPS=$(find "$DEST_DIR" -name "$SOURCE_NAME"_backup_*.tar.gz -type f -mtime +7 2>/dev/null || true)
-
-    if [ -n "$OLD_BACKUPS" ]; then
-        OLD_COUNT=$(echo "$OLD_BACKUPS" | wc -l)
-        log_warning "Found $OLD_COUNT old backup(s) to remove:"
-        echo "$OLD_BACKUPS" | while read -r backup; do
-            echo -e "   $GRAY   • $(basename "$backup")$NC"
-        done
-        
-        log_step "Removing old backups..."
-        find "$DEST_DIR" -name "$SOURCE_NAME"_backup_*.tar.gz -type f -mtime +7 -delete 2>/dev/null || true
-        log_success "Old backups cleaned up"
-    else
-        log_info "No old backups found to clean up"
     fi
 
     # Final success message

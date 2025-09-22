@@ -12,6 +12,7 @@
 
     # Nix Scripts
     ./scripts/backup.nix
+    ./scripts/backup-cleanup.nix
     ./scripts/fix-permissions.nix
     ./scripts/nix-rebuild.nix
     ./scripts/nix-update.nix
