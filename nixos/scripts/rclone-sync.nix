@@ -33,7 +33,6 @@ let
     # Default values
     DEFAULT_BUCKET_NAME="backups.benfeather.com"
     DEFAULT_CREDENTIALS_FILE="${config.sops.secrets."gcs".path}"
-    LOG_DIR="${env.log_dir}"
     REMOTE_NAME="gcs-remote"
 
     # Function to display usage
@@ -104,7 +103,6 @@ let
         echo -e "  $CYAN Credentials:$NC $WHITE$CREDENTIALS_FILE$NC"
         echo -e "  $CYAN Source:$NC      $WHITE$LOCAL_SOURCE$NC"
         echo -e "  $CYAN Destination:$NC $WHITE$BUCKET_DEST_PATH$NC"
-        echo -e "  $CYAN Log File:$NC    $WHITE$LOG_FILE$NC"
         print_separator
         echo ""
     }
@@ -150,18 +148,6 @@ let
         exit 1
     fi
     log_success "Credentials file found"
-
-    # Create log directory if it doesn't exist
-    mkdir -p "$LOG_DIR"
-
-    # Generate timestamp for log file
-    TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-    LOG_FILE="$LOG_DIR/gcs-sync_$TIMESTAMP.log"
-
-    # Function to log with timestamp (for log file only)
-    log_with_timestamp() {
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
-    }
 
     # Function to setup rclone config for GCS
     setup_rclone_config() {
@@ -249,13 +235,6 @@ let
 
     # Main execution function
     main() {
-        # Initialize log file
-        log_with_timestamp "=== GCS Sync Script Started ==="
-        log_with_timestamp "Bucket: $BUCKET_NAME"
-        log_with_timestamp "Credentials File: $CREDENTIALS_FILE"
-        log_with_timestamp "Source: $LOCAL_SOURCE"
-        log_with_timestamp "Destination: $BUCKET_DEST_PATH"
-        
         # Setup trap for cleanup
         trap cleanup EXIT
         
@@ -284,10 +263,7 @@ let
         print_separator
         echo -e "  $BOLD$GREEN🎉 Sync Operation Completed Successfully! 🎉$NC"
         print_separator
-        echo -e "  $CYAN📝 Full log saved to:$NC $WHITE$LOG_FILE$NC"
         echo ""
-        
-        log_with_timestamp "=== GCS Sync Script Completed ==="
     }
 
     # Check if rclone is installed

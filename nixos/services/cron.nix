@@ -1,8 +1,12 @@
 {
+  env,
+  ...
+}:
+{
   services.cron = {
     enable = true;
-    # systemCronJobs = [
-    #   "*/5 * * * *      root    date >> /tmp/cron.log"
-    # ];
+    systemCronJobs = [
+      "0 1 * * *    root    backup-appdata"
+    ];
   };
 }
