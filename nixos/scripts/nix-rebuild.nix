@@ -7,7 +7,6 @@ let
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
       echo "This script requires root privileges. Re-running with sudo..."
-      echo ""
       exec sudo "$0" "$@"
     fi
 
@@ -114,12 +113,12 @@ let
     if nixos-rebuild switch --flake "$FLAKE_PATH"; then
       echo ""
       log_success "NixOS rebuild completed successfully! 🎉"
-      
+
       print_section "ℹ️  Post-Rebuild Information" "Important notes about the system update..."
       log_info "System configuration has been updated and applied"
       log_warning "Some services may need to be restarted to use new versions"
       log_warning "A reboot may be required for kernel or systemd changes"
-      
+
       echo ""
       print_separator
       echo -e "  $BOLD$GREEN🎉 System Rebuild Completed Successfully! 🎉$NC"
@@ -127,11 +126,11 @@ let
       echo -e "  $CYAN❄️  NixOS:$NC $WHITE""System is now running the latest configuration""$NC"
       echo -e "  $CYAN🔗 Flake:$NC $WHITE$FLAKE_PATH$NC"
       echo ""
-      
+
     else
       echo ""
       log_error "NixOS rebuild failed!"
-      
+
       print_section "🚨 Troubleshooting" "Common issues and solutions..."
       echo -e "   $YELLOW   Common causes of rebuild failures:$NC"
       echo -e "   $GRAY   • Syntax errors in configuration files (.nix files)$NC"
@@ -141,7 +140,7 @@ let
       echo -e "   $GRAY   • Conflicting package versions or dependencies$NC"
       echo ""
       log_warning "Check the error messages above for specific details"
-      
+
       echo ""
       print_separator
       echo -e "  $BOLD$RED❌ System Rebuild Failed$NC"

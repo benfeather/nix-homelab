@@ -14,7 +14,7 @@
         "PUID" = env.puid;
         "TZ" = env.tz;
 
-        "VPN_ENABLED" = "true";
+        "VPN_ENABLED" = "false";
         "VPN_CONF" = "wg0";
         "VPN_PROVIDER" = "proton";
         "VPN_LAN_NETWORK" = "192.168.1.0/24";
@@ -37,7 +37,7 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.qbittorrent.entrypoints" = "websecure";
-        "traefik.http.routers.qbittorrent.middlewares" = "authelia@docker";
+        # "traefik.http.routers.qbittorrent.middlewares" = "authelia@docker";
         "traefik.http.routers.qbittorrent.rule" = "Host(`qbittorrent.${env.domain}`)";
         "traefik.http.services.qbittorrent.loadbalancer.server.port" = "8080";
       };
@@ -47,7 +47,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/qbittorrent/config:/config"
+        "${env.appdata_dir}/qbittorrent:/config"
         "${env.data_dir}:/data"
       ];
     };

@@ -12,7 +12,6 @@ let
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
       echo "This script requires root privileges. Re-running with sudo..."
-      echo ""
       exec sudo "$0" "$@"
     fi
 
@@ -152,10 +151,10 @@ let
     # Function to setup rclone config for GCS
     setup_rclone_config() {
         print_section "⚙️  Setting up rclone" "Configuring GCS remote with uniform bucket-level access..."
-        
+
         log_step "Removing existing configuration..."
         rclone config delete "$REMOTE_NAME" >/dev/null 2>&1 || true
-        
+
         log_step "Creating new GCS remote configuration..."
         rclone config create "$REMOTE_NAME" gcs \
             service_account_file "$CREDENTIALS_FILE" \
@@ -166,7 +165,7 @@ let
             storage_class "" \
             bucket_policy_only "true" \
             --non-interactive >/dev/null 2>&1
-        
+
         log_success "Rclone GCS configuration completed"
     }
 
@@ -174,18 +173,18 @@ let
     perform_sync() {
         local source="$1"
         local dest="$2"
-        
+
         print_section "🚀 Starting Sync Operation" "Syncing files to Google Cloud Storage..."
-        
+
         log_info "Source: $source"
         log_info "Destination: $REMOTE_NAME:$BUCKET_NAME/$dest"
         log_warning "Hidden files (.*) will be excluded from sync"
-        
+
         echo ""
         echo -e "   $BOLD$GREEN📊 Sync Progress:$NC"
         echo -e "   $GRAY   Press Ctrl+C to cancel$NC"
         echo ""
-        
+
         # Perform the sync with progress and stats, optimized for uniform bucket-level access
         rclone sync "$source" "$REMOTE_NAME:$BUCKET_NAME/$dest" \
             --progress \
@@ -213,9 +212,9 @@ let
                     echo "   $line"
                 fi
             done
-        
+
         local exit_code=$?
-        
+
         echo ""
         if [ $exit_code -eq 0 ]; then
             log_success "Sync completed successfully! 🎉"
@@ -237,27 +236,27 @@ let
     main() {
         # Setup trap for cleanup
         trap cleanup EXIT
-        
+
         # Show configuration summary
         print_config_summary
-        
+
         # Setup rclone configuration
         setup_rclone_config
-        
+
         # Test connection
         print_section "🔗 Testing Connection" "Verifying access to GCS bucket..."
         log_step "Testing GCS connection..."
-        
+
         if rclone lsd "$REMOTE_NAME:$BUCKET_NAME" --gcs-no-check-bucket --gcs-bucket-policy-only >/dev/null 2>&1; then
             log_success "GCS connection test successful"
         else
             log_error "Failed to connect to GCS bucket '$BUCKET_NAME'"
             exit 1
         fi
-        
+
         # Perform sync
         perform_sync "$LOCAL_SOURCE" "$BUCKET_DEST_PATH"
-        
+
         # Final success message
         echo ""
         print_separator

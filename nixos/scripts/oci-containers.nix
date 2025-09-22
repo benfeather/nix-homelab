@@ -7,7 +7,6 @@ let
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
       echo "This script requires root privileges. Re-running with sudo..."
-      echo ""
       exec sudo "$0" "$@"
     fi
 
@@ -70,7 +69,7 @@ let
         echo ""
         echo -e "$BOLD$WHITE"Actions:"$NC"
         echo -e "  $CYAN"start"$NC     : Start all Docker services (except whitelisted)"
-        echo -e "  $CYAN"stop"$NC      : Stop all Docker services (except whitelisted)"  
+        echo -e "  $CYAN"stop"$NC      : Stop all Docker services (except whitelisted)"
         echo -e "  $CYAN"restart"$NC   : Restart all Docker services (except whitelisted)"
         echo ""
         echo -e "$BOLD$WHITE"Examples:"$NC"

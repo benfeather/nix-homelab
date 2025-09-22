@@ -7,7 +7,6 @@ let
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
       echo "This script requires root privileges. Re-running with sudo..."
-      echo ""
       exec sudo "$0" "$@"
     fi
 
@@ -97,7 +96,7 @@ let
         echo -e "$BOLD$WHITE"What this script does:"$NC"
         echo -e "  $GRAY• Sets ownership of base directory to $BASE_USER:$BASE_GROUP$NC"
         echo -e "  $GRAY• Sets directory permissions to $DIR_PERMISSIONS and file permissions to $FILE_PERMISSIONS$NC"
-        echo -e "  $GRAY• Sets secrets directory ownership to $BASE_USER:$SECRETS_GROUP$NC" 
+        echo -e "  $GRAY• Sets secrets directory ownership to $BASE_USER:$SECRETS_GROUP$NC"
         echo -e "  $GRAY• Sets secrets file permissions to $SECRETS_FILE_PERMISSIONS (more restrictive)$NC"
         echo ""
         echo -e "$BOLD$WHITE"Configuration:"$NC"
@@ -185,7 +184,7 @@ let
     if [ "$SECRETS_EXISTS" = true ]; then
         print_section "🔒 Setting Secrets Permissions" "Applying restricted permissions to secrets..."
         log_step "Setting secrets ownership to $BASE_USER:$SECRETS_GROUP..."
-        
+
         if chown -R "$BASE_USER:$SECRETS_GROUP" "$SECRETS_PATH" 2>/dev/null; then
             log_success "Secrets ownership applied successfully"
         else

@@ -45,7 +45,7 @@
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     # ./containers/overseerr.nix
-    # ./containers/plex.nix
+    ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/qbittorrent.nix
     ./containers/radarr.nix
@@ -57,7 +57,7 @@
     # ./containers/uptime-kuma.nix
     ./containers/watchtower.nix
     ./containers/whisparr.nix
-    ./containers/whoami.nix
+    # ./containers/whoami.nix
   ];
 
   boot = {
