@@ -23,6 +23,10 @@
         config.sops.secrets."plex".path
       ];
 
+      # extraOptions = [
+      #   "--network=host"
+      # ];
+
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.plex.entrypoints" = "websecure";
@@ -32,20 +36,20 @@
       };
 
       networks = [
-        "host"
         "proxy"
       ];
 
-      # ports = [
-      #   # "1900:1900/udp" # Plex DLNA discovery
-      #   "5353:5353/udp" # Bonjour/Avahi network discovery
-      #   "8324:8324" # Plex for Roku via Plex Companion
-      #   "32410:32410/udp" # GDM network discovery
-      #   "32412:32412/udp" # GDM network discovery
-      #   "32413:32413/udp" # GDM network discovery
-      #   "32414:32414/udp" # GDM network discovery
-      #   "32469:32469" # Plex DLNA discovery
-      # ];
+      ports = [
+        "1900:1900/udp" # DLNA discovery
+        "5353:5353/udp" # Bonjour/Avahi network discovery
+        "8324:8324" # Plex for Roku via Plex Companion
+        "32400:32400" # Required
+        "32410:32410/udp" # GDM network discovery
+        "32412:32412/udp" # GDM network discovery
+        "32413:32413/udp" # GDM network discovery
+        "32414:32414/udp" # GDM network discovery
+        "32469:32469" # Plex DLNA discovery
+      ];
 
       volumes = [
         "${env.appdata_dir}/plex/config:/config"
