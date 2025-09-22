@@ -1,2 +1,3 @@
 *.fuse*
 *.sqlite
+users.yml
