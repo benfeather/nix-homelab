@@ -115,20 +115,6 @@ let
         exit 1
     fi
 
-    print_section "📋 Change Summary" "Reviewing what was updated..."
-    log_step "Checking flake.lock changes..."
-
-    if [ -f "flake.lock" ]; then
-        log_info "Recent lock file changes:"
-        if git log -1 --oneline flake.lock 2>/dev/null; then
-            echo -e "   $GRAY   ↑ Git history available$NC"
-        else
-            echo -e "   $GRAY   • Git not available or no previous commits$NC"
-        fi
-    else
-        log_warning "No flake.lock file found"
-    fi
-
     print_section "🔧 System Rebuild" "Rebuilding NixOS with updated packages..."
     log_warning "This operation may take several minutes..."
 
