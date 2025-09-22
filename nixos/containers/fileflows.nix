@@ -33,11 +33,11 @@
       ];
 
       volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock:ro"
         "${env.appdata_dir}/fileflows/config:/app/Data"
         "${env.appdata_dir}/fileflows/logs:/app/Logs"
         "${env.appdata_dir}/fileflows/temp:/temp"
         "${env.data_dir}:/data"
-        "/var/run/docker.sock:/var/run/docker.sock:ro"
       ];
     };
   };

@@ -37,6 +37,7 @@
     # ./containers/bazarr.nix
     # ./containers/bookshelf.nix
     # ./containers/cloud.nix
+    ./containers/dozzle.nix
     # ./containers/fileflows.nix
     ./containers/homepage.nix
     # ./containers/huntarr.nix
