@@ -19,10 +19,6 @@
         "TZ" = env.tz;
       };
 
-      environmentFiles = [
-        config.sops.secrets."plex".path
-      ];
-
       # extraOptions = [
       #   "--network=host"
       # ];

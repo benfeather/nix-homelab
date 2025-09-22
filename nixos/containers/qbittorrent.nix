@@ -7,28 +7,35 @@
   virtualisation.oci-containers.containers = {
     "qbittorrent" = {
       hostname = "qbittorrent";
-      image = "ghcr.io/hotio/qbittorrent:latest";
+      image = "ghcr.io/binhex/arch-qbittorrentvpn:latest";
 
       environment = {
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;
 
-        "VPN_ENABLED" = "false";
-        "VPN_CONF" = "wg0";
-        "VPN_PROVIDER" = "proton";
-        "VPN_LAN_NETWORK" = "192.168.1.0/24";
-        "VPN_LAN_LEAK_ENABLED" = "false";
-        "VPN_EXPOSE_PORTS_ON_LAN" = "";
-        "VPN_AUTO_PORT_FORWARD" = "true";
-        "VPN_AUTO_PORT_FORWARD_TO_PORTS" = "";
-        "VPN_FIREWALL_TYPE" = "auto";
-        "VPN_HEALTHCHECK_ENABLED" = "false";
-        "VPN_NAMESERVERS" = "";
-        "PRIVOXY_ENABLED" = "false";
-        "UNBOUND_ENABLED" = "false";
-        "UNBOUND_NAMESERVERS" = "";
+        "VPN_ENABLED" = "yes";
+        "VPN_PROV" = "protonvpn";
+        "VPN_CLIENT" = "openvpn";
+        # "VPN_OPTIONS" = "<additional openvpn cli options>";
+        # "ENABLE_STARTUP_SCRIPTS" = "<yes|no>";
+        # "ENABLE_PRIVOXY" = "<yes|no>";
+        # "STRICT_PORT_FORWARD" = "<yes|no>";
+        # "USERSPACE_WIREGUARD" = "<yes|no>";
+        # "ENABLE_SOCKS" = "<yes|no>";
+        # "SOCKS_USER" = "<socks username>";
+        # "SOCKS_PASS" = "<socks password>";
+        "LAN_NETWORK" = "192.168.0.0/24";
+        # "NAME_SERVERS" = "<name server ip(s)>";
+        # "VPN_INPUT_PORTS" = "<port number(s)>";
+        # "VPN_OUTPUT_PORTS" = "<port number(s)>";
+        # "DEBUG" = "<true|false>";
+        # "WEBUI_PORT" = "<port for web interfance>";
       };
+
+      environmentFiles = [
+        config.sops.secrets."vpn".path
+      ];
 
       extraOptions = [
         "--cap-add=NET_ADMIN"
@@ -53,3 +60,30 @@
     };
   };
 }
+
+#     ports:
+#       - "8080:8080"
+#       - "8118:8118"
+#       - "9118:9118"
+#       - "58946:58946"
+#       - "58946:58946/udp"
+#     environment:
+#       - VPN_ENABLED=<yes|no>
+#       - VPN_USER=<vpn username>
+#       - VPN_PASS=<vpn password>
+#       - VPN_PROV=<pia|airvpn|protonvpn|custom>
+#       - VPN_CLIENT=<openvpn|wireguard>
+#       - VPN_OPTIONS=<additional openvpn cli options>
+#       - ENABLE_STARTUP_SCRIPTS=<yes|no>
+#       - ENABLE_PRIVOXY=<yes|no>
+#       - STRICT_PORT_FORWARD=<yes|no>
+#       - USERSPACE_WIREGUARD=<yes|no>
+#       - ENABLE_SOCKS=<yes|no>
+#       - SOCKS_USER=<socks username>
+#       - SOCKS_PASS=<socks password>
+#       - LAN_NETWORK=<lan ipv4 network>/<cidr notation>
+#       - NAME_SERVERS=<name server ip(s)>
+#       - VPN_INPUT_PORTS=<port number(s)>
+#       - VPN_OUTPUT_PORTS=<port number(s)>
+#       - DEBUG=<true|false>
+#       - WEBUI_PORT=<port for web interfance>

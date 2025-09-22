@@ -177,12 +177,6 @@
         key = "";
       };
 
-      "duplicati" = {
-        format = "dotenv";
-        sopsFile = ./secrets/duplicati.env;
-        key = "";
-      };
-
       "gcs" = {
         format = "json";
         sopsFile = ./secrets/gcs.json;
@@ -195,15 +189,9 @@
         key = "";
       };
 
-      "plex" = {
+      "vpn" = {
         format = "dotenv";
-        sopsFile = ./secrets/plex.env;
-        key = "";
-      };
-
-      "wireguard" = {
-        format = "ini";
-        sopsFile = ./secrets/wireguard.ini;
+        sopsFile = ./secrets/vpn.env;
         key = "";
       };
     };
