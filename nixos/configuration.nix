@@ -200,6 +200,12 @@
         sopsFile = ./secrets/plex.env;
         key = "";
       };
+
+      "wireguard" = {
+        format = "ini";
+        sopsFile = ./secrets/wireguard.ini;
+        key = "";
+      };
     };
   };
 
