@@ -73,17 +73,6 @@
     sops
   ];
 
-  fileSystems."/mnt/unraid" = {
-    device = "unraid";
-    fsType = "virtiofs";
-    options = [
-      "defaults"
-      "noatime"
-      "nodiratime"
-      "nofail" # Prevent system from failing if this drive doesn't mount
-    ];
-  };
-
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -143,7 +132,7 @@
     gc = {
       automatic = true;
       dates = "03:00";
-      options = "--delete-older-than 3d";
+      options = "--delete-older-than 7d";
     };
   };
 

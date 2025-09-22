@@ -100,10 +100,10 @@ let
         print_separator
         echo -e "$BOLD$WHITE  📋 Configuration Summary$NC"
         print_separator
-        echo -e "  $CYAN Source:$NC      $WHITE$LOCAL_SOURCE$NC"
         echo -e "  $CYAN Bucket:$NC      $WHITE$BUCKET_NAME$NC"
-        echo -e "  $CYAN Destination:$NC $WHITE$BUCKET_DEST_PATH$NC"
         echo -e "  $CYAN Credentials:$NC $WHITE$CREDENTIALS_FILE$NC"
+        echo -e "  $CYAN Source:$NC      $WHITE$LOCAL_SOURCE$NC"
+        echo -e "  $CYAN Destination:$NC $WHITE$BUCKET_DEST_PATH$NC"
         echo -e "  $CYAN Log File:$NC    $WHITE$LOG_FILE$NC"
         print_separator
         echo ""
@@ -251,11 +251,10 @@ let
     main() {
         # Initialize log file
         log_with_timestamp "=== GCS Sync Script Started ==="
-        log_with_timestamp "Local Source: $LOCAL_SOURCE"
         log_with_timestamp "Bucket: $BUCKET_NAME"
-        log_with_timestamp "Destination Path: $BUCKET_DEST_PATH"
         log_with_timestamp "Credentials File: $CREDENTIALS_FILE"
-        log_with_timestamp "Log File: $LOG_FILE"
+        log_with_timestamp "Source: $LOCAL_SOURCE"
+        log_with_timestamp "Destination: $BUCKET_DEST_PATH"
         
         # Setup trap for cleanup
         trap cleanup EXIT

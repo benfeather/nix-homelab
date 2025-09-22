@@ -39,6 +39,17 @@
     ];
   };
 
+  fileSystems."/mnt/unraid" = {
+    device = "unraid";
+    fsType = "virtiofs";
+    options = [
+      "defaults"
+      "noatime"
+      "nodiratime"
+      "nofail" # Prevent system from failing if this drive doesn't mount
+    ];
+  };
+
   swapDevices = [
     { device = "/dev/disk/by-uuid/856e41fc-4207-4083-8d0d-2fb740ff8bc2"; }
   ];
