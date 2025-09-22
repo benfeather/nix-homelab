@@ -3,9 +3,9 @@
   ...
 }:
 let
-  backup-cleanup = pkgs.writeShellScriptBin "backup-cleanup" ''
+  archive-cleanup = pkgs.writeShellScriptBin "archive-cleanup" ''
     # Clean up old backup files from a directory
-    # Usage: backup-cleanup <source_directory> [days_to_keep]
+    # Usage: archive-cleanup <source_directory> [days_to_keep]
 
     # Color definitions
     RED='\033[0;31m'
@@ -282,6 +282,6 @@ let
 in
 {
   environment.systemPackages = [
-    backup-cleanup
+    archive-cleanup
   ];
 }

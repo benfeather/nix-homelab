@@ -4,9 +4,9 @@
   ...
 }:
 let
-  backup = pkgs.writeShellScriptBin "backup" ''
-    # Create a compressed backup of a local directory
-    # Usage: backup <source_dir> <dest_dir>
+  archive = pkgs.writeShellScriptBin "archive" ''
+    # Create a compressed archive of a local directory
+    # Usage: archive <source_dir> <dest_dir>
 
     # Color definitions
     RED='\033[0;31m'
@@ -163,6 +163,6 @@ let
 in
 {
   environment.systemPackages = [
-    backup
+    archive
   ];
 }
