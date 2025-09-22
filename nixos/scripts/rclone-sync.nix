@@ -7,35 +7,113 @@
 let
   rclone-sync = pkgs.writeShellScriptBin "rclone-sync" ''
     # GCS Sync Script using rclone
-    # Usage: rclone-sync <local_source_path> <bucket_dest_path> [bucket_name] [credentials_file]
+    # Usage: rclone-sync local_source_path bucket_dest_path [bucket_name] [credentials_file]
+
+    # Check if running as root, if not re-run with sudo
+    if [ "$EUID" -ne 0 ]; then
+      echo "This script requires root privileges. Re-running with sudo..."
+      echo ""
+      exec sudo "$0" "$@"
+    fi
 
     set -euo pipefail
 
+    # Color definitions
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    PURPLE='\033[0;35m'
+    CYAN='\033[0;36m'
+    WHITE='\033[1;37m'
+    GRAY='\033[0;90m'
+    BOLD='\033[1m'
+    NC='\033[0m' # No Color
+
     # Default values
     DEFAULT_BUCKET_NAME="backups.benfeather.com"
-    DEFAULT_CREDENTIALS_FILE="${config.sops.secrets."gcs".path}
+    DEFAULT_CREDENTIALS_FILE="${config.sops.secrets."gcs".path}"
     LOG_DIR="${env.log_dir}"
     REMOTE_NAME="gcs-remote"
 
     # Function to display usage
     usage() {
-        echo "Usage: $0 <local_source_path> <bucket_dest_path> [bucket_name] [credentials_file]"
+        echo -e "$BOLD$BLUE┌─────────────────────────────────────────────────────────────────────────────┐$NC"
+        echo -e "$BOLD$BLUE│                          🚀 GCS Sync Script                                 │$NC"
+        echo -e "$BOLD$BLUE└─────────────────────────────────────────────────────────────────────────────┘$NC"
         echo ""
-        echo "Arguments:"
-        echo "  local_source_path   : Local directory to sync from"
-        echo "  bucket_dest_path    : Destination path relative to bucket root"
-        echo "  bucket_name         : GCS bucket name (default: $DEFAULT_BUCKET_NAME)"
-        echo "  credentials_file    : Path to GCS credentials JSON file (default: $DEFAULT_CREDENTIALS_FILE)"
+        echo -e "$BOLDUsage:$NC $0 LOCAL_SOURCE_PATH BUCKET_DEST_PATH [BUCKET_NAME] [CREDENTIALS_FILE]"
         echo ""
-        echo "Examples:"
-        echo "  $0 ./local-folder remote-folder"
-        echo "  $0 /home/user/data backup/2025 my-bucket ./auth/creds.json"
+        echo -e "$BOLD$WHITEArguments:$NC"
+        echo -e "  $CYANLOCAL_SOURCE_PATH$NC   : Local directory to sync from"
+        echo -e "  $CYANBUCKET_DEST_PATH$NC    : Destination path relative to bucket root"
+        echo -e "  $CYANBUCKET_NAME$NC         : GCS bucket name (default: $GRAY$DEFAULT_BUCKET_NAME$NC)"
+        echo -e "  $CYANCREDENTIALS_FILE$NC    : Path to GCS credentials JSON file (default: $GRAY$DEFAULT_CREDENTIALS_FILE$NC)"
+        echo ""
+        echo -e "$BOLD$WHITEExamples:$NC"
+        echo -e "  $GRAY$0 ./local-folder remote-folder$NC"
+        echo -e "  $GRAY$0 /home/user/data backup/2025 my-bucket ./auth/creds.json$NC"
+        echo ""
         exit 1
+    }
+
+    # Enhanced logging functions
+    print_header() {
+        echo -e "$BOLD$BLUE┌─────────────────────────────────────────────────────────────────────────────┐$NC"
+        echo -e "$BOLD$BLUE│                          🚀 GCS Sync Script                                 │$NC"
+        echo -e "$BOLD$BLUE└─────────────────────────────────────────────────────────────────────────────┘$NC"
+        echo ""
+    }
+
+    print_section() {
+        echo ""
+        echo -e "$BOLD$PURPLE▶  $1$NC"
+        echo -e "$GRAY   $2$NC"
+    }
+
+    log_info() {
+        echo -e "$CYAN   ℹ  $NC$(date '+%H:%M:%S') $WHITE$1$NC"
+    }
+
+    log_success() {
+        echo -e "$GREEN   ✓  $NC$(date '+%H:%M:%S') $WHITE$1$NC"
+    }
+
+    log_warning() {
+        echo -e "$YELLOW   ⚠  $NC$(date '+%H:%M:%S') $WHITE$1$NC"
+    }
+
+    log_error() {
+        echo -e "$RED   ✗  $NC$(date '+%H:%M:%S') $WHITE$1$NC"
+    }
+
+    log_step() {
+        echo -e "$BLUE   →  $NC$(date '+%H:%M:%S') $WHITE$1$NC"
+    }
+
+    print_separator() {
+        echo -e "$GRAY─────────────────────────────────────────────────────────────────────────────$NC"
+    }
+
+    print_config_summary() {
+        echo ""
+        print_separator
+        echo -e "$BOLD$WHITE  📋 Configuration Summary$NC"
+        print_separator
+        echo -e "  $CYAN Source:$NC      $WHITE$LOCAL_SOURCE$NC"
+        echo -e "  $CYAN Bucket:$NC      $WHITE$BUCKET_NAME$NC"
+        echo -e "  $CYAN Destination:$NC $WHITE$BUCKET_DEST_PATH$NC"
+        echo -e "  $CYAN Credentials:$NC $WHITE$CREDENTIALS_FILE$NC"
+        echo -e "  $CYAN Log File:$NC    $WHITE$LOG_FILE$NC"
+        print_separator
+        echo ""
     }
 
     # Check if minimum arguments provided
     if [ $# -lt 2 ]; then
-        echo "Error: Missing required arguments"
+        print_header
+        echo -e "$RED   ✗  Error: Missing required arguments$NC"
+        echo ""
         usage
     fi
 
@@ -58,15 +136,20 @@ let
     fi
 
     # Validate inputs
+    print_header
+    print_section "🔍 Validating Inputs" "Checking source directory and credentials..."
+
     if [ ! -d "$LOCAL_SOURCE" ]; then
-        echo "Error: Local source directory '$LOCAL_SOURCE' does not exist"
+        log_error "Local source directory '$LOCAL_SOURCE' does not exist"
         exit 1
     fi
+    log_success "Source directory exists"
 
     if [ ! -f "$CREDENTIALS_FILE" ]; then
-        echo "Error: Credentials file '$CREDENTIALS_FILE' does not exist"
+        log_error "Credentials file '$CREDENTIALS_FILE' does not exist"
         exit 1
     fi
+    log_success "Credentials file found"
 
     # Create log directory if it doesn't exist
     mkdir -p "$LOG_DIR"
@@ -75,28 +158,30 @@ let
     TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
     LOG_FILE="$LOG_DIR/gcs-sync_$TIMESTAMP.log"
 
-    # Function to log with timestamp
+    # Function to log with timestamp (for log file only)
     log_with_timestamp() {
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
     }
 
     # Function to setup rclone config for GCS
     setup_rclone_config() {
-        log_with_timestamp "Setting up rclone configuration for GCS..."
+        print_section "⚙️  Setting up rclone" "Configuring GCS remote with uniform bucket-level access..."
         
-        # Remove existing config if present
-        rclone config delete "$REMOTE_NAME" 2>/dev/null || true
+        log_step "Removing existing configuration..."
+        rclone config delete "$REMOTE_NAME" >/dev/null 2>&1 || true
         
-        # Create new GCS remote configuration
+        log_step "Creating new GCS remote configuration..."
         rclone config create "$REMOTE_NAME" gcs \
             service_account_file "$CREDENTIALS_FILE" \
             project_number "" \
             object_acl "" \
             bucket_acl "" \
             location "" \
-            storage_class ""
+            storage_class "" \
+            bucket_policy_only "true" \
+            --non-interactive >/dev/null 2>&1
         
-        log_with_timestamp "Rclone GCS configuration completed"
+        log_success "Rclone GCS configuration completed"
     }
 
     # Function to perform the sync
@@ -104,83 +189,118 @@ let
         local source="$1"
         local dest="$2"
         
-        log_with_timestamp "Starting sync operation..."
-        log_with_timestamp "Source: $source"
-        log_with_timestamp "Destination: $REMOTE_NAME:$BUCKET_NAME/$dest"
+        print_section "🚀 Starting Sync Operation" "Syncing files to Google Cloud Storage..."
         
-        # Perform the sync with progress and stats
+        log_info "Source: $source"
+        log_info "Destination: $REMOTE_NAME:$BUCKET_NAME/$dest"
+        log_warning "Hidden files (.*) will be excluded from sync"
+        
+        echo ""
+        echo -e "   $BOLD$GREEN📊 Sync Progress:$NC"
+        echo -e "   $GRAY   Press Ctrl+C to cancel$NC"
+        echo ""
+        
+        # Perform the sync with progress and stats, optimized for uniform bucket-level access
         rclone sync "$source" "$REMOTE_NAME:$BUCKET_NAME/$dest" \
             --progress \
-            --stats 30s \
+            --stats 10s \
             --stats-one-line \
             --transfers 4 \
             --checkers 8 \
             --retries 3 \
             --low-level-retries 10 \
             --stats-log-level INFO \
-            --log-level INFO
+            --log-level ERROR \
+            --gcs-no-check-bucket \
+            --gcs-bucket-policy-only \
+            --exclude ".*" 2>&1 | while IFS= read -r line; do
+                if [[ "$line" == *"INFO"* ]] && [[ "$line" == *"There was nothing to transfer"* ]]; then
+                    echo -e "   $CYAN   ℹ  $NC$(date '+%H:%M:%S') $WHITE""No new files to transfer$NC"
+                elif [[ "$line" == *"INFO"* ]]; then
+                    # Skip other INFO messages to reduce noise
+                    continue
+                elif [[ "$line" == *"ERROR"* ]]; then
+                    echo -e "   $RED   ✗  $NC$(date '+%H:%M:%S') $WHITE""$line$NC"
+                elif [[ "$line" =~ ^[0-9] ]]; then
+                    echo -e "   $BLUE   📈  $NC$line"
+                else
+                    echo "   $line"
+                fi
+            done
         
         local exit_code=$?
         
+        echo ""
         if [ $exit_code -eq 0 ]; then
-            log_with_timestamp "Sync completed successfully"
+            log_success "Sync completed successfully! 🎉"
         else
-            log_with_timestamp "Sync failed with exit code: $exit_code"
+            log_error "Sync failed with exit code: $exit_code"
             return $exit_code
         fi
     }
 
     # Function to cleanup
     cleanup() {
-        log_with_timestamp "Cleaning up rclone configuration..."
-        rclone config delete "$REMOTE_NAME" 2>/dev/null || true
+        print_section "🧹 Cleanup" "Removing temporary rclone configuration..."
+        log_step "Cleaning up rclone configuration..."
+        rclone config delete "$REMOTE_NAME" >/dev/null 2>&1 || true
+        log_success "Cleanup completed"
     }
 
     # Main execution function
     main() {
-        {
-            log_with_timestamp "=== GCS Sync Script Started ==="
-            log_with_timestamp "Local Source: $LOCAL_SOURCE"
-            log_with_timestamp "Bucket: $BUCKET_NAME"
-            log_with_timestamp "Destination Path: $BUCKET_DEST_PATH"
-            log_with_timestamp "Credentials File: $CREDENTIALS_FILE"
-            log_with_timestamp "Log File: $LOG_FILE"
-            
-            # Setup trap for cleanup
-            trap cleanup EXIT
-            
-            # Setup rclone configuration
-            setup_rclone_config
-            
-            # Test connection
-            log_with_timestamp "Testing GCS connection..."
-            if rclone lsd "$REMOTE_NAME:$BUCKET_NAME" >/dev/null 2>&1; then
-                log_with_timestamp "GCS connection test successful"
-            else
-                log_with_timestamp "Error: Failed to connect to GCS bucket '$BUCKET_NAME'"
-                exit 1
-            fi
-            
-            # Perform sync
-            perform_sync "$LOCAL_SOURCE" "$BUCKET_DEST_PATH"
-            
-            log_with_timestamp "=== GCS Sync Script Completed ==="
-            
-        } 2>&1 | tee "$LOG_FILE"
+        # Initialize log file
+        log_with_timestamp "=== GCS Sync Script Started ==="
+        log_with_timestamp "Local Source: $LOCAL_SOURCE"
+        log_with_timestamp "Bucket: $BUCKET_NAME"
+        log_with_timestamp "Destination Path: $BUCKET_DEST_PATH"
+        log_with_timestamp "Credentials File: $CREDENTIALS_FILE"
+        log_with_timestamp "Log File: $LOG_FILE"
+        
+        # Setup trap for cleanup
+        trap cleanup EXIT
+        
+        # Show configuration summary
+        print_config_summary
+        
+        # Setup rclone configuration
+        setup_rclone_config
+        
+        # Test connection
+        print_section "🔗 Testing Connection" "Verifying access to GCS bucket..."
+        log_step "Testing GCS connection..."
+        
+        if rclone lsd "$REMOTE_NAME:$BUCKET_NAME" --gcs-no-check-bucket --gcs-bucket-policy-only >/dev/null 2>&1; then
+            log_success "GCS connection test successful"
+        else
+            log_error "Failed to connect to GCS bucket '$BUCKET_NAME'"
+            exit 1
+        fi
+        
+        # Perform sync
+        perform_sync "$LOCAL_SOURCE" "$BUCKET_DEST_PATH"
+        
+        # Final success message
+        echo ""
+        print_separator
+        echo -e "  $BOLD$GREEN🎉 Sync Operation Completed Successfully! 🎉$NC"
+        print_separator
+        echo -e "  $CYAN📝 Full log saved to:$NC $WHITE$LOG_FILE$NC"
+        echo ""
+        
+        log_with_timestamp "=== GCS Sync Script Completed ==="
     }
 
     # Check if rclone is installed
     if ! command -v rclone >/dev/null 2>&1; then
-        echo "Error: rclone is not installed or not in PATH"
-        echo "Please install rclone: https://rclone.org/install/"
+        print_header
+        log_error "rclone is not installed or not in PATH"
+        echo -e "   $YELLOW💡 Please install rclone: $CYAN""https://rclone.org/install/$NC"
         exit 1
     fi
 
     # Run main function
     main
-
-    echo ""
-    echo "Sync operation completed. Log file: $LOG_FILE"
   '';
 in
 {

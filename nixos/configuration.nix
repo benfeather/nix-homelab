@@ -181,7 +181,7 @@
 
       "gcs" = {
         format = "json";
-        sopsFile = ./secrets/gcs.env;
+        sopsFile = ./secrets/gcs.json;
         key = "";
       };
 
