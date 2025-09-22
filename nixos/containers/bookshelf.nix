@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/bookshelf/config:/config"
+        "${env.appdata_dir}/bookshelf/config:/config"
         "${env.data_dir}:/data"
       ];
     };

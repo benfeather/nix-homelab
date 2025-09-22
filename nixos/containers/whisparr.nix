@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/whisparr/config:/config"
+        "${env.appdata_dir}/whisparr/config:/config"
         "${env.data_dir}:/data"
       ];
     };

@@ -33,11 +33,11 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/stash/blobs:/blobs"
-        "${env.conf_dir}/stash/cache:/cache"
-        "${env.conf_dir}/stash/config:/root/.stash"
-        "${env.conf_dir}/stash/generated:/generated"
-        "${env.conf_dir}/stash/metadata:/metadata"
+        "${env.appdata_dir}/stash/blobs:/blobs"
+        "${env.appdata_dir}/stash/cache:/cache"
+        "${env.appdata_dir}/stash/config:/root/.stash"
+        "${env.appdata_dir}/stash/generated:/generated"
+        "${env.appdata_dir}/stash/metadata:/metadata"
         "${env.data_dir}:/data"
       ];
     };

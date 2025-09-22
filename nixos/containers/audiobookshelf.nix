@@ -28,8 +28,8 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/audiobookshelf/config:/config"
-        "${env.conf_dir}/audiobookshelf/metadata:/metadata"
+        "${env.appdata_dir}/audiobookshelf/config:/config"
+        "${env.appdata_dir}/audiobookshelf/metadata:/metadata"
         "${env.data_dir}:/data"
       ];
     };

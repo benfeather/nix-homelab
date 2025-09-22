@@ -47,7 +47,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/plex/config:/config"
+        "${env.appdata_dir}/plex/config:/config"
         "${env.data_dir}:/data"
       ];
     };

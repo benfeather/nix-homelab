@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/bazarr:/config"
+        "${env.appdata_dir}/bazarr:/config"
         "${env.data_dir}:/data"
       ];
     };
@@ -52,7 +52,7 @@
       };
 
       volumes = [
-        "${env.conf_dir}/bazarr-anime:/config"
+        "${env.appdata_dir}/bazarr-anime:/config"
         "${env.data_dir}:/data"
       ];
     };

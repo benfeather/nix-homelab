@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/radarr/config:/config"
+        "${env.appdata_dir}/radarr/config:/config"
         "${env.data_dir}:/data"
       ];
     };
@@ -56,7 +56,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/radarr-anime/config:/config"
+        "${env.appdata_dir}/radarr-anime/config:/config"
         "${env.data_dir}:/data"
       ];
     };

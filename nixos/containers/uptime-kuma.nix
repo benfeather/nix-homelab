@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/uptime/config:/app/data"
+        "${env.appdata_dir}/uptime/config:/app/data"
       ];
     };
   };

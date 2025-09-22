@@ -44,7 +44,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/cloud/config:/config"
+        "${env.appdata_dir}/cloud/config:/config"
         "${env.data_dir}/cloud:/data"
       ];
     };
@@ -72,7 +72,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/cloud/db:/var/lib/mysql"
+        "${env.appdata_dir}/cloud/db:/var/lib/mysql"
       ];
     };
 
@@ -91,7 +91,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/cloud/redis:/data"
+        "${env.appdata_dir}/cloud/redis:/data"
       ];
     };
   };

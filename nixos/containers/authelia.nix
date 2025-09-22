@@ -35,7 +35,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/authelia:/config"
+        "${env.appdata_dir}/authelia:/config"
       ];
     };
   };

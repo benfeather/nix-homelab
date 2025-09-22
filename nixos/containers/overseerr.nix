@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.conf_dir}/overseerr/config:/config"
+        "${env.appdata_dir}/overseerr/config:/config"
       ];
     };
   };

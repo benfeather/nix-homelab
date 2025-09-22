@@ -67,7 +67,7 @@
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
-        "${env.conf_dir}/traefik:/etc/traefik"
+        "${env.appdata_dir}/traefik:/etc/traefik"
       ];
     };
   };

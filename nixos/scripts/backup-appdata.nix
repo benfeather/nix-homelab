@@ -8,7 +8,7 @@ let
     set -euo pipefail
 
     # Create log directory if it doesn't exist
-    LOG_DIR="${env.log_dir}"
+    LOG_DIR="${env.root_dir}/logs"
     mkdir -p "$LOG_DIR"
 
     # Use daily log file
@@ -31,14 +31,14 @@ let
       log_to_file "  PID:           $$"
       log_to_file "  User:          $(whoami)"
       log_to_file "  Backup Dir:    ${env.backup_dir}"
-      log_to_file "  Config Dir:    ${env.conf_dir}"
+      log_to_file "  Config Dir:    ${env.appdata_dir}"
       log_to_file "================================================================================"
     }
 
     log_section() {
       local title="$1"
       local description="$2"
-      
+
       log_to_file ">> $title"
       log_to_file "   $description"
     }
@@ -81,7 +81,7 @@ let
     log_session_footer() {
       local session_end=$(date +"%Y-%m-%d %H:%M:%S")
       local duration=$(($(date +%s) - $(date -d "$SESSION_START" +%s)))
-      
+
       log_to_file "================================================================================"
       log_to_file "                            SESSION COMPLETED"
       log_to_file "================================================================================"
@@ -95,7 +95,7 @@ let
       local exit_code=$1
       local session_end=$(date +"%Y-%m-%d %H:%M:%S")
       local duration=$(($(date +%s) - $(date -d "$SESSION_START" +%s)))
-      
+
       log_to_file "================================================================================"
       log_to_file "                            SESSION FAILED"
       log_to_file "================================================================================"
@@ -110,10 +110,10 @@ let
     run_command() {
       local cmd="$1"
       local description="$2"
-      
+
       log_step "Starting: $description"
       log_info "Command: $cmd"
-      
+
       if eval "$cmd" >/dev/null 2>&1; then
         log_success "Completed: $description"
         return 0
@@ -130,32 +130,32 @@ let
       # Initialize session in log file
       log_session_header
       log_to_file ""
-      
+
       # Stop containers
       log_section "Stopping Containers" "Stopping OCI containers before backup"
       run_command "oci-containers stop" "Stopping OCI containers"
       log_to_file ""
-      
+
       # Create archive
       log_section "Creating Archive" "Archiving configuration directory"
-      run_command "archive ${env.conf_dir} ${env.backup_dir}" "Creating archive of config directory"
+      run_command "archive ${env.appdata_dir} ${env.backup_dir}" "Creating archive of config directory"
       log_to_file ""
-      
+
       # Cleanup old archives
       log_section "Cleaning Up" "Removing old backup archives"
       run_command "archive-cleanup ${env.backup_dir}" "Cleaning up old archives"
       log_to_file ""
-      
+
       # Sync to cloud storage
       log_section "Cloud Sync" "Syncing backups to cloud storage"
       run_command "rclone-sync ${env.backup_dir} backups" "Syncing backups to cloud storage"
       log_to_file ""
-      
+
       # Start containers
       log_section "Starting Containers" "Starting OCI containers after backup"
       run_command "oci-containers start" "Starting OCI containers"
       log_to_file ""
-      
+
       # Log successful completion
       log_session_footer
     }
@@ -166,10 +166,10 @@ let
 
       if [ $exit_code -ne 0 ]; then
         log_session_error $exit_code
-        
+
         log_section "Emergency Cleanup" "Attempting to restart containers after failure"
         log_warning "Script failed, attempting to start containers as cleanup..."
-        
+
         if oci-containers start >/dev/null 2>&1; then
           log_success "Containers started successfully during cleanup"
         else
