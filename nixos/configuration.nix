@@ -33,28 +33,28 @@
     ./containers/traefik.nix
 
     # Homelab
-    ./containers/audiobookshelf.nix
-    ./containers/bazarr.nix
-    ./containers/bookshelf.nix
-    ./containers/cloud.nix
-    ./containers/fileflows.nix
+    # ./containers/audiobookshelf.nix
+    # ./containers/bazarr.nix
+    # ./containers/bookshelf.nix
+    # ./containers/cloud.nix
+    # ./containers/fileflows.nix
     ./containers/homepage.nix
-    ./containers/huntarr.nix
-    ./containers/jellyfin.nix
-    ./containers/jellyseerr.nix
+    # ./containers/huntarr.nix
+    # ./containers/jellyfin.nix
+    # ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     # ./containers/overseerr.nix
-    ./containers/plex.nix
+    # ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
-    ./containers/recyclarr.nix
+    # ./containers/recyclarr.nix
     # ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
-    ./containers/uptime-kuma.nix
-    ./containers/watchtower.nix
+    # ./containers/uptime-kuma.nix
+    # ./containers/watchtower.nix
     ./containers/whisparr.nix
     ./containers/whoami.nix
   ];
