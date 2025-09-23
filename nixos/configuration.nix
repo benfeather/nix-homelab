@@ -39,6 +39,7 @@
     # ./containers/cloud.nix
     ./containers/dozzle.nix
     # ./containers/fileflows.nix
+    ./containers/flaresolver.nix
     ./containers/homepage.nix
     # ./containers/huntarr.nix
     # ./containers/jellyfin.nix
