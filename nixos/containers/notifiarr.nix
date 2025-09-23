@@ -10,14 +10,20 @@
       image = "docker.io/golift/notifiarr:latest";
 
       environment = {
-        "PGID" = env.pgid;
-        "PUID" = env.puid;
         "TZ" = env.tz;
       };
 
       environmentFiles = [
         config.sops.secrets."notifiarr".path
       ];
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.notifiarr.entrypoints" = "websecure";
+        # "traefik.http.routers.notifiarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.notifiarr.rule" = "Host(`notifiarr.${env.domain}`)";
+        "traefik.http.services.notifiarr.loadbalancer.server.port" = "5454";
+      };
 
       networks = [
         "proxy"
