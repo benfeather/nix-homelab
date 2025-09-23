@@ -45,13 +45,13 @@
     # ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
+    ./containers/notifiarr.nix
     # ./containers/overseerr.nix
     ./containers/plex.nix
     ./containers/prowlarr.nix
     ./containers/qbittorrent.nix
     ./containers/radarr.nix
     ./containers/readarr.nix
-    ./containers/recyclarr.nix
     # ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
@@ -190,9 +190,9 @@
         key = "";
       };
 
-      "recyclarr" = {
-        format = "yaml";
-        sopsFile = ./secrets/recyclarr.yml;
+      "notifiarr" = {
+        format = "dotenv";
+        sopsFile = ./secrets/notifiarr.env;
         key = "";
       };
 

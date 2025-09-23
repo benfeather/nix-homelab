@@ -5,9 +5,9 @@
 }:
 {
   virtualisation.oci-containers.containers = {
-    "recyclarr" = {
-      hostname = "recyclarr";
-      image = "ghcr.io/recyclarr/recyclarr:latest";
+    "notifiarr" = {
+      hostname = "notifiarr";
+      image = "docker.io/golift/notifiarr:latest";
 
       environment = {
         "PGID" = env.pgid;
@@ -15,13 +15,16 @@
         "TZ" = env.tz;
       };
 
+      environmentFiles = [
+        config.sops.secrets."notifiarr".path
+      ];
+
       networks = [
         "proxy"
       ];
 
       volumes = [
-        "${env.appdata_dir}/recyclarr:/config"
-        "${config.sops.secrets."recyclarr".path}:/config/secrets.yml"
+        "${env.appdata_dir}/notifiarr:/config"
       ];
     };
   };
