@@ -51,7 +51,7 @@
     ./containers/qbittorrent.nix
     ./containers/radarr.nix
     ./containers/readarr.nix
-    # ./containers/recyclarr.nix
+    ./containers/recyclarr.nix
     # ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix

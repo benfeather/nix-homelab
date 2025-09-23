@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "recyclarr" = {
       hostname = "recyclarr";
-      image = "recyclarr/recyclarr:latest";
+      image = "ghcr.io/recyclarr/recyclarr:latest";
 
       environment = {
         "PGID" = env.pgid;
