@@ -190,6 +190,12 @@
         key = "";
       };
 
+      "recyclarr" = {
+        format = "yaml";
+        sopsFile = ./secrets/recyclarr.yml;
+        key = "";
+      };
+
       "vpn" = {
         format = "dotenv";
         sopsFile = ./secrets/vpn.env;

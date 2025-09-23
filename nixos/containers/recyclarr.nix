@@ -20,7 +20,8 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/recyclarr/config:/config"
+        "${env.appdata_dir}/recyclarr:/config"
+        "${config.sops.secrets."recyclarr".path}:/config/secrets.yml"
       ];
     };
   };
