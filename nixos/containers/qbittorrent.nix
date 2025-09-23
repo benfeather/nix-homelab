@@ -10,27 +10,13 @@
       image = "ghcr.io/binhex/arch-qbittorrentvpn:latest";
 
       environment = {
+        "LAN_NETWORK" = "192.168.0.0/24";
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;
-
         "VPN_ENABLED" = "yes";
         "VPN_PROV" = "protonvpn";
         "VPN_CLIENT" = "openvpn";
-        # "VPN_OPTIONS" = "<additional openvpn cli options>";
-        # "ENABLE_STARTUP_SCRIPTS" = "<yes|no>";
-        # "ENABLE_PRIVOXY" = "<yes|no>";
-        # "STRICT_PORT_FORWARD" = "<yes|no>";
-        # "USERSPACE_WIREGUARD" = "<yes|no>";
-        # "ENABLE_SOCKS" = "<yes|no>";
-        # "SOCKS_USER" = "<socks username>";
-        # "SOCKS_PASS" = "<socks password>";
-        "LAN_NETWORK" = "192.168.0.0/24";
-        # "NAME_SERVERS" = "<name server ip(s)>";
-        # "VPN_INPUT_PORTS" = "<port number(s)>";
-        # "VPN_OUTPUT_PORTS" = "<port number(s)>";
-        # "DEBUG" = "<true|false>";
-        # "WEBUI_PORT" = "<port for web interfance>";
       };
 
       environmentFiles = [
