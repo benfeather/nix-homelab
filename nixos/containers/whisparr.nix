@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "whisparr" = {
       hostname = "whisparr";
-      image = "ghcr.io/hotio/whisparr:latest";
+      image = "ghcr.io/hotio/whisparr:v3";
 
       environment = {
         "PGID" = env.pgid;

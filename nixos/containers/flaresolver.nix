@@ -15,6 +15,10 @@
         "PUID" = env.puid;
         "TZ" = env.tz;
       };
+
+      networks = [
+        "proxy"
+      ];
     };
   };
 }

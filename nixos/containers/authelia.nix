@@ -10,6 +10,7 @@
       hostname = "authelia";
 
       environment = {
+        "AUTHELIA_LOG_LEVEL" = "info";
         "TZ" = env.tz;
       };
 

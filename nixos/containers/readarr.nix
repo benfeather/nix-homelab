@@ -5,8 +5,8 @@
 }:
 {
   virtualisation.oci-containers.containers = {
-    "bookshelf" = {
-      hostname = "bookshelf";
+    "readarr" = {
+      hostname = "readarr";
       image = "ghcr.io/pennydreadful/bookshelf:hardcover";
 
       environment = {
@@ -17,10 +17,10 @@
 
       labels = {
         "traefik.enable" = "true";
-        "traefik.http.routers.bookshelf.entrypoints" = "websecure";
-        "traefik.http.routers.bookshelf.middlewares" = "authelia@docker";
-        "traefik.http.routers.bookshelf.rule" = "Host(`bookshelf.${env.domain}`)";
-        "traefik.http.services.bookshelf.loadbalancer.server.port" = "8787";
+        "traefik.http.routers.readarr.entrypoints" = "websecure";
+        "traefik.http.routers.readarr.middlewares" = "authelia@docker";
+        "traefik.http.routers.readarr.rule" = "Host(`readarr.${env.domain}`)";
+        "traefik.http.services.readarr.loadbalancer.server.port" = "8787";
       };
 
       networks = [
@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/bookshelf/config:/config"
+        "${env.appdata_dir}/readarr/config:/config"
         "${env.data_dir}:/data"
       ];
     };

@@ -35,7 +35,6 @@
     # Homelab
     # ./containers/audiobookshelf.nix
     # ./containers/bazarr.nix
-    # ./containers/bookshelf.nix
     # ./containers/cloud.nix
     ./containers/dozzle.nix
     # ./containers/fileflows.nix
@@ -51,6 +50,7 @@
     ./containers/prowlarr.nix
     ./containers/qbittorrent.nix
     ./containers/radarr.nix
+    ./containers/readarr.nix
     # ./containers/recyclarr.nix
     # ./containers/romm.nix
     ./containers/sabnzbd.nix
