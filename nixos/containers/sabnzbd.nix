@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.sabnzbd.entrypoints" = "websecure";
-        # "traefik.http.routers.sabnzbd.middlewares" = "authelia@docker";
         "traefik.http.routers.sabnzbd.rule" = "Host(`sabnzbd.${env.domain}`)";
         "traefik.http.services.sabnzbd.loadbalancer.server.port" = "8080";
       };

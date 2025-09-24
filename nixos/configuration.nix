@@ -233,15 +233,10 @@
       dates = "weekly";
     };
 
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-
-      daemon.settings.dns = [
-        "1.1.1.1"
-        "1.0.0.1"
-      ];
-    };
+    daemon.settings.dns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
   };
 
   virtualisation.oci-containers = {

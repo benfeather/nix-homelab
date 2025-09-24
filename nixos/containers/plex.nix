@@ -26,7 +26,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.plex.entrypoints" = "websecure";
-        # "traefik.http.routers.overseerr.middlewares" = "authelia@docker";
         "traefik.http.routers.plex.rule" = "Host(`plex.${env.domain}`)";
         "traefik.http.services.plex.loadbalancer.server.port" = "32400";
       };

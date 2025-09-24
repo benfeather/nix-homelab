@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.sonarr.entrypoints" = "websecure";
-        "traefik.http.routers.sonarr.middlewares" = "authelia@docker";
         "traefik.http.routers.sonarr.rule" = "Host(`sonarr.${env.domain}`)";
         "traefik.http.services.sonarr.loadbalancer.server.port" = "8989";
       };
@@ -46,7 +45,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.sonarr-anime.entrypoints" = "websecure";
-        "traefik.http.routers.sonarr-anime.middlewares" = "authelia@docker";
         "traefik.http.routers.sonarr-anime.rule" = "Host(`sonarr-anime.${env.domain}`)";
         "traefik.http.services.sonarr-anime.loadbalancer.server.port" = "8989";
       };

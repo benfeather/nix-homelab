@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.whisparr.entrypoints" = "websecure";
-        "traefik.http.routers.whisparr.middlewares" = "authelia@docker";
         "traefik.http.routers.whisparr.rule" = "Host(`whisparr.${env.domain}`)";
         "traefik.http.services.whisparr.loadbalancer.server.port" = "6969";
       };

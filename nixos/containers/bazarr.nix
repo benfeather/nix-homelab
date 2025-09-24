@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.bazarr.entrypoints" = "websecure";
-        "traefik.http.routers.bazarr.middlewares" = "authelia@docker";
         "traefik.http.routers.bazarr.rule" = "Host(`bazarr.${env.domain}`)";
         "traefik.http.services.bazarr.loadbalancer.server.port" = "6767";
       };
@@ -46,7 +45,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.bazarr-anime.entrypoints" = "websecure";
-        "traefik.http.routers.bazarr-anime.middlewares" = "authelia@docker";
         "traefik.http.routers.bazarr-anime.rule" = "Host(`bazarr-anime.${env.domain}`)";
         "traefik.http.services.bazarr-anime.loadbalancer.server.port" = "6767";
       };

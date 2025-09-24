@@ -30,7 +30,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.qbittorrent.entrypoints" = "websecure";
-        # "traefik.http.routers.qbittorrent.middlewares" = "authelia@docker";
         "traefik.http.routers.qbittorrent.rule" = "Host(`qbittorrent.${env.domain}`)";
         "traefik.http.services.qbittorrent.loadbalancer.server.port" = "8080";
       };

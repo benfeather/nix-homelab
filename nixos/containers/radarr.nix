@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.radarr.entrypoints" = "websecure";
-        "traefik.http.routers.radarr.middlewares" = "authelia@docker";
         "traefik.http.routers.radarr.rule" = "Host(`radarr.${env.domain}`)";
         "traefik.http.services.radarr.loadbalancer.server.port" = "7878";
       };
@@ -46,7 +45,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.radarr-anime.entrypoints" = "websecure";
-        "traefik.http.routers.radarr-anime.middlewares" = "authelia@docker";
         "traefik.http.routers.radarr-anime.rule" = "Host(`radarr-anime.${env.domain}`)";
         "traefik.http.services.radarr-anime.loadbalancer.server.port" = "7878";
       };

@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.prowlarr.entrypoints" = "websecure";
-        "traefik.http.routers.prowlarr.middlewares" = "authelia@docker";
         "traefik.http.routers.prowlarr.rule" = "Host(`prowlarr.${env.domain}`)";
         "traefik.http.services.prowlarr.loadbalancer.server.port" = "9696";
       };

@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.readarr.entrypoints" = "websecure";
-        "traefik.http.routers.readarr.middlewares" = "authelia@docker";
         "traefik.http.routers.readarr.rule" = "Host(`readarr.${env.domain}`)";
         "traefik.http.services.readarr.loadbalancer.server.port" = "8787";
       };

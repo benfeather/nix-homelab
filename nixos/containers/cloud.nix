@@ -33,7 +33,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.cloud.entrypoints" = "websecure";
-        # "traefik.http.routers.cloud.middlewares" = "authelia@docker";
         "traefik.http.routers.cloud.rule" = "Host(`cloud.${env.domain}`)";
         "traefik.http.services.cloud.loadbalancer.server.port" = "80";
       };

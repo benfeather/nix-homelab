@@ -20,7 +20,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.notifiarr.entrypoints" = "websecure";
-        # "traefik.http.routers.notifiarr.middlewares" = "authelia@docker";
         "traefik.http.routers.notifiarr.rule" = "Host(`notifiarr.${env.domain}`)";
         "traefik.http.services.notifiarr.loadbalancer.server.port" = "5454";
       };
