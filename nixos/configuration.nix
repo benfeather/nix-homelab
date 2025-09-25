@@ -41,12 +41,12 @@
     ./containers/flaresolver.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
-    ./containers/jellyfin.nix
+    # ./containers/jellyfin.nix
     ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     ./containers/notifiarr.nix
-    ./containers/plex.nix
+    # ./containers/plex.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
     ./containers/qbittorrent.nix
@@ -80,15 +80,7 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    # extraPackages = with pkgs; [
-    #   amdvlk # AMD Vulkan driver
-    #   rocm-opencl-icd # OpenCL support
-    # ];
   };
-
-  # hardware.amdgpu.initrd.enable = true;
-
-  # boot.initrd.kernelModules = [ "amdgpu" ];
 
   home-manager = {
     useGlobalPkgs = true;
