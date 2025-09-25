@@ -1,6 +1,8 @@
 {
 	"cSpell.words": [
 		"bazarr",
+		"benfeather",
+		"homelab",
 		"letsencrypt",
 		"networkmanager",
 		"nixfmt",
@@ -11,6 +13,7 @@
 		"puid",
 		"sonarr",
 		"traefik",
+		"unraid",
 		"websecure"
 	],
 

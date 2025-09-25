@@ -22,8 +22,8 @@
     }@inputs:
     let
       env = {
-        appdata_dir = "/mnt/unraid/appdata/homelab";
-        backup_dir = "/mnt/unraid/backups/homelab";
+        appdata_dir = "/mnt/unraid/appdata";
+        backup_dir = "/mnt/unraid/backups";
         data_dir = "/mnt/unraid/data";
         root_dir = "/mnt/unraid/homelab";
         domain = "benfeather.com";
