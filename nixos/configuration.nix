@@ -40,7 +40,7 @@
     # ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
-    # ./containers/huntarr.nix
+    ./containers/huntarr.nix
     # ./containers/jellyfin.nix
     ./containers/jellyseerr.nix
     ./containers/lidarr.nix

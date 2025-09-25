@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.huntarr.entrypoints" = "websecure";
-        "traefik.http.routers.huntarr.middlewares" = "authelia@docker";
         "traefik.http.routers.huntarr.rule" = "Host(`huntarr.${env.domain}`)";
         "traefik.http.services.huntarr.loadbalancer.server.port" = "9705";
       };
