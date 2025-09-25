@@ -41,7 +41,7 @@
     ./containers/flaresolver.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
-    # ./containers/jellyfin.nix
+    ./containers/jellyfin.nix
     ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
@@ -76,6 +76,8 @@
     rclone
     sops
   ];
+
+  hardware.graphics.enable = true;
 
   home-manager = {
     useGlobalPkgs = true;
@@ -213,6 +215,7 @@
       extraGroups = [
         "docker"
         "networkmanager"
+        "video"
         "wheel"
       ];
 

@@ -19,10 +19,6 @@
         "TZ" = env.tz;
       };
 
-      # extraOptions = [
-      #   "--network=host"
-      # ];
-
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.plex.entrypoints" = "websecure";
