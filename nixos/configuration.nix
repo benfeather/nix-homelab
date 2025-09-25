@@ -77,7 +77,18 @@
     sops
   ];
 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    # extraPackages = with pkgs; [
+    #   amdvlk # AMD Vulkan driver
+    #   rocm-opencl-icd # OpenCL support
+    # ];
+  };
+
+  # hardware.amdgpu.initrd.enable = true;
+
+  # boot.initrd.kernelModules = [ "amdgpu" ];
 
   home-manager = {
     useGlobalPkgs = true;
