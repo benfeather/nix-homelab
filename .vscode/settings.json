@@ -11,6 +11,7 @@
 		"pgid",
 		"pkgs",
 		"puid",
+		"readarr",
 		"sonarr",
 		"traefik",
 		"unraid",

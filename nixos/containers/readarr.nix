@@ -32,4 +32,32 @@
       ];
     };
   };
+
+  "readarr-audio" = {
+      hostname = "readarr-audio";
+      image = "ghcr.io/pennydreadful/bookshelf:hardcover";
+
+      environment = {
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.readarr-audio.entrypoints" = "websecure";
+        "traefik.http.routers.readarr-audio.rule" = "Host(`readarr-audio.${env.domain}`)";
+        "traefik.http.services.readarr-audio.loadbalancer.server.port" = "8787";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.appdata_dir}/readarr-audio/config:/config"
+        "${env.data_dir}:/data"
+      ];
+    };
+  };
 }
