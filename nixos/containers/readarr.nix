@@ -31,9 +31,8 @@
         "${env.data_dir}:/data"
       ];
     };
-  };
 
-  "readarr-audio" = {
+    "readarr-audio" = {
       hostname = "readarr-audio";
       image = "ghcr.io/pennydreadful/bookshelf:hardcover";
 
