@@ -125,7 +125,7 @@ let
         echo -e "   $BOLD$CYAN🔄 Rebuilding NixOS System...$NC"
         echo -e "   $GRAY   Please wait while the system is being rebuilt$NC"
         echo ""
-        
+
         if sudo nixos-rebuild switch --flake "$FLAKE_TARGET"; then
             echo ""
             log_success "System updated and rebuilt successfully! 🎉"
@@ -142,7 +142,7 @@ let
         echo -e "   $BOLD$CYAN🔄 Rebuilding NixOS System...$NC"
         echo -e "   $GRAY   Please wait while the system is being rebuilt$NC"
         echo ""
-        
+
         if nixos-rebuild switch --flake "$FLAKE_TARGET"; then
             echo ""
             log_success "System updated and rebuilt successfully! 🎉"

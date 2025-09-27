@@ -8,6 +8,12 @@ let
     # Create a compressed archive of a local directory
     # Usage: archive <source_dir> <dest_dir>
 
+    # Check if running as root, if not re-run with sudo
+    if [ "$EUID" -ne 0 ]; then
+      echo "This script requires root privileges. Re-running with sudo..."
+      exec sudo "$0" "$@"
+    fi
+
     # Color definitions
     RED='\033[0;31m'
     GREEN='\033[0;32m'

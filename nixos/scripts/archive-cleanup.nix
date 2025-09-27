@@ -7,6 +7,12 @@ let
     # Clean up old backup files from a directory
     # Usage: archive-cleanup <source_directory> [days_to_keep]
 
+    # Check if running as root, if not re-run with sudo
+    if [ "$EUID" -ne 0 ]; then
+      echo "This script requires root privileges. Re-running with sudo..."
+      exec sudo "$0" "$@"
+    fi
+
     # Color definitions
     RED='\033[0;31m'
     GREEN='\033[0;32m'
@@ -187,7 +193,7 @@ let
     if [ "$TOTAL_SIZE" -gt 0 ]; then
         TOTAL_SIZE_HUMAN=$(echo "$TOTAL_SIZE" | awk '{
             if ($1 >= 1073741824) printf "%.1fGB", $1/1073741824
-            else if ($1 >= 1048576) printf "%.1fMB", $1/1048576  
+            else if ($1 >= 1048576) printf "%.1fMB", $1/1048576
             else if ($1 >= 1024) printf "%.1fKB", $1/1024
             else printf "%dB", $1
         }')
