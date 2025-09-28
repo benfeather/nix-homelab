@@ -10,9 +10,9 @@
       image = "docker.io/stashapp/stash:latest";
 
       environment = {
-        "STASH_CACHE" = "/cache";
-        "STASH_GENERATED" = "/generated";
-        "STASH_METADATA" = "/metadata";
+        "STASH_CACHE" = "/stash/cache";
+        "STASH_GENERATED" = "/stash/generated";
+        "STASH_METADATA" = "/stash/metadata";
         "STASH_PORT" = "6969";
         "STASH_STASH" = "/data";
         "PGID" = env.pgid;
@@ -33,9 +33,10 @@
       ];
 
       volumes = [
+        "${env.appdata_dir}/stash/cache:/stash/cache"
         "${env.appdata_dir}/stash/config:/root/.stash"
-        "${env.appdata_dir}/stash/generated:/generated"
-        "${env.appdata_dir}/stash/metadata:/metadata"
+        "${env.appdata_dir}/stash/generated:/stash/generated"
+        "${env.appdata_dir}/stash/metadata:/stash/metadata"
         "${env.data_dir}:/data"
       ];
     };
