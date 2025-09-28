@@ -116,21 +116,9 @@
 
   networking = {
     firewall = {
-      enable = false;
+      enable = true;
       allowedTCPPorts = [
         22 # SSH
-        80 # Web
-        443 # Websecure
-        32400 # Plex
-        32469 # Plex DLNA
-      ];
-      allowedUDPPorts = [
-        1900 # Plex/Jellyfin DLNA discovery
-        5353 # Plex Bonjour/Avahi network discovery
-        32410 # Plex GDM network discovery
-        32412 # Plex GDM network discovery
-        32413 # Plex GDM network discovery
-        32414 # Plex GDM network discovery
       ];
     };
 
