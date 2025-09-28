@@ -34,19 +34,17 @@
 
     # Homelab
     # ./containers/audiobookshelf.nix
-    # ./containers/bazarr.nix
+    ./containers/bazarr.nix
     # ./containers/cloud.nix
     ./containers/dozzle.nix
     # ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
     ./containers/huntarr.nix
-    # ./containers/jellyfin.nix
     ./containers/jellyseerr.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     ./containers/notifiarr.nix
-    # ./containers/plex.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
     ./containers/qbittorrent.nix
