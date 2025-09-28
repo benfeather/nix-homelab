@@ -49,6 +49,10 @@
         "traefik.http.services.bazarr-anime.loadbalancer.server.port" = "6767";
       };
 
+      networks = [
+        "proxy"
+      ];
+
       volumes = [
         "${env.appdata_dir}/bazarr-anime:/config"
         "${env.data_dir}:/data"
