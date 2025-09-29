@@ -42,6 +42,7 @@
     ./containers/homepage.nix
     ./containers/huntarr.nix
     ./containers/jellyseerr.nix
+    ./containers/kavita.nix
     ./containers/lidarr.nix
     # ./containers/n8n.nix
     ./containers/notifiarr.nix
