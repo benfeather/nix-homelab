@@ -27,7 +27,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/kavita/config:/config"
+        "${env.appdata_dir}/kavita:/config"
         "${env.data_dir}:/data"
       ];
     };

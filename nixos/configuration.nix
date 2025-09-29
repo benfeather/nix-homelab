@@ -55,7 +55,7 @@
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
-    ./containers/uptime-kuma.nix
+    ./containers/uptime.nix
     ./containers/watchtower.nix
     ./containers/whisparr.nix
     ./containers/whoami.nix
