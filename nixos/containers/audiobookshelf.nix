@@ -18,7 +18,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.audiobookshelf.entrypoints" = "websecure";
-        "traefik.http.routers.audiobookshelf.middlewares" = "authelia@docker";
         "traefik.http.routers.audiobookshelf.rule" = "Host(`audiobookshelf.${env.domain}`)";
         "traefik.http.services.audiobookshelf.loadbalancer.server.port" = "80";
       };

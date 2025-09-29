@@ -33,7 +33,7 @@
     ./containers/traefik.nix
 
     # Homelab
-    # ./containers/audiobookshelf.nix
+    ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     # ./containers/cloud.nix
     ./containers/dozzle.nix
