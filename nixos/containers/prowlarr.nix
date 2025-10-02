@@ -27,7 +27,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/prowlarr/config:/config"
+        "${env.appdata_dir}/prowlarr:/config"
         "${env.data_dir}:/data"
       ];
     };

@@ -27,7 +27,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/readarr/config:/config"
+        "${env.appdata_dir}/readarr:/config"
         "${env.data_dir}:/data"
       ];
     };
@@ -54,7 +54,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/readarr-audio/config:/config"
+        "${env.appdata_dir}/readarr-audio:/config"
         "${env.data_dir}:/data"
       ];
     };

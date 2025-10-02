@@ -26,7 +26,7 @@
 
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock:ro"
-        "${env.appdata_dir}/uptime/config:/app/data"
+        "${env.appdata_dir}/uptime:/app/data"
       ];
     };
   };

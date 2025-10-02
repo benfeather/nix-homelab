@@ -28,7 +28,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/jellyseerr/config:/app/config"
+        "${env.appdata_dir}/jellyseerr:/app/config"
       ];
     };
   };

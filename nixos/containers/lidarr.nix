@@ -27,7 +27,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/lidarr/config:/config"
+        "${env.appdata_dir}/lidarr:/config"
         "${env.data_dir}:/data"
       ];
     };

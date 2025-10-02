@@ -36,7 +36,7 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/jellyfin/config:/config"
+        "${env.appdata_dir}/jellyfin:/config"
         "${env.data_dir}:/data"
       ];
     };
