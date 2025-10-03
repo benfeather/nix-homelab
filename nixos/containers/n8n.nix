@@ -44,8 +44,8 @@
       ];
 
       volumes = [
-        "${env.appdata_dir}/n8n/config:/home/node/.n8n"
-        "${env.appdata_dir}/n8n/files:/files"
+        "n8n-data:/home/node/.n8n"
+        "${env.appdata_dir}/n8n:/files"
       ];
     };
   };
