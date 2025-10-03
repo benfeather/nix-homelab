@@ -55,6 +55,7 @@
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
+    ./containers/stirling-pdf.nix
     ./containers/uptime.nix
     ./containers/watchtower.nix
     ./containers/whisparr.nix

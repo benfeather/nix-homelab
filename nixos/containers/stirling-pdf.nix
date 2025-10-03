@@ -1,15 +1,40 @@
-{ }
+{
+  config,
+  env,
+  ...
+}:
+{
+  virtualisation.oci-containers.containers = {
+    "stirling-pdf" = {
+      hostname = "stirling-pdf";
+      image = "docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest";
 
-# stirling-pdf:
-#   image: docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest
-#   ports:
-#     - '8080:8080'
-#   volumes:
-#     - ./StirlingPDF/trainingData:/usr/share/tessdata # Required for extra OCR languages
-#     - ./StirlingPDF/extraConfigs:/configs
-#     - ./StirlingPDF/customFiles:/customFiles/
-#     - ./StirlingPDF/logs:/logs/
-#     - ./StirlingPDF/pipeline:/pipeline/
-#   environment:
-#     - DISABLE_ADDITIONAL_FEATURES=false
-#     - LANGS=en_GB
+      environment = {
+        "DISABLE_ADDITIONAL_FEATURES" = "false";
+        "LANGS" = "en_NZ";
+        "PGID" = env.pgid;
+        "PUID" = env.puid;
+        "TZ" = env.tz;
+      };
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.pdf.entrypoints" = "websecure";
+        "traefik.http.routers.pdf.rule" = "Host(`pdf.${env.domain}`)";
+        "traefik.http.services.pdf.loadbalancer.server.port" = "8080";
+      };
+
+      networks = [
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.appdata_dir}/stirling-pdf/trainingData:/usr/share/tessdata"
+        "${env.appdata_dir}/stirling-pdf/configs:/configs"
+        "${env.appdata_dir}/stirling-pdf/customFiles:/customFiles"
+        "${env.appdata_dir}/stirling-pdf/logs:/logs"
+        "${env.appdata_dir}/stirling-pdf/pipeline:/pipeline"
+      ];
+    };
+  };
+}
