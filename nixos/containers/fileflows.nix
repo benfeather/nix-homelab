@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "fileflows" = {
       hostname = "fileflows";
-      image = "revenz/fileflows";
+      image = "docker.io/revenz/fileflows:latest";
 
       devices = [
         "/dev/dri:/dev/dri"
