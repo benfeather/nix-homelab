@@ -1,48 +1,74 @@
-{ }
+{
+  config,
+  env,
+  ...
+}:
+{
+  virtualisation.oci-containers.containers = {
+    "romm" = {
+      hostname = "romm";
+      image = "docker.io/rommapp/romm:latest";
 
-# romm:
-#   image: rommapp/romm:latest
-#   container_name: romm
-#   restart: unless-stopped
-#   environment:
-#     - DB_HOST=romm-db
-#     - DB_NAME=romm # Should match MARIADB_DATABASE in mariadb
-#     - DB_USER=romm-user # Should match MARIADB_USER in mariadb
-#     - DB_PASSWD= # Should match MARIADB_PASSWORD in mariadb
-#     - ROMM_AUTH_SECRET_KEY= # Generate a key with `openssl rand -hex 32`
-#     - SCREENSCRAPER_USER= # These are the recommended metadata providers
-#     - SCREENSCRAPER_PASSWORD= # https://docs.romm.app/latest/Getting-Started/Metadata-Providers/#screenscraper
-#     - RETROACHIEVEMENTS_API_KEY= # https://docs.romm.app/latest/Getting-Started/Metadata-Providers/#retroachievements
-#     - STEAMGRIDDB_API_KEY= # https://docs.romm.app/latest/Getting-Started/Metadata-Providers/#steamgriddb
-#     - HASHEOUS_API_ENABLED=true # https://docs.romm.app/latest/Getting-Started/Metadata-Providers/#hasheous
-#   volumes:
-#     - romm_resources:/romm/resources # Resources fetched from IGDB (covers, screenshots, etc.)
-#     - romm_redis_data:/redis-data # Cached data for background tasks
-#     - /path/to/library:/romm/library # Your game library. Check https://github.com/rommapp/romm?tab=readme-ov-file#folder-structure for more details.
-#     - /path/to/assets:/romm/assets # Uploaded saves, states, etc.
-#     - /path/to/config:/romm/config # Path where config.yml is stored
-#   ports:
-#     - 80:8080
-#   depends_on:
-#     romm-db:
-#         condition: service_healthy
-#         restart: true
+      environment = {
+        "DB_HOST" = "romm-db";
+        "DB_NAME" = "$DB_NAME";
+        "DB_USER" = "$DB_USER";
+        "DB_PASSWD" = "$DB_PASS";
+        "ROMM_AUTH_SECRET_KEY" = "$ROMM_AUTH_SECRET_KEY";
+        "SCREENSCRAPER_USER" = "$SCREENSCRAPER_USER";
+        "SCREENSCRAPER_PASSWORD" = "$SCREENSCRAPER_PASS";
+        "RETROACHIEVEMENTS_API_KEY" = "$RETROACHIEVEMENTS_API_KEY";
+        "STEAMGRIDDB_API_KEY" = "$STEAMGRIDDB_API_KEY";
+        "HASHEOUS_API_ENABLED" = "true";
+      };
 
-# romm-db:
-#   image: mariadb:latest
-#   container_name: romm-db
-#   restart: unless-stopped
-#   environment:
-#     - MARIADB_ROOT_PASSWORD= # Use a unique, secure password
-#     - MARIADB_DATABASE=romm
-#     - MARIADB_USER=romm-user
-#     - MARIADB_PASSWORD=
-#   volumes:
-#     - mysql_data:/var/lib/mysql
-#   healthcheck:
-#     test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
-#     start_period: 30s
-#     start_interval: 10s
-#     interval: 10s
-#     timeout: 5s
-#     retries: 5
+      environmentFiles = [
+        config.sops.secrets."global".path
+      ];
+
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.romm.entrypoints" = "websecure";
+        "traefik.http.routers.romm.rule" = "Host(`romm.${env.domain}`)";
+        "traefik.http.services.romm.loadbalancer.server.port" = "8080";
+      };
+
+      networks = [
+        "backend"
+        "proxy"
+      ];
+
+      volumes = [
+        "${env.appdata_dir}/romm/config:/romm/config"
+        "${env.appdata_dir}/romm/redis:/redis-data"
+        "${env.appdata_dir}/romm/resources:/romm/resources"
+        "${env.data_dir}/games/data:/romm/assets"
+        "${env.data_dir}/games/roms:/romm/library"
+      ];
+    };
+
+    "romm-db" = {
+      hostname = "romm-db";
+      image = "docker.io/mariadb:latest";
+
+      environment = {
+        "MARIADB_ROOT_PASSWORD" = "$DB_ROOT_PASS";
+        "MARIADB_DATABASE" = "$DB_NAME";
+        "MARIADB_USER" = "$DB_USER";
+        "MARIADB_PASSWORD" = "$DB_PASS";
+      };
+
+      environmentFiles = [
+        config.sops.secrets."global".path
+      ];
+
+      volumes = [
+        "${env.appdata_dir}/romm/db:/var/lib/mysql"
+      ];
+
+      networks = [
+        "backend"
+      ];
+    };
+  };
+}

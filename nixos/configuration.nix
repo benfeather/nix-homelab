@@ -159,27 +159,21 @@
         key = "";
       };
 
-      "cloud" = {
-        format = "dotenv";
-        sopsFile = ./secrets/cloud.env;
-        key = "";
-      };
-
       "cloudflare" = {
         format = "dotenv";
         sopsFile = ./secrets/cloudflare.env;
         key = "";
       };
 
-      "gcs" = {
-        format = "json";
-        sopsFile = ./secrets/gcs.json;
+      "global" = {
+        format = "dotenv";
+        sopsFile = ./secrets/global.env;
         key = "";
       };
 
-      "homepage" = {
-        format = "dotenv";
-        sopsFile = ./secrets/homepage.env;
+      "gcs" = {
+        format = "json";
+        sopsFile = ./secrets/gcs.json;
         key = "";
       };
 
