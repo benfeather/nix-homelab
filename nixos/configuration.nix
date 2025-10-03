@@ -44,7 +44,7 @@
     ./containers/jellyseerr.nix
     ./containers/kavita.nix
     ./containers/lidarr.nix
-    # ./containers/n8n.nix
+    ./containers/n8n.nix
     ./containers/notifiarr.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
