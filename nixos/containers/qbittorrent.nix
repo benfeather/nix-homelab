@@ -15,12 +15,14 @@
         "PUID" = env.puid;
         "TZ" = env.tz;
         "VPN_ENABLED" = "yes";
-        "VPN_PROV" = "protonvpn";
         "VPN_CLIENT" = "openvpn";
+        "VPN_PROV" = "protonvpn";
+        "VPN_USER" = "$VPN_USER";
+        "VPN_PASS" = "$VPN_PASS";
       };
 
       environmentFiles = [
-        config.sops.secrets."vpn".path
+        config.sops.secrets."global".path
       ];
 
       extraOptions = [

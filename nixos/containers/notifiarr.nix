@@ -10,11 +10,12 @@
       image = "docker.io/golift/notifiarr:latest";
 
       environment = {
+        "DN_API_KEY" = "$NOTIFIARR_API_KEY";
         "TZ" = env.tz;
       };
 
       environmentFiles = [
-        config.sops.secrets."notifiarr".path
+        config.sops.secrets."global".path
       ];
 
       labels = {

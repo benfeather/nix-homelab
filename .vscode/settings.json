@@ -1,22 +1,30 @@
 {
 	"cSpell.words": [
+		"authelia",
 		"bazarr",
 		"benfeather",
 		"homelab",
 		"letsencrypt",
+		"lidarr",
 		"networkmanager",
 		"nixfmt",
 		"nixos",
 		"nixpkgs",
+		"notifiarr",
 		"pgid",
 		"pkgs",
+		"prowlarr",
 		"puid",
+		"qbittorrent",
+		"radarr",
 		"readarr",
 		"romm",
+		"sabnzbd",
 		"sonarr",
 		"traefik",
 		"unraid",
-		"websecure"
+		"websecure",
+		"whisparr"
 	],
 
 	"extensions.verifySignature": false

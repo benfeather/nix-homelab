@@ -165,27 +165,15 @@
         key = "";
       };
 
-      "global" = {
-        format = "dotenv";
-        sopsFile = ./secrets/global.env;
-        key = "";
-      };
-
       "gcs" = {
         format = "json";
         sopsFile = ./secrets/gcs.json;
         key = "";
       };
 
-      "notifiarr" = {
+      "global" = {
         format = "dotenv";
-        sopsFile = ./secrets/notifiarr.env;
-        key = "";
-      };
-
-      "vpn" = {
-        format = "dotenv";
-        sopsFile = ./secrets/vpn.env;
+        sopsFile = ./secrets/global.env;
         key = "";
       };
     };
