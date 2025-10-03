@@ -20,6 +20,7 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.pdf.entrypoints" = "websecure";
+        "traefik.http.routers.pdf.middlewares" = "authelia@docker";
         "traefik.http.routers.pdf.rule" = "Host(`pdf.${env.domain}`)";
         "traefik.http.services.pdf.loadbalancer.server.port" = "8080";
       };
