@@ -43,11 +43,11 @@
       ];
 
       volumes = [
+        "romm-redis:/redis-data"
+        "romm-resources:/romm/resources"
         "${env.appdata_dir}/romm/assets:/romm/assets"
         "${env.appdata_dir}/romm/config:/romm/config"
-        "${env.appdata_dir}/romm/redis:/redis-data"
-        "${env.appdata_dir}/romm/resources:/romm/resources"
-        "${env.data_dir}/games:/data"
+        "${env.data_dir}/media/games:/romm/library"
       ];
     };
 
