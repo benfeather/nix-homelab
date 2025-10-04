@@ -9,6 +9,10 @@
       hostname = "romm";
       image = "docker.io/rommapp/romm:latest";
 
+      dependsOn = [
+        "romm-db"
+      ];
+
       environment = {
         "DB_HOST" = "romm-db";
         "DB_NAME" = "$DB_NAME";
@@ -39,11 +43,11 @@
       ];
 
       volumes = [
+        "${env.appdata_dir}/romm/assets:/romm/assets"
         "${env.appdata_dir}/romm/config:/romm/config"
         "${env.appdata_dir}/romm/redis:/redis-data"
         "${env.appdata_dir}/romm/resources:/romm/resources"
-        "${env.data_dir}/games/data:/romm/assets"
-        "${env.data_dir}/games/roms:/romm/library"
+        "${env.data_dir}/games:/data"
       ];
     };
 
