@@ -36,7 +36,6 @@
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     # ./containers/cloud.nix
-    # ./containers/deluge.nix
     ./containers/dozzle.nix
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
@@ -58,7 +57,6 @@
     ./containers/stash.nix
     ./containers/stirling-pdf.nix
     ./containers/uptime.nix
-    ./containers/watchtower.nix
     ./containers/whisparr.nix
     ./containers/whoami.nix
   ];
