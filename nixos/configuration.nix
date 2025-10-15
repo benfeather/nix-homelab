@@ -172,15 +172,21 @@
         key = "";
       };
 
-      "global" = {
-        format = "dotenv";
-        sopsFile = ./secrets/global.env;
-        key = "";
-      };
-
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
+
+      "notifiarr" = {
+        format = "dotenv";
+        sopsFile = ./secrets/notifiarr.env;
+        key = "";
+      };
+
+      "romm" = {
+        format = "dotenv";
+        sopsFile = ./secrets/romm.env;
         key = "";
       };
 

@@ -15,7 +15,7 @@
       };
 
       environmentFiles = [
-        config.sops.secrets."global".path
+        config.sops.secrets."notifiarr".path
       ];
 
       labels = {

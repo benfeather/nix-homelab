@@ -15,21 +15,12 @@
 
       environment = {
         "DB_HOST" = "romm-db";
-        "DB_NAME" = "$DB_NAME";
-        "DB_USER" = "$DB_USER";
-        "DB_PASSWD" = "$DB_PASS";
-        "HASHEOUS_API_ENABLED" = "true";
-        "IGDB_CLIENT_ID" = "$IGDB_CLIENT_ID";
-        "IGDB_CLIENT_SECRET" = "$IGDB_CLIENT_SECRET";
-        "ROMM_AUTH_SECRET_KEY" = "$ROMM_AUTH_SECRET_KEY";
-        "RETROACHIEVEMENTS_API_KEY" = "$RETROACHIEVEMENTS_API_KEY";
-        "SCREENSCRAPER_USER" = "$SCREENSCRAPER_USER";
-        "SCREENSCRAPER_PASSWORD" = "$SCREENSCRAPER_PASS";
-        "STEAMGRIDDB_API_KEY" = "$STEAMGRIDDB_API_KEY";
+        "DB_NAME" = "db";
+        "DB_USER" = "db";
       };
 
       environmentFiles = [
-        config.sops.secrets."global".path
+        config.sops.secrets."romm".path
       ];
 
       labels = {
@@ -58,14 +49,12 @@
       image = "docker.io/mariadb:latest";
 
       environment = {
-        "MARIADB_ROOT_PASSWORD" = "$DB_ROOT_PASS";
-        "MARIADB_DATABASE" = "$DB_NAME";
-        "MARIADB_USER" = "$DB_USER";
-        "MARIADB_PASSWORD" = "$DB_PASS";
+        "MARIADB_DATABASE" = "db";
+        "MARIADB_USER" = "db";
       };
 
       environmentFiles = [
-        config.sops.secrets."global".path
+        config.sops.secrets."romm".path
       ];
 
       volumes = [
