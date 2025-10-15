@@ -14,15 +14,10 @@
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;
-        "VPN_ENABLED" = "yes";
-        "VPN_CLIENT" = "openvpn";
-        "VPN_PROV" = "protonvpn";
-        "VPN_USER" = "$VPN_USER";
-        "VPN_PASS" = "$VPN_PASS";
       };
 
       environmentFiles = [
-        config.sops.secrets."global".path
+        config.sops.secrets."vpn".path
       ];
 
       extraOptions = [
@@ -33,7 +28,7 @@
         "traefik.enable" = "true";
         "traefik.http.routers.deluge.entrypoints" = "websecure";
         "traefik.http.routers.deluge.rule" = "Host(`deluge.${env.domain}`)";
-        "traefik.http.services.deluge.loadbalancer.server.port" = "8118";
+        "traefik.http.services.deluge.loadbalancer.server.port" = "8112";
       };
 
       networks = [

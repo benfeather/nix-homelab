@@ -36,7 +36,7 @@
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     # ./containers/cloud.nix
-    ./containers/deluge.nix
+    # ./containers/deluge.nix
     ./containers/dozzle.nix
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
@@ -175,6 +175,18 @@
       "global" = {
         format = "dotenv";
         sopsFile = ./secrets/global.env;
+        key = "";
+      };
+
+      "homepage" = {
+        format = "dotenv";
+        sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
+
+      "vpn" = {
+        format = "dotenv";
+        sopsFile = ./secrets/vpn.env;
         key = "";
       };
     };
