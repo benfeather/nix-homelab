@@ -10,6 +10,7 @@
       image = "ghcr.io/plexguide/huntarr:latest";
 
       environment = {
+        "LOG_LEVEL" = "INFO";
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;
