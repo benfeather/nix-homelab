@@ -12,8 +12,8 @@
 
     # Nix Scripts
     ./scripts/archive.nix
-    ./scripts/archive-cleanup.nix
     ./scripts/backup-appdata.nix
+    ./scripts/cleanup.nix
     ./scripts/fix-permissions.nix
     ./scripts/nix-rebuild.nix
     ./scripts/nix-update.nix

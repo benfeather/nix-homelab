@@ -3,9 +3,9 @@
   ...
 }:
 let
-  archive-cleanup = pkgs.writeShellScriptBin "archive-cleanup" ''
-    # Clean up old backup files from a directory
-    # Usage: archive-cleanup <source_directory> [days_to_keep]
+  cleanup = pkgs.writeShellScriptBin "cleanup" ''
+    # Clean up old files from a directory
+    # Usage: cleanup <source_directory> [days_to_keep] [--yes]
 
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
@@ -27,12 +27,12 @@ let
 
     # Default configuration
     DEFAULT_DAYS_TO_KEEP=7
-    BACKUP_PATTERNS="*_backup_*.tar.gz *_backup_*.zip *backup*.tar.gz *backup*.zip *.bak"
+    SKIP_CONFIRMATION=false
 
     # Enhanced logging functions
     print_header() {
         echo -e "$BOLD$BLUE┌─────────────────────────────────────────────────────────────────────────────┐$NC"
-        echo -e "$BOLD$BLUE│                        🧹 Backup Cleanup Tool                               │$NC"
+        echo -e "$BOLD$BLUE│                        🧹 File Cleanup Tool                                 │$NC"
         echo -e "$BOLD$BLUE└─────────────────────────────────────────────────────────────────────────────┘$NC"
         echo ""
     }
@@ -74,44 +74,65 @@ let
         print_separator
         echo -e "  $CYAN📁 Source Dir:$NC    $WHITE$SOURCE_DIR$NC"
         echo -e "  $CYAN📅 Days to Keep:$NC  $WHITE$DAYS_TO_KEEP days$NC"
-        echo -e "  $CYAN🔍 Patterns:$NC     $WHITE$BACKUP_PATTERNS$NC"
         echo -e "  $CYAN👁️  Exclusions:$NC   $WHITE""Hidden files/folders (.*)""$NC"
+        echo -e "  $CYAN🤖 Auto-confirm:$NC  $WHITE$SKIP_CONFIRMATION$NC"
         print_separator
         echo ""
     }
 
     usage() {
         print_header
-        echo -e "$BOLD"Usage:"$NC $0 <source_directory> [days_to_keep]"
+        echo -e "$BOLD""Usage:""$NC $0 <source_directory> [days_to_keep] [--yes|-y]"
         echo ""
-        echo -e "$BOLD$WHITE"Arguments:"$NC"
-        echo -e "  $CYAN"source_directory"$NC : Directory to clean up backup files from"
-        echo -e "  $CYAN"days_to_keep"$NC     : Keep backups newer than this (default: $DEFAULT_DAYS_TO_KEEP days)"
+        echo -e "$BOLD$WHITE""Arguments:""$NC"
+        echo -e "  $CYAN""source_directory""$NC : Directory to clean up files from"
+        echo -e "  $CYAN""days_to_keep""$NC     : Keep files newer than this (default: $DEFAULT_DAYS_TO_KEEP days)"
         echo ""
-        echo -e "$BOLD$WHITE"Examples:"$NC"
+        echo -e "$BOLD$WHITE""Options:""$NC"
+        echo -e "  $CYAN""--yes, -y""$NC        : Skip confirmation prompt"
+        echo ""
+        echo -e "$BOLD$WHITE""Examples:""$NC"
         echo -e "  $GRAY$0 /backup/location$NC"
-        echo -e "  $GRAY$0 /backup/location 14    # Keep 14 days$NC"
+        echo -e "  $GRAY$0 /backup/location 14$NC"
+        echo -e "  $GRAY$0 /backup/location 14 --yes    # Auto-confirm$NC"
+        echo -e "  $GRAY$0 /backup/location --yes       # Use default 7 days$NC"
         echo ""
-        echo -e "$BOLD$WHITE"What gets cleaned:"$NC"
-        echo -e "  $GRAY• Files matching backup patterns (*_backup_*.tar.gz, *.zip, *.bak, etc.)$NC"
-        echo -e "  $GRAY• Files older than the specified number of days$NC"
+        echo -e "$BOLD$WHITE""What gets cleaned:""$NC"
+        echo -e "  $GRAY• ALL files older than the specified number of days$NC"
         echo -e "  $GRAY• Hidden files and directories are ignored$NC"
         echo ""
-        echo -e "$BOLD$WHITE"Safety features:"$NC"
+        echo -e "$BOLD$WHITE""Safety features:""$NC"
         echo -e "  $GRAY• Shows preview before deletion$NC"
-        echo -e "  $GRAY• Requires confirmation for cleanup$NC"
+        echo -e "  $GRAY• Requires confirmation (unless --yes is used)$NC"
         echo -e "  $GRAY• Detailed summary of actions taken$NC"
         echo ""
         exit 1
     }
 
-    # Check for correct number of arguments
-    if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    # Parse arguments
+    SOURCE_DIR=""
+    DAYS_TO_KEEP=""
+
+    for arg in "$@"; do
+        case $arg in
+            --yes|-y)
+                SKIP_CONFIRMATION=true
+                shift
+                ;;
+            *)
+                if [ -z "$SOURCE_DIR" ]; then
+                    SOURCE_DIR="$arg"
+                elif [ -z "$DAYS_TO_KEEP" ]; then
+                    DAYS_TO_KEEP="$arg"
+                fi
+                ;;
+        esac
+    done
+
+    # Check if source directory is provided
+    if [ -z "$SOURCE_DIR" ]; then
         usage
     fi
-
-    SOURCE_DIR="$1"
-    DAYS_TO_KEEP="$2"
 
     # Set default days to keep if not provided
     if [ -z "$DAYS_TO_KEEP" ]; then
@@ -146,25 +167,21 @@ let
     # Show configuration summary
     print_config_summary
 
-    print_section "🔍 Scanning for Old Backups" "Finding backup files older than $DAYS_TO_KEEP days..."
-    log_step "Scanning directory for backup files..."
+    print_section "🔍 Scanning for Old Files" "Finding files older than $DAYS_TO_KEEP days..."
+    log_step "Scanning directory..."
 
-    # Build find command to locate old backup files, excluding hidden files
+    # Find all files older than specified days, excluding hidden files
     OLD_FILES_TEMP=$(mktemp)
-    TOTAL_SIZE=0
 
-    for pattern in $BACKUP_PATTERNS; do
-        find "$SOURCE_DIR" -maxdepth 1 -name "$pattern" -not -name ".*" -type f -mtime +"$DAYS_TO_KEEP" 2>/dev/null >> "$OLD_FILES_TEMP" || true
-    done
+    find "$SOURCE_DIR" -maxdepth 1 -not -name ".*" -type f -mtime +"$DAYS_TO_KEEP" 2>/dev/null > "$OLD_FILES_TEMP" || true
 
-    # Remove duplicates and sort
-    OLD_FILES=$(sort -u "$OLD_FILES_TEMP")
+    OLD_FILES=$(cat "$OLD_FILES_TEMP")
     rm -f "$OLD_FILES_TEMP"
 
     FILE_COUNT=$(echo "$OLD_FILES" | grep -c . || echo 0)
 
     if [ "$FILE_COUNT" -eq 0 ] || [ -z "$OLD_FILES" ]; then
-        log_info "No old backup files found to clean up"
+        log_info "No old files found to clean up"
         echo ""
         print_separator
         echo -e "  $BOLD$GREEN🎉 Directory is Already Clean! 🎉$NC"
@@ -175,9 +192,9 @@ let
         exit 0
     fi
 
-    log_success "Found $FILE_COUNT old backup files"
+    log_success "Found $FILE_COUNT old files"
 
-    print_section "📋 Files to Remove" "Backup files that will be deleted..."
+    print_section "📋 Files to Remove" "Files that will be deleted..."
 
     # Calculate total size and show file list
     echo "$OLD_FILES" | while read -r file; do
@@ -203,32 +220,37 @@ let
 
     log_warning "Total size to be freed: $TOTAL_SIZE_HUMAN"
 
-    print_section "⚠️  Confirmation" "Please confirm the cleanup operation..."
-    echo ""
-    echo -e "   $BOLD$YELLOW⚠️  This will permanently delete $FILE_COUNT backup files!$NC"
-    echo -e "   $GRAY   Files older than $DAYS_TO_KEEP days will be removed$NC"
-    echo -e "   $GRAY   Total space to be freed: $TOTAL_SIZE_HUMAN$NC"
-    echo ""
-    echo -e "   $WHITE""Do you want to proceed? (y/N):$NC "
-    read -r CONFIRMATION
+    # Confirmation prompt (unless --yes flag is used)
+    if [ "$SKIP_CONFIRMATION" = false ]; then
+        print_section "⚠️  Confirmation" "Please confirm the cleanup operation..."
+        echo ""
+        echo -e "   $BOLD$YELLOW⚠️  This will permanently delete $FILE_COUNT files!$NC"
+        echo -e "   $GRAY   Files older than $DAYS_TO_KEEP days will be removed$NC"
+        echo -e "   $GRAY   Total space to be freed: $TOTAL_SIZE_HUMAN$NC"
+        echo ""
+        echo -e "   $WHITE""Do you want to proceed? (y/N):$NC "
+        read -r CONFIRMATION
 
-    case $CONFIRMATION in
-        [Yy]|[Yy][Ee][Ss])
-            log_info "Proceeding with cleanup..."
-            ;;
-        *)
-            log_info "Cleanup cancelled by user"
-            echo ""
-            print_separator
-            echo -e "  $BOLD$YELLOW🚫 Cleanup Cancelled$NC"
-            print_separator
-            echo -e "  $CYAN📊 Would have removed:$NC $WHITE$FILE_COUNT files ($TOTAL_SIZE_HUMAN)$NC"
-            echo ""
-            exit 0
-            ;;
-    esac
+        case $CONFIRMATION in
+            [Yy]|[Yy][Ee][Ss])
+                log_info "Proceeding with cleanup..."
+                ;;
+            *)
+                log_info "Cleanup cancelled by user"
+                echo ""
+                print_separator
+                echo -e "  $BOLD$YELLOW🚫 Cleanup Cancelled$NC"
+                print_separator
+                echo -e "  $CYAN📊 Would have removed:$NC $WHITE$FILE_COUNT files ($TOTAL_SIZE_HUMAN)$NC"
+                echo ""
+                exit 0
+                ;;
+        esac
+    else
+        log_info "Auto-confirming cleanup (--yes flag used)"
+    fi
 
-    print_section "🗑️  Removing Old Backups" "Deleting old backup files..."
+    print_section "🗑️  Removing Old Files" "Deleting old files..."
     log_step "Removing files..."
 
     REMOVED_COUNT=0
@@ -246,19 +268,6 @@ let
         fi
     done
 
-    # Recalculate actual results (since we're in a subshell above, we need to recount)
-    FINAL_REMOVED=0
-    FINAL_FAILED=0
-    echo "$OLD_FILES" | while read -r file; do
-        if [ -n "$file" ]; then
-            if [ ! -f "$file" ]; then
-                FINAL_REMOVED=$((FINAL_REMOVED + 1))
-            else
-                FINAL_FAILED=$((FINAL_FAILED + 1))
-            fi
-        fi
-    done > /tmp/cleanup_results
-
     # Get final counts
     FINAL_REMOVED=$(echo "$OLD_FILES" | while read -r file; do [ -n "$file" ] && [ ! -f "$file" ] && echo 1; done | wc -l)
     FINAL_FAILED=$((FILE_COUNT - FINAL_REMOVED))
@@ -275,7 +284,7 @@ let
     # Final success message
     echo ""
     print_separator
-    echo -e "  $BOLD$GREEN🎉 Backup Cleanup Completed! 🎉$NC"
+    echo -e "  $BOLD$GREEN🎉 Cleanup Completed! 🎉$NC"
     print_separator
     echo -e "  $CYAN🗑️  Removed:$NC     $WHITE$FINAL_REMOVED files$NC"
     if [ "$FINAL_FAILED" -gt 0 ]; then
@@ -288,6 +297,6 @@ let
 in
 {
   environment.systemPackages = [
-    archive-cleanup
+    cleanup
   ];
 }
