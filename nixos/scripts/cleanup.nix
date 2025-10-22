@@ -80,7 +80,6 @@ let
         else
             echo -e "  $CYAN🔍 Extension:$NC    $WHITE""All files""$NC"
         fi
-        echo -e "  $CYAN👁️  Exclusions:$NC   $WHITE""Hidden files/folders (.*)""$NC"
         echo -e "  $CYAN🤖 Auto-confirm:$NC  $WHITE$SKIP_CONFIRMATION$NC"
         print_separator
         echo ""

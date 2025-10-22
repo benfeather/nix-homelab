@@ -44,8 +44,6 @@
     fsType = "virtiofs";
     options = [
       "defaults"
-      "noatime"
-      "nodiratime"
       "nofail" # Prevent system from failing if this drive doesn't mount
     ];
   };
