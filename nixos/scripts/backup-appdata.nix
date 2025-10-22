@@ -143,7 +143,7 @@ let
 
       # Cleanup old archives
       log_section "Cleaning Up" "Removing old backup archives"
-      run_command "cleanup ${env.backup_dir} 7 --yes" "Cleaning up old archives"
+      run_command "cleanup ${env.backup_dir} 5 --ext .tar.gz --yes" "Cleaning up old archives"
       log_to_file ""
 
       # Sync to cloud storage

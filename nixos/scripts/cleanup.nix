@@ -5,7 +5,7 @@
 let
   cleanup = pkgs.writeShellScriptBin "cleanup" ''
     # Clean up old files from a directory
-    # Usage: cleanup <source_directory> [days_to_keep] [--yes]
+    # Usage: cleanup <source_directory> [days_to_keep] [--ext extension] [--yes]
 
     # Check if running as root, if not re-run with sudo
     if [ "$EUID" -ne 0 ]; then
@@ -28,6 +28,7 @@ let
     # Default configuration
     DEFAULT_DAYS_TO_KEEP=7
     SKIP_CONFIRMATION=false
+    FILE_EXTENSION=""
 
     # Enhanced logging functions
     print_header() {
@@ -74,6 +75,11 @@ let
         print_separator
         echo -e "  $CYAN📁 Source Dir:$NC    $WHITE$SOURCE_DIR$NC"
         echo -e "  $CYAN📅 Days to Keep:$NC  $WHITE$DAYS_TO_KEEP days$NC"
+        if [ -n "$FILE_EXTENSION" ]; then
+            echo -e "  $CYAN🔍 Extension:$NC    $WHITE$FILE_EXTENSION$NC"
+        else
+            echo -e "  $CYAN🔍 Extension:$NC    $WHITE""All files""$NC"
+        fi
         echo -e "  $CYAN👁️  Exclusions:$NC   $WHITE""Hidden files/folders (.*)""$NC"
         echo -e "  $CYAN🤖 Auto-confirm:$NC  $WHITE$SKIP_CONFIRMATION$NC"
         print_separator
@@ -82,23 +88,26 @@ let
 
     usage() {
         print_header
-        echo -e "$BOLD""Usage:""$NC $0 <source_directory> [days_to_keep] [--yes|-y]"
+        echo -e "$BOLD""Usage:""$NC $0 <source_directory> [days_to_keep] [options]"
         echo ""
         echo -e "$BOLD$WHITE""Arguments:""$NC"
         echo -e "  $CYAN""source_directory""$NC : Directory to clean up files from"
         echo -e "  $CYAN""days_to_keep""$NC     : Keep files newer than this (default: $DEFAULT_DAYS_TO_KEEP days)"
         echo ""
         echo -e "$BOLD$WHITE""Options:""$NC"
-        echo -e "  $CYAN""--yes, -y""$NC        : Skip confirmation prompt"
+        echo -e "  $CYAN""--ext, -e <ext>""$NC   : Only delete files with this extension (e.g., .tar.gz, .bak)"
+        echo -e "  $CYAN""--yes, -y""$NC         : Skip confirmation prompt"
         echo ""
         echo -e "$BOLD$WHITE""Examples:""$NC"
         echo -e "  $GRAY$0 /backup/location$NC"
         echo -e "  $GRAY$0 /backup/location 14$NC"
-        echo -e "  $GRAY$0 /backup/location 14 --yes    # Auto-confirm$NC"
-        echo -e "  $GRAY$0 /backup/location --yes       # Use default 7 days$NC"
+        echo -e "  $GRAY$0 /backup/location 14 --ext .tar.gz$NC"
+        echo -e "  $GRAY$0 /backup/location --ext .bak --yes$NC"
+        echo -e "  $GRAY$0 /backup/location 30 -e .log -y$NC"
         echo ""
         echo -e "$BOLD$WHITE""What gets cleaned:""$NC"
-        echo -e "  $GRAY• ALL files older than the specified number of days$NC"
+        echo -e "  $GRAY• Files older than the specified number of days$NC"
+        echo -e "  $GRAY• Optionally filtered by file extension$NC"
         echo -e "  $GRAY• Hidden files and directories are ignored$NC"
         echo ""
         echo -e "$BOLD$WHITE""Safety features:""$NC"
@@ -113,18 +122,36 @@ let
     SOURCE_DIR=""
     DAYS_TO_KEEP=""
 
-    for arg in "$@"; do
-        case $arg in
+    while [ $# -gt 0 ]; do
+        case $1 in
             --yes|-y)
                 SKIP_CONFIRMATION=true
                 shift
                 ;;
+            --ext|-e|--extension)
+                if [ -n "$2" ] && [ "''${2:0:1}" != "-" ]; then
+                    FILE_EXTENSION="$2"
+                    # Add leading dot if not present
+                    if [ "''${FILE_EXTENSION:0:1}" != "." ]; then
+                        FILE_EXTENSION=".$FILE_EXTENSION"
+                    fi
+                    shift 2
+                else
+                    echo "Error: --ext requires an argument"
+                    exit 1
+                fi
+                ;;
+            -*)
+                echo "Unknown option: $1"
+                usage
+                ;;
             *)
                 if [ -z "$SOURCE_DIR" ]; then
-                    SOURCE_DIR="$arg"
+                    SOURCE_DIR="$1"
                 elif [ -z "$DAYS_TO_KEEP" ]; then
-                    DAYS_TO_KEEP="$arg"
+                    DAYS_TO_KEEP="$1"
                 fi
+                shift
                 ;;
         esac
     done
@@ -173,7 +200,13 @@ let
     # Find all files older than specified days, excluding hidden files
     OLD_FILES_TEMP=$(mktemp)
 
-    find "$SOURCE_DIR" -maxdepth 1 -not -name ".*" -type f -mtime +"$DAYS_TO_KEEP" 2>/dev/null > "$OLD_FILES_TEMP" || true
+    if [ -n "$FILE_EXTENSION" ]; then
+        # Filter by extension
+        find "$SOURCE_DIR" -maxdepth 1 -not -name ".*" -type f -name "*$FILE_EXTENSION" -mtime +"$DAYS_TO_KEEP" 2>/dev/null > "$OLD_FILES_TEMP" || true
+    else
+        # All files
+        find "$SOURCE_DIR" -maxdepth 1 -not -name ".*" -type f -mtime +"$DAYS_TO_KEEP" 2>/dev/null > "$OLD_FILES_TEMP" || true
+    fi
 
     OLD_FILES=$(cat "$OLD_FILES_TEMP")
     rm -f "$OLD_FILES_TEMP"
@@ -188,6 +221,9 @@ let
         print_separator
         echo -e "  $CYAN📁 Scanned:$NC $WHITE$SOURCE_DIR$NC"
         echo -e "  $CYAN📅 Cutoff:$NC  $WHITE$DAYS_TO_KEEP days ago$NC"
+        if [ -n "$FILE_EXTENSION" ]; then
+            echo -e "  $CYAN🔍 Filter:$NC  $WHITE$FILE_EXTENSION files$NC"
+        fi
         echo ""
         exit 0
     fi
@@ -226,6 +262,9 @@ let
         echo ""
         echo -e "   $BOLD$YELLOW⚠️  This will permanently delete $FILE_COUNT files!$NC"
         echo -e "   $GRAY   Files older than $DAYS_TO_KEEP days will be removed$NC"
+        if [ -n "$FILE_EXTENSION" ]; then
+            echo -e "   $GRAY   Only $FILE_EXTENSION files will be deleted$NC"
+        fi
         echo -e "   $GRAY   Total space to be freed: $TOTAL_SIZE_HUMAN$NC"
         echo ""
         echo -e "   $WHITE""Do you want to proceed? (y/N):$NC "
@@ -292,6 +331,9 @@ let
     fi
     echo -e "  $CYAN💾 Space Freed:$NC $WHITE$TOTAL_SIZE_HUMAN$NC"
     echo -e "  $CYAN📁 Directory:$NC   $WHITE$SOURCE_DIR$NC"
+    if [ -n "$FILE_EXTENSION" ]; then
+        echo -e "  $CYAN🔍 Extension:$NC   $WHITE$FILE_EXTENSION$NC"
+    fi
     echo ""
   '';
 in
