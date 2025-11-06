@@ -25,7 +25,7 @@
         appdata_dir = "/mnt/unraid/appdata/homelab";
         backup_dir = "/mnt/unraid/backups/homelab";
         data_dir = "/mnt/unraid/data";
-        root_dir = "/mnt/unraid/homelab";
+        root_dir = "/etc/nixos";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
         pgid = "131";

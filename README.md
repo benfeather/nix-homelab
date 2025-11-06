@@ -32,14 +32,14 @@ environment.systemPackages = with pkgs; [
 
 `nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'`
 
-### Clone this repo: 
+### Clone this repo:
 
-`sudo mkdir /mnt/unraid/homelab`
+`sudo chown -R 1000:nobody /etc/nixos`
 
-`sudo chown -R 1000:nobody /mnt/unraid/homelab`
+`rm configuration.nix hardware-configuration.nix`
 
-`git clone https://github.com/benfeather/nix-homelab.git /mnt/unraid/homelab`
+`git clone https://github.com/benfeather/nix-homelab.git /etc/nixos`
 
 ### Use the new config
 
-`sudo nixos-rebuild switch --flake /mnt/unraid/homelab#nixos`
+`sudo nixos-rebuild switch --flake /etc/nixos#nixos`
