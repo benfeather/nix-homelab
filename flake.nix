@@ -22,7 +22,7 @@
     }@inputs:
     let
       env = {
-        appdata_dir = "/mnt/unraid/appdata/homelab";
+        appdata_dir = "/appdata";
         backup_dir = "/mnt/unraid/backups/homelab";
         data_dir = "/mnt/unraid/data";
         root_dir = "/etc/nixos";

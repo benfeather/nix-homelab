@@ -41,7 +41,7 @@
 
   fileSystems."/mnt/unraid" = {
     device = "unraid";
-    fsType = "virtiofs";
+    fsType = "9p";
     options = [
       "defaults"
       "nofail" # Prevent system from failing if this drive doesn't mount

@@ -48,7 +48,7 @@
     ./containers/notifiarr.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
-    ./containers/qbittorrent.nix
+    # ./containers/qbittorrent.nix
     ./containers/radarr.nix
     ./containers/readarr.nix
     # ./containers/romm.nix
