@@ -51,7 +51,7 @@
     # ./containers/qbittorrent.nix
     ./containers/radarr.nix
     ./containers/readarr.nix
-    # ./containers/romm.nix
+    ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
@@ -86,11 +86,11 @@
     useUserPackages = true;
 
     users.nixos = {
-      home.stateVersion = "25.05";
+      home.stateVersion = "25.11";
 
       programs.git = {
         enable = true;
-        extraConfig = {
+        settings = {
           user.name = "Ben Feather";
           user.email = "contact@benfeather.dev";
           init.defaultBranch = "master";
@@ -196,7 +196,7 @@
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
   time.timeZone = env.tz;
 
