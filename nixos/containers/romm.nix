@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "romm" = {
       hostname = "romm";
-      image = "docker.io/rommapp/romm:latest";
+      image = "docker.io/rommapp/romm:4.4-slim";
 
       dependsOn = [
         "romm-db"
@@ -37,9 +37,9 @@
 
       volumes = [
         "romm-redis:/redis-data"
-        "romm-resources:/romm/resources"
         "${env.appdata_dir}/romm/assets:/romm/assets"
         "${env.appdata_dir}/romm/config:/romm/config"
+        "${env.appdata_dir}/romm/resources:/romm/resources"
         "${env.data_dir}/media/games:/romm/library"
       ];
     };
@@ -57,12 +57,12 @@
         config.sops.secrets."romm".path
       ];
 
-      volumes = [
-        "${env.appdata_dir}/romm/db:/var/lib/mysql"
-      ];
-
       networks = [
         "backend"
+      ];
+
+      volumes = [
+        "${env.appdata_dir}/romm/db:/var/lib/mysql"
       ];
     };
   };
