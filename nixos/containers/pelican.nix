@@ -10,6 +10,10 @@
       image = "ghcr.io/pelican-dev/panel:latest";
 
       environment = {
+        "ADMIN_EMAIL" = env.email;
+        "APP_TIMEZONE" = env.tz;
+        "APP_ENV" = "production";
+        "APP_URL" = "https://pelican.${env.domain}";
         "PGID" = env.pgid;
         "PUID" = env.puid;
         "TZ" = env.tz;

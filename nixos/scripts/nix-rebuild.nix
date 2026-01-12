@@ -1,4 +1,5 @@
 {
+  env,
   pkgs,
   ...
 }:
@@ -22,7 +23,7 @@ let
     BOLD='\033[1m'
     NC='\033[0m' # No Color
 
-    FLAKE_PATH="/mnt/unraid/homelab#nixos"
+    {env.root_dir}="/mnt/unraid/homelab#nixos"
 
     # Enhanced logging functions
     print_header() {
@@ -62,43 +63,7 @@ let
         echo -e "$GRAY─────────────────────────────────────────────────────────────────────────────$NC"
     }
 
-    print_config_summary() {
-        echo ""
-        print_separator
-        echo -e "  $BOLD$WHITE❄️  Configuration Summary$NC"
-        print_separator
-        echo -e "  $CYAN🔗 Flake Path:$NC $WHITE$FLAKE_PATH$NC"
-        echo -e "  $CYAN📁 Flake Dir:$NC  $WHITE$FLAKE_DIR$NC"
-        echo -e "  $CYAN⚙️  Operation:$NC  $WHITE""NixOS System Rebuild""$NC"
-        print_separator
-        echo ""
-    }
-
     print_header
-
-    # Extract flake directory by removing everything after #
-    FLAKE_DIR=$(echo "$FLAKE_PATH" | sed 's/#.*$//')
-
-    print_config_summary
-
-    print_section "🔍 Validation" "Checking flake configuration and paths..."
-
-    log_step "Validating flake directory..."
-    # Check if flake path exists
-    if [ ! -d "$FLAKE_DIR" ]; then
-      log_error "Flake directory '$FLAKE_DIR' does not exist!"
-      echo -e "   $WHITE   Please ensure the path '$FLAKE_PATH' is correct and accessible.$NC"
-      exit 1
-    fi
-    log_success "Flake directory exists and is accessible"
-
-    log_step "Checking for flake.nix file..."
-    # Check if flake.nix exists
-    if [ ! -f "$FLAKE_DIR/flake.nix" ]; then
-      log_error "flake.nix not found in '$FLAKE_DIR'!"
-      exit 1
-    fi
-    log_success "flake.nix found and ready"
 
     print_section "🔧 System Rebuild" "Starting NixOS configuration rebuild..."
     log_warning "This operation may take several minutes..."
@@ -110,7 +75,7 @@ let
     echo -e "   $GRAY   Please wait while the system is being rebuilt$NC"
     echo ""
 
-    if nixos-rebuild switch --flake "$FLAKE_PATH"; then
+    if nixos-rebuild switch --flake "${env.root_dir}"; then
       echo ""
       log_success "NixOS rebuild completed successfully! 🎉"
 
@@ -124,7 +89,7 @@ let
       echo -e "  $BOLD$GREEN🎉 System Rebuild Completed Successfully! 🎉$NC"
       print_separator
       echo -e "  $CYAN❄️  NixOS:$NC $WHITE""System is now running the latest configuration""$NC"
-      echo -e "  $CYAN🔗 Flake:$NC $WHITE$FLAKE_PATH$NC"
+      echo -e "  $CYAN🔗 Flake:$NC $WHITE${env.root_dir}$NC"
       echo ""
 
     else
