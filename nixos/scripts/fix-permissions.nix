@@ -19,8 +19,8 @@ let
 
     echo "Fixing permissions in ${env.appdata_dir}..."
     chown -R ${env.puid}:docker ${env.appdata_dir}
-    find ${env.appdata_dir} -type d -exec chmod 770 {} \;
-    find ${env.appdata_dir} -type f -exec chmod 660 {} \;
+    find ${env.appdata_dir} -type d -exec chmod 777 {} \;
+    find ${env.appdata_dir} -type f -exec chmod 666 {} \;
     echo "Permissions fixed."
   '';
 in

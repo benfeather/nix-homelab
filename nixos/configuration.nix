@@ -51,7 +51,7 @@
     ./containers/prowlarr.nix
     ./containers/radarr.nix
     ./containers/readarr.nix
-    ./containers/romm.nix
+    # ./containers/romm.nix
     ./containers/sabnzbd.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
