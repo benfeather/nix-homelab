@@ -5,9 +5,9 @@
 }:
 {
   virtualisation.oci-containers.containers = {
-    "pelican-panel" = {
-      hostname = "pelican-panel";
-      image = "ghcr.io/pelican-dev/panel:latest";
+    "pelican" = {
+      hostname = "pelican";
+      image = "ghcr.io/pelican-dev/panel:v1.0.0-beta30";
 
       environment = {
         "APP_URL" = "https://pelican.${env.domain}";
@@ -28,7 +28,6 @@
       volumes = [
         "${env.appdata_dir}/pelican/caddyfile:/etc/caddy/Caddyfile"
         "${env.appdata_dir}/pelican/data:/pelican-data"
-        "${env.appdata_dir}/pelican/logs:/var/www/html/storage/logs"
       ];
     };
   };
