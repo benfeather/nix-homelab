@@ -47,7 +47,7 @@
     ./containers/lidarr.nix
     ./containers/n8n.nix
     ./containers/notifiarr.nix
-    ./containers/pelican.nix
+    ./containers/pelican-panel.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
@@ -124,7 +124,7 @@
       ];
     };
 
-    hostName = "nixos";
+    hostName = "hydra";
 
     networkmanager.enable = true;
   };
@@ -146,6 +146,18 @@
   nixpkgs = {
     config = {
       allowUnfree = true;
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = env.email;
+    certs = {
+      "${env.domain}" = {
+        domain = "*.${env.domain}";
+        dnsProvider = "cloudflare";
+        environmentFile = config.sops.secrets."cloudflare".sopsFile;
+      };
     };
   };
 
