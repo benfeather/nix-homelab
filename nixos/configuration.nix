@@ -41,13 +41,12 @@
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
-    ./containers/huntarr.nix
     ./containers/jellyseerr.nix
     ./containers/kavita.nix
     ./containers/lidarr.nix
     ./containers/n8n.nix
     ./containers/notifiarr.nix
-    ./containers/pelican-panel.nix
+    # ./containers/pelican-panel.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
