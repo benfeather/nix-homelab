@@ -41,7 +41,6 @@
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
-    ./containers/jellyseerr.nix
     ./containers/kavita.nix
     ./containers/lidarr.nix
     ./containers/n8n.nix
@@ -53,6 +52,7 @@
     ./containers/readarr.nix
     # ./containers/romm.nix
     ./containers/sabnzbd.nix
+    ./containers/seerr.nix
     ./containers/sonarr.nix
     ./containers/stash.nix
     ./containers/stirling-pdf.nix
