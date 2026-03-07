@@ -41,6 +41,7 @@
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
+    ./containers/immich.nix
     ./containers/kavita.nix
     ./containers/lidarr.nix
     ./containers/n8n.nix
@@ -185,6 +186,12 @@
       "homepage" = {
         format = "dotenv";
         sopsFile = ./secrets/homepage.env;
+        key = "";
+      };
+
+      "immich" = {
+        format = "dotenv";
+        sopsFile = ./secrets/immich.env;
         key = "";
       };
 
