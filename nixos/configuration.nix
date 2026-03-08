@@ -38,7 +38,7 @@
     ./containers/bazarr.nix
     # ./containers/cloud.nix
     ./containers/dozzle.nix
-    ./containers/duplicati.nix
+    # ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
@@ -61,6 +61,7 @@
     ./containers/uptime.nix
     ./containers/whisparr.nix
     ./containers/whoami.nix
+    ./containers/zerobyte.nix
   ];
 
   boot = {
@@ -217,6 +218,12 @@
       "vpn" = {
         format = "dotenv";
         sopsFile = ./secrets/vpn.env;
+        key = "";
+      };
+
+      "zerobyte" = {
+        format = "dotenv";
+        sopsFile = ./secrets/zerobyte.env;
         key = "";
       };
     };
