@@ -38,6 +38,7 @@
     ./containers/bazarr.nix
     # ./containers/cloud.nix
     ./containers/dozzle.nix
+    ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
@@ -174,6 +175,12 @@
       "cloudflare" = {
         format = "dotenv";
         sopsFile = ./secrets/cloudflare.env;
+        key = "";
+      };
+
+      "duplicati" = {
+        format = "dotenv";
+        sopsFile = ./secrets/duplicati.env;
         key = "";
       };
 
