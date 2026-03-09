@@ -16,6 +16,10 @@
         "TZ" = env.tz;
       };
 
+      environmentFiles = [
+        config.sops.secrets."dockpeek".path
+      ];
+
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.dockpeek.entrypoints" = "websecure";
