@@ -13,12 +13,10 @@
     # Nix Scripts
     ./scripts/archive.nix
     ./scripts/backup-appdata.nix
-    ./scripts/cleanup.nix
     ./scripts/fix-permissions.nix
     ./scripts/nix-rebuild.nix
     ./scripts/nix-update.nix
     ./scripts/oci-containers.nix
-    ./scripts/rclone-sync.nix
 
     # Nix Services
     ./services/cron.nix
@@ -37,8 +35,8 @@
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     # ./containers/cloud.nix
+    ./containers/dockpeek.nix
     ./containers/dozzle.nix
-    # ./containers/duplicati.nix
     ./containers/fileflows.nix
     ./containers/flaresolver.nix
     ./containers/homepage.nix
@@ -46,7 +44,6 @@
     ./containers/kavita.nix
     ./containers/lidarr.nix
     ./containers/n8n.nix
-    ./containers/notifiarr.nix
     # ./containers/pelican-panel.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
@@ -179,9 +176,9 @@
         key = "";
       };
 
-      "duplicati" = {
+      "dockpeek" = {
         format = "dotenv";
-        sopsFile = ./secrets/duplicati.env;
+        sopsFile = ./secrets/dockpeek.env;
         key = "";
       };
 
@@ -200,12 +197,6 @@
       "immich" = {
         format = "dotenv";
         sopsFile = ./secrets/immich.env;
-        key = "";
-      };
-
-      "notifiarr" = {
-        format = "dotenv";
-        sopsFile = ./secrets/notifiarr.env;
         key = "";
       };
 

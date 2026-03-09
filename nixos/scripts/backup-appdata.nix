@@ -146,11 +146,6 @@ let
       run_command "cleanup ${env.backup_dir} 21 --ext .tar.gz --yes" "Cleaning up old archives"
       log_to_file ""
 
-      # Sync to cloud storage
-      log_section "Cloud Sync" "Syncing backups to cloud storage"
-      run_command "rclone-sync ${env.backup_dir} backups" "Syncing backups to cloud storage"
-      log_to_file ""
-
       # Start containers
       log_section "Starting Containers" "Starting OCI containers after backup"
       run_command "oci-containers start" "Starting OCI containers"

@@ -27,7 +27,6 @@
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.zerobyte.entrypoints" = "websecure";
-        "traefik.http.routers.zerobyte.middlewares" = "authelia@docker";
         "traefik.http.routers.zerobyte.rule" = "Host(`zerobyte.${env.domain}`)";
         "traefik.http.services.zerobyte.loadbalancer.server.port" = "4096";
       };
@@ -39,6 +38,7 @@
       volumes = [
         "/etc/localtime:/etc/localtime:ro"
         "${env.appdata_dir}/zerobyte:/var/lib/zerobyte"
+        "${env.data_dir}:/data"
       ];
     };
   };
