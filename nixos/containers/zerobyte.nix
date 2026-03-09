@@ -7,7 +7,7 @@
   virtualisation.oci-containers.containers = {
     "zerobyte" = {
       hostname = "zerobyte";
-      image = "ghcr.io/nicotsx/zerobyte:v0.29";
+      image = "ghcr.io/nicotsx/zerobyte:latest";
 
       devices = [
         "/dev/fuse:/dev/fuse"
