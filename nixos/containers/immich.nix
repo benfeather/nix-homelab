@@ -27,6 +27,7 @@
 
       labels = {
         "traefik.enable" = "true";
+        "traefik.docker.network" = "proxy";
         "traefik.http.routers.immich-server.entrypoints" = "websecure";
         "traefik.http.routers.immich-server.rule" = "Host(`immich.${env.domain}`)";
         "traefik.http.services.immich-server.loadbalancer.server.port" = "2283";

@@ -31,8 +31,8 @@
         "--entrypoints.websecure.http.tls.certresolver=cloudflare"
         "--entrypoints.websecure.http.tls.domains[0].main=${env.domain}"
         "--entrypoints.websecure.http.tls.domains[0].sans=*.${env.domain}"
+        "--entrypoints.websecure.transport.respondingTimeouts.readTimeout=0s"
         "--entrypoints.websecure.transport.respondingTimeouts.idleTimeout=600s"
-        "--entrypoints.websecure.transport.respondingTimeouts.readTimeout=600s"
 
         "--providers.docker=true"
         "--providers.docker.endpoint=unix:///var/run/docker.sock"
