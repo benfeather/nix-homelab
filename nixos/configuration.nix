@@ -23,6 +23,7 @@
     ./services/docker-networks.nix
     ./services/openssh.nix
     ./services/qemu.nix
+    ./services/tailscale.nix
     ./services/vscode-server.nix
     ./services/xserver.nix
 
@@ -74,6 +75,7 @@
     nixfmt-rfc-style
     rclone
     sops
+    tailscale
   ];
 
   hardware.graphics = {
@@ -118,8 +120,17 @@
   networking = {
     firewall = {
       enable = true;
+
       allowedTCPPorts = [
         22 # SSH
+      ];
+
+      allowedUDPPorts = [
+        config.services.tailscale.port
+      ];
+
+      trustedInterfaces = [
+        "tailscale0"
       ];
     };
 
@@ -203,6 +214,12 @@
       "romm" = {
         format = "dotenv";
         sopsFile = ./secrets/romm.env;
+        key = "";
+      };
+
+      "tailscale" = {
+        format = "dotenv";
+        sopsFile = ./secrets/tailscale.env;
         key = "";
       };
 
