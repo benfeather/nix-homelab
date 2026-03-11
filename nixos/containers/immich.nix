@@ -38,10 +38,6 @@
         "proxy"
       ];
 
-      ports = [
-        "2283:2283"
-      ];
-
       volumes = [
         "${env.appdata_dir}/immich:/config"
         "${env.data_dir}/media/library:/data"
