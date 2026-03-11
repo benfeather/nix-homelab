@@ -47,9 +47,6 @@
         format = "binary";
         sopsFile = ../secrets/restic.txt;
         key = "";
-        owner = env.user;
-        group = "users";
-        mode = "0400";
       };
 
       "romm" = {

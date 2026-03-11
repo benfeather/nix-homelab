@@ -6,7 +6,6 @@
   imports = [
     ./programs/git.nix
     ./programs/rclone.nix
-    ./programs/restic.nix
     ./programs/starship.nix
     ./programs/zsh.nix
   ];

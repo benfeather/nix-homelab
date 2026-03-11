@@ -3,10 +3,8 @@
   ...
 }:
 {
-  services.restic = {
-    enable = true;
-
-    backups."appdata" = {
+  services.restic.backups = {
+    appdata = {
       # backupCleanupCommand
       # backupPrepareCommand
       passwordFile = config.sops.secrets."restic".path;
