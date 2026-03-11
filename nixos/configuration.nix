@@ -23,7 +23,6 @@
     ./services/docker-networks.nix
     ./services/openssh.nix
     ./services/qemu.nix
-    ./services/rclone.nix
     ./services/tailscale.nix
     ./services/vscode-server.nix
     ./services/xserver.nix
