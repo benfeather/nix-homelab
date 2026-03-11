@@ -205,12 +205,6 @@
         key = "";
       };
 
-      "vpn" = {
-        format = "dotenv";
-        sopsFile = ./secrets/vpn.env;
-        key = "";
-      };
-
       "zerobyte" = {
         format = "dotenv";
         sopsFile = ./secrets/zerobyte.env;
