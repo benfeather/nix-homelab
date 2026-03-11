@@ -1,22 +1,28 @@
 {
-  config,
-  env,
-  inputs,
-  lib,
-  pkgs,
-  ...
-}:
-{
   imports = [
+    # Hardware
     ./hardware-configuration.nix
 
-    # Nix Scripts
+    # Base
+    ./base/acme.nix
+    ./base/boot.nix
+    ./base/graphics.nix
+    ./base/localization.nix
+    ./base/networking.nix
+    ./base/nix-core.nix
+    ./base/programs.nix
+    ./base/sops.nix
+    ./base/system.nix
+    ./base/users.nix
+    ./base/virtualisation.nix
+
+    # Scripts
     ./scripts/archive.nix
     ./scripts/backup-appdata.nix
     ./scripts/fix-permissions.nix
     ./scripts/oci-containers.nix
 
-    # Nix Programs/Services
+    # Services
     ./services/cron.nix
     ./services/docker-networks.nix
     ./services/openssh.nix
@@ -25,11 +31,11 @@
     ./services/vscode-server.nix
     ./services/xserver.nix
 
-    # Networking
+    # Networking containers
     ./containers/authelia.nix
     ./containers/traefik.nix
 
-    # Homelab
+    # Homelab containers
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
     ./containers/dockpeek.nix
@@ -56,213 +62,4 @@
     ./containers/whoami.nix
     ./containers/zerobyte.nix
   ];
-
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    curl
-    fish
-    git
-    nano
-    nixfmt-rfc-style
-    sops
-  ];
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-  home-manager = {
-    extraSpecialArgs = {
-      inherit env;
-    };
-    users.${env.user} = import ./home/default.nix;
-    useGlobalPkgs = true;
-    useUserPackages = true;
-  };
-
-  i18n = {
-    defaultLocale = "en_NZ.UTF-8";
-
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_NZ.UTF-8";
-      LC_IDENTIFICATION = "en_NZ.UTF-8";
-      LC_MEASUREMENT = "en_NZ.UTF-8";
-      LC_MONETARY = "en_NZ.UTF-8";
-      LC_NAME = "en_NZ.UTF-8";
-      LC_NUMERIC = "en_NZ.UTF-8";
-      LC_PAPER = "en_NZ.UTF-8";
-      LC_TELEPHONE = "en_NZ.UTF-8";
-      LC_TIME = "en_NZ.UTF-8";
-    };
-  };
-
-  networking = {
-    firewall = {
-      enable = true;
-
-      allowedTCPPorts = [
-        22 # SSH
-      ];
-
-      allowedUDPPorts = [
-        config.services.tailscale.port
-      ];
-
-      trustedInterfaces = [
-        "tailscale0"
-      ];
-    };
-
-    hostName = "hydra";
-
-    networkmanager.enable = true;
-  };
-
-  nix = {
-    channel.enable = false;
-
-    settings = {
-      experimental-features = "nix-command flakes";
-    };
-
-    gc = {
-      automatic = true;
-      dates = "03:00";
-      options = "--delete-older-than 7d";
-    };
-  };
-
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-  };
-
-  programs = {
-    fish.enable = true;
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = env.email;
-    certs = {
-      "${env.domain}" = {
-        domain = "*.${env.domain}";
-        dnsProvider = "cloudflare";
-        environmentFile = config.sops.secrets."cloudflare".sopsFile;
-      };
-    };
-  };
-
-  sops = {
-    age.keyFile = "/home/${env.user}/.config/sops/age/keys.txt";
-
-    secrets = {
-      "authelia" = {
-        format = "dotenv";
-        sopsFile = ./secrets/authelia.env;
-        key = "";
-      };
-
-      "cloudflare" = {
-        format = "dotenv";
-        sopsFile = ./secrets/cloudflare.env;
-        key = "";
-      };
-
-      "dockpeek" = {
-        format = "dotenv";
-        sopsFile = ./secrets/dockpeek.env;
-        key = "";
-      };
-
-      "gcs" = {
-        format = "json";
-        sopsFile = ./secrets/gcs.json;
-        key = "";
-        owner = env.user;
-        group = "users";
-        mode = "0400";
-      };
-
-      "homepage" = {
-        format = "dotenv";
-        sopsFile = ./secrets/homepage.env;
-        key = "";
-      };
-
-      "immich" = {
-        format = "dotenv";
-        sopsFile = ./secrets/immich.env;
-        key = "";
-      };
-
-      "romm" = {
-        format = "dotenv";
-        sopsFile = ./secrets/romm.env;
-        key = "";
-      };
-
-      "tailscale" = {
-        format = "dotenv";
-        sopsFile = ./secrets/tailscale.env;
-        key = "";
-      };
-
-      "zerobyte" = {
-        format = "dotenv";
-        sopsFile = ./secrets/zerobyte.env;
-        key = "";
-      };
-    };
-  };
-
-  system.stateVersion = "25.11";
-
-  time.timeZone = env.tz;
-
-  users = {
-    users.${env.user} = {
-      extraGroups = [
-        "docker"
-        "networkmanager"
-        "video"
-        "wheel"
-      ];
-
-      isNormalUser = true;
-
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
-      ];
-
-      shell = pkgs.fish;
-    };
-  };
-
-  virtualisation = {
-    docker = {
-      enable = true;
-      enableOnBoot = true;
-
-      autoPrune = {
-        enable = true;
-        dates = "weekly";
-      };
-
-      daemon.settings.dns = [
-        "1.1.1.1"
-        "1.0.0.1"
-      ];
-    };
-
-    oci-containers = {
-      backend = "docker";
-    };
-  };
 }
