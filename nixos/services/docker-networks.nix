@@ -18,7 +18,6 @@
 
     wantedBy = [
       "docker-authelia.service"
-      "docker-cf-tunnel.service"
       "docker-traefik.service"
     ];
   };

@@ -29,13 +29,11 @@
 
     # Networking
     ./containers/authelia.nix
-    ./containers/cf-tunnel.nix
     ./containers/traefik.nix
 
     # Homelab
     ./containers/audiobookshelf.nix
     ./containers/bazarr.nix
-    # ./containers/cloud.nix
     ./containers/dockpeek.nix
     ./containers/dozzle.nix
     ./containers/fileflows.nix
@@ -45,7 +43,6 @@
     ./containers/kavita.nix
     ./containers/lidarr.nix
     ./containers/n8n.nix
-    # ./containers/pelican-panel.nix
     ./containers/profilarr.nix
     ./containers/prowlarr.nix
     ./containers/radarr.nix
