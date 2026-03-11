@@ -43,6 +43,15 @@
         key = "";
       };
 
+      "restic" = {
+        format = "dotenv";
+        sopsFile = ../secrets/restic.env;
+        key = "";
+        owner = env.user;
+        group = "users";
+        mode = "0400";
+      };
+
       "romm" = {
         format = "dotenv";
         sopsFile = ../secrets/romm.env;
