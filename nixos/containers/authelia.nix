@@ -23,6 +23,7 @@
         "traefik.http.middlewares.authelia.forwardAuth.address" =
           "http://authelia:9091/api/verify?rd=https://auth.${env.domain}";
         "traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader" = "true";
+        "traefik.http.middlewares.authelia.forwardAuth.maxResponseBodySize" = "1048576";
         "traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders" =
           "Remote-User,Remote-Groups,Remote-Email,Remote-Name";
         "traefik.http.routers.authelia.entrypoints" = "websecure";

@@ -26,7 +26,7 @@
         backup_dir = "/mnt/unraid/backups/homelab";
         data_dir = "/mnt/unraid/data";
         root_dir = "/etc/nixos";
-        domain = "lab.benfeather.com";
+        domain = "benfeather.com";
         email = "contact@benfeather.dev";
         pgid = "131";
         puid = "1000";

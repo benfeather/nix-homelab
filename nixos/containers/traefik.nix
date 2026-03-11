@@ -40,8 +40,13 @@
         "--providers.docker.watch=true"
 
         "--certificatesresolvers.cloudflare.acme.email=${env.email}"
+        "--certificatesresolvers.cloudflare.acme.storage=/etc/traefik/acme.json"
         "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
         "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      ];
+
+      dependsOn = [
+        "authelia"
       ];
 
       environment = {
@@ -65,6 +70,12 @@
 
       networks = [
         "proxy"
+      ];
+
+      ports = [
+        "80:80"
+        "443:443"
+        "8080:8080"
       ];
 
       volumes = [
