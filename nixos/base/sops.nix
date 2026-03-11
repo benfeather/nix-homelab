@@ -44,7 +44,7 @@
       };
 
       "restic" = {
-        format = "dotenv";
+        format = "BINARY";
         sopsFile = ../secrets/restic.env;
         key = "";
         owner = env.user;

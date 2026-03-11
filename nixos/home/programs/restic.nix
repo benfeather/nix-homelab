@@ -14,7 +14,7 @@
     backups."appdata" = {
       # backupCleanupCommand
       # backupPrepareCommand
-      environmentFile = osConfig.sops.secrets."restic".path;
+      passwordFile = osConfig.sops.secrets."restic".path;
       exclude = [
         "*.log"
         "**/log/*"
