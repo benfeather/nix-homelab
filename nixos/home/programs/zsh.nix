@@ -5,11 +5,18 @@
 }:
 {
   home.packages = with pkgs; [
-    fish
+    zsh
   ];
 
-  programs.fish = {
+  programs.zsh = {
     enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+
+    initContent = ''
+      eval "$(starship init zsh)"
+    '';
+
     shellAliases = {
       cls = "clear";
       la = "ls -la";

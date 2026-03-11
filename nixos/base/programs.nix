@@ -4,14 +4,21 @@
   ...
 }:
 {
-  environment.systemPackages = with pkgs; [
-    curl
-    fish
-    git
-    nano
-    nixfmt-rfc-style
-    sops
-  ];
+  environment = {
+    shells = with pkgs; [
+      zsh
+    ];
+
+    systemPackages = with pkgs; [
+      curl
+      git
+      nano
+      nixd
+      nixfmt
+      sops
+      zsh
+    ];
+  };
 
   home-manager = {
     extraSpecialArgs = {
@@ -22,5 +29,5 @@
     useUserPackages = true;
   };
 
-  programs.fish.enable = true;
+  programs.zsh.enable = true;
 }

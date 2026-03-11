@@ -1,13 +1,13 @@
 {
   env,
-  pkgs,
   ...
 }:
 {
   imports = [
-    ./programs/fish.nix
     ./programs/git.nix
     ./programs/rclone.nix
+    ./programs/starship.nix
+    ./programs/zsh.nix
   ];
 
   home = {
