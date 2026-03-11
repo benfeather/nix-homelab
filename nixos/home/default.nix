@@ -9,5 +9,6 @@
 
   imports = [
     ./programs/git.nix
+    ./programs/rclone.nix
   ];
 }
