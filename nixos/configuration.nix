@@ -154,7 +154,7 @@
   };
 
   sops = {
-    age.keyFile = "/home/nixos/.config/sops/age/keys.txt";
+    age.keyFile = "/home/${env.user}/.config/sops/age/keys.txt";
 
     secrets = {
       "authelia" = {
@@ -179,6 +179,9 @@
         format = "json";
         sopsFile = ./secrets/gcs.json;
         key = "";
+        owner = env.user;
+        group = "users";
+        mode = "0400";
       };
 
       "homepage" = {
