@@ -64,6 +64,7 @@
 
   environment.systemPackages = with pkgs; [
     curl
+    fish
     git
     nano
     nixfmt-rfc-style
@@ -76,6 +77,9 @@
   };
 
   home-manager = {
+    extraSpecialArgs = {
+      inherit env;
+    };
     users.${env.user} = import ./home/default.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -137,6 +141,10 @@
     config = {
       allowUnfree = true;
     };
+  };
+
+  programs = {
+    fish.enable = true;
   };
 
   security.acme = {
@@ -232,6 +240,8 @@
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRN844nMraLIO6ZSO5XlxVOd2va3pnnJMC/BRS41zIo"
       ];
+
+      shell = pkgs.fish;
     };
   };
 

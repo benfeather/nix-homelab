@@ -1,14 +1,18 @@
 {
-  homeDirectory,
-  host,
+  env,
   pkgs,
   ...
 }:
 {
-  home.stateVersion = "25.11";
-
   imports = [
+    ./programs/fish.nix
     ./programs/git.nix
     ./programs/rclone.nix
   ];
+
+  home = {
+    homeDirectory = "/home/${env.user}";
+    stateVersion = "25.11";
+    username = env.user;
+  };
 }
