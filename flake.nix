@@ -28,6 +28,7 @@
         root_dir = "/etc/nixos";
         domain = "benfeather.com";
         email = "contact@benfeather.dev";
+        user = "nixos";
         pgid = "131";
         puid = "1000";
         tz = "Pacific/Auckland";

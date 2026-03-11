@@ -18,11 +18,12 @@
     ./scripts/nix-update.nix
     ./scripts/oci-containers.nix
 
-    # Nix Services
+    # Nix Programs/Services
     ./services/cron.nix
     ./services/docker-networks.nix
     ./services/openssh.nix
     ./services/qemu.nix
+    ./services/rclone.nix
     ./services/tailscale.nix
     ./services/vscode-server.nix
     ./services/xserver.nix
@@ -67,12 +68,9 @@
   environment.systemPackages = with pkgs; [
     curl
     git
-    home-manager
     nano
     nixfmt-rfc-style
-    rclone
     sops
-    tailscale
   ];
 
   hardware.graphics = {
@@ -81,21 +79,9 @@
   };
 
   home-manager = {
+    users.${env.user} = import ./home/default.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
-
-    users.nixos = {
-      home.stateVersion = "25.11";
-
-      programs.git = {
-        enable = true;
-        settings = {
-          user.name = "Ben Feather";
-          user.email = "contact@benfeather.dev";
-          init.defaultBranch = "master";
-        };
-      };
-    };
   };
 
   i18n = {
@@ -239,7 +225,7 @@
   time.timeZone = env.tz;
 
   users = {
-    users.nixos = {
+    users.${env.user} = {
       extraGroups = [
         "docker"
         "networkmanager"
@@ -255,22 +241,24 @@
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-
-    autoPrune = {
+  virtualisation = {
+    docker = {
       enable = true;
-      dates = "weekly";
+      enableOnBoot = true;
+
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
+
+      daemon.settings.dns = [
+        "1.1.1.1"
+        "1.0.0.1"
+      ];
     };
 
-    daemon.settings.dns = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-  };
-
-  virtualisation.oci-containers = {
-    backend = "docker";
+    oci-containers = {
+      backend = "docker";
+    };
   };
 }
