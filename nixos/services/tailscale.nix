@@ -43,7 +43,7 @@
       source ${config.sops.secrets."tailscale".path}
 
       # authenticate with tailscale
-      ${tailscale}/bin/tailscale up -authkey "$TAILSCALE_AUTH_KEY"
+      ${tailscale}/bin/tailscale up --authkey "$TAILSCALE_AUTH_KEY" --ssh
     '';
   };
 }
