@@ -1,30 +1,36 @@
 {
-  osConfig,
-  pkgs,
+  config,
   ...
 }:
 {
-  home.packages = with pkgs; [
-    restic
-  ];
-
   services.restic = {
     enable = true;
 
     backups."appdata" = {
       # backupCleanupCommand
       # backupPrepareCommand
-      passwordFile = osConfig.sops.secrets."restic".path;
+      passwordFile = config.sops.secrets."restic".path;
+
       exclude = [
         "*.log"
         "**/log/*"
         "**/logs/*"
       ];
+
       initialize = true;
+
       paths = [
         "/appdata"
       ];
+
+      # pruneOpts = [
+      #   "--keep-daily 7"
+      #   "--keep-weekly 5"
+      #   "--keep-monthly 12"
+      # ];
+
       repository = "rclone:gcs:appdata";
+
       # timerConfig = {
       #   OnCalendar = "daily";
       #   Persistent = true;

@@ -45,7 +45,7 @@
 
       "restic" = {
         format = "binary";
-        sopsFile = ../secrets/restic.env;
+        sopsFile = ../secrets/restic.txt;
         key = "";
         owner = env.user;
         group = "users";

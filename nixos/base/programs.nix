@@ -15,6 +15,8 @@
       nano
       nixd
       nixfmt
+      rclone
+      restic
       sops
       zsh
     ];
