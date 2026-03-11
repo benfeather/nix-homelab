@@ -9,6 +9,7 @@
 		"certresolver",
 		"dnschallenge",
 		"dockpeek",
+		"dotenv",
 		"dozzle",
 		"duplicati",
 		"exposedbydefault",
@@ -45,7 +46,8 @@
 		"traefik",
 		"unraid",
 		"websecure",
-		"whisparr"
+		"whisparr",
+		"zerobyte"
 	],
 
 	"extensions.verifySignature": false
