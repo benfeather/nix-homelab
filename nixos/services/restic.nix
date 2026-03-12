@@ -5,8 +5,10 @@
 {
   services.restic.backups = {
     appdata = {
-      # backupCleanupCommand
-      # backupPrepareCommand
+      backupCleanupCommand = "oci-containers start";
+
+      backupPrepareCommand = "oci-containers stop";
+
       passwordFile = config.sops.secrets."restic".path;
 
       exclude = [
@@ -27,8 +29,9 @@
       #   "--keep-monthly 12"
       # ];
 
-      rcloneOptions = {
-        gcs-service-account-file = config.sops.secrets."gcs".path;
+      rcloneConfig = {
+        type = "google cloud storage";
+        service_account_file = config.sops.secrets."gcs".path;
       };
 
       repository = "rclone:gcs:appdata";

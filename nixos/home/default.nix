@@ -5,7 +5,7 @@
 {
   imports = [
     ./programs/git.nix
-    ./programs/rclone.nix
+    # ./programs/rclone.nix
     ./programs/starship.nix
     ./programs/zsh.nix
   ];
