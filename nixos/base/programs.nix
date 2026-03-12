@@ -26,7 +26,12 @@
     extraSpecialArgs = {
       inherit env;
     };
-    users.${env.user} = import ../home/default.nix;
+
+    users = {
+      ${env.user} = import ../home/${env.user}.nix;
+      root = import ../home/root.nix;
+    };
+
     useGlobalPkgs = true;
     useUserPackages = true;
   };

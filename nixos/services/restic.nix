@@ -27,6 +27,10 @@
       #   "--keep-monthly 12"
       # ];
 
+      rcloneOptions = {
+        gcs-service-account-file = config.sops.secrets."gcs".path;
+      };
+
       repository = "rclone:gcs:appdata";
 
       # timerConfig = {
