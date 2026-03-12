@@ -1,4 +1,7 @@
-{ env, ... }:
+{
+  env,
+  ...
+}:
 {
   sops = {
     age.keyFile = "/home/${env.user}/.config/sops/age/keys.txt";
