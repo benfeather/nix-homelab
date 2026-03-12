@@ -28,8 +28,7 @@
     };
 
     users = {
-      ${env.user} = import ../home/${env.user}.nix;
-      root = import ../home/root.nix;
+      ${env.user} = import ../home/default.nix;
     };
 
     useGlobalPkgs = true;
