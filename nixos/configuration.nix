@@ -61,6 +61,6 @@
     ./containers/uptime.nix
     ./containers/whisparr.nix
     ./containers/whoami.nix
-    ./containers/zerobyte.nix
+    # ./containers/zerobyte.nix
   ];
 }
