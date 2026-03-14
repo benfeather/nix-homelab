@@ -2,6 +2,7 @@
   security.polkit = {
     enable = true;
     extraConfig = ''
+      // Allow members of the "docker" group to start/stop/restart docker-*.service units without password
       polkit.addRule(function(action, subject) {
         if (
           action.id == "org.freedesktop.systemd1.manage-units" &&
