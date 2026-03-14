@@ -59,6 +59,8 @@
 
       repository = "rclone:appdata:${env.backup_bucket}/appdata";
 
+      runCheck = true;
+
       timerConfig = {
         OnCalendar = "01:00:00";
         Persistent = true;
