@@ -27,8 +27,15 @@
 
       exclude = [
         "*.log"
-        "**/log/*"
-        "**/logs/*"
+      ];
+
+      extraBackupArgs = [
+        "--iexclude=**/backup/*"
+        "--iexclude=**/backups/*"
+        "--iexclude=**/cache/*"
+        "--iexclude=**/log/*"
+        "--iexclude=**/logs/*"
+        "--iexclude=**/temp/*"
       ];
 
       initialize = true;
