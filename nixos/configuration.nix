@@ -10,6 +10,7 @@
     ./base/localization.nix
     ./base/networking.nix
     ./base/nix-core.nix
+    ./base/polkit.nix
     ./base/programs.nix
     ./base/sops.nix
     ./base/system.nix
