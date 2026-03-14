@@ -17,8 +17,6 @@
     ./base/virtualisation.nix
 
     # Scripts
-    ./scripts/archive.nix
-    ./scripts/backup-appdata.nix
     ./scripts/fix-permissions.nix
     ./scripts/oci-containers.nix
 

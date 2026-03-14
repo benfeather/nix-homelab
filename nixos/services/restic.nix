@@ -1,15 +1,29 @@
 {
   config,
+  env,
+  pkgs,
   ...
 }:
 {
   services.restic.backups = {
     appdata = {
-      backupCleanupCommand = "oci-containers start";
+      # Start containers after the backup finishes (success or failure)
+      backupCleanupCommand = ''
+        echo "Restarting Docker containers..."
 
-      backupPrepareCommand = "oci-containers stop";
+        for unit in $(${pkgs.systemd}/bin/systemctl list-unit-files --type=service 2>/dev/null \
+          | ${pkgs.gnugrep}/bin/grep -E '^docker-.*\.service' \
+          | ${pkgs.gawk}/bin/awk '{print $1}' || true); \
+        do
+          ${pkgs.systemd}/bin/systemctl start "$unit"
+        done
+      '';
 
-      passwordFile = config.sops.secrets."restic".path;
+      # Stop containers before the backup starts
+      backupPrepareCommand = ''
+        echo "Stopping Docker containers..."
+        ${pkgs.systemd}/bin/systemctl stop "docker-*.service"
+      '';
 
       exclude = [
         "*.log"
@@ -19,27 +33,28 @@
 
       initialize = true;
 
+      passwordFile = config.sops.secrets."restic".path;
+
       paths = [
         "/appdata"
       ];
 
-      # pruneOpts = [
-      #   "--keep-daily 7"
-      #   "--keep-weekly 5"
-      #   "--keep-monthly 12"
-      # ];
+      pruneOpts = [
+        "--keep-daily 7"
+      ];
 
       rcloneConfig = {
         type = "google cloud storage";
         service_account_file = config.sops.secrets."gcs".path;
+        bucket_policy_only = "true";
       };
 
-      repository = "rclone:gcs:appdata";
+      repository = "rclone:appdata:${env.backup_bucket}/appdata";
 
-      # timerConfig = {
-      #   OnCalendar = "daily";
-      #   Persistent = true;
-      # };
+      timerConfig = {
+        OnCalendar = "01:00:00";
+        Persistent = true;
+      };
     };
   };
 }

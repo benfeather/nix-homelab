@@ -61,11 +61,11 @@
         key = "";
       };
 
-      "zerobyte" = {
-        format = "dotenv";
-        sopsFile = ../secrets/zerobyte.env;
-        key = "";
-      };
+      # "zerobyte" = {
+      #   format = "dotenv";
+      #   sopsFile = ../secrets/zerobyte.env;
+      #   key = "";
+      # };
     };
   };
 }

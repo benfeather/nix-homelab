@@ -23,7 +23,7 @@
     let
       env = {
         appdata_dir = "/appdata";
-        backup_dir = "/mnt/unraid/backups/homelab";
+        backup_bucket = "backups.benfeather.com";
         data_dir = "/mnt/unraid/data";
         root_dir = "/etc/nixos";
         domain = "benfeather.com";
